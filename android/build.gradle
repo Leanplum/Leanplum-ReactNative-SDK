@@ -33,7 +33,7 @@ buildscript {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:3.4.1'
+            classpath 'com.android.tools.build:gradle:3.5.3'
         }
     }
 }
@@ -68,12 +68,19 @@ repositories {
     }
     google()
     jcenter()
+
+    maven {
+        url "https://repo.leanplum.com/"
+    }
 }
 
 dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
+    implementation 'com.leanplum:leanplum-core:5.3.2'
 }
+
+
 
 def configureReactNativePom(def pom) {
     def packageJson = new groovy.json.JsonSlurper().parseText(file('../package.json').text)
