@@ -69,6 +69,10 @@ class Leanplum {
   ) {
     this.nativeModule.setDeviceLocation(latitude, longitude, type);
   }
+
+  forceContentUpdate() {
+    this.nativeModule.forceContentUpdate();
+  }
 }
 
 const leanplum = new Leanplum(NativeModules.Leanplum);

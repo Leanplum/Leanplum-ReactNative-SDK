@@ -70,5 +70,9 @@ class RNLeanplum: NSObject {
     let accuracyType = LPLocationAccuracyType(rawValue: UInt32(type))
     Leanplum.setDeviceLocationWithLatitude(latitude, longitude: longitude, type: accuracyType)
   }
-  
+    
+  @objc
+  func forceContentUpdate() -> Void {
+    Leanplum.forceContentUpdate();
+  }
 }

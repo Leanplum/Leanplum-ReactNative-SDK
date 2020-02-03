@@ -33,6 +33,7 @@ Leanplum.start();
 * `trackPurchase` (value: number, currencyCode: string, purchaseParams: LeanplumObject, purchaseEvent: string): void - Manually track purchase event with currency code in your application
 * `disableLocationCollection` (): void - Disable location collection
 * `setDeviceLocation` (latitude: number, longitude: number, type: LocationAccuracyType): void - Set location manually. Best if used in after calling disableLocationCollection. Useful if you want to apply additional logic before sending in the location.
+* `forceContentUpdate` (): void - Forces content to update from the server. If variables have changed, the appropriate callbacks will fire. Use sparingly as if the app is updated, you'll have to deal with potentially inconsistent state or user experience.
 
 ```javascript
 LeanplumObject {

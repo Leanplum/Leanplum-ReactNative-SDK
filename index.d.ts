@@ -30,6 +30,7 @@ declare class Leanplum {
     trackPurchase(value: number, currencyCode: string, purchaseParams: LeanplumObject, purchaseEvent: string): void;
     disableLocationCollection() : void;
     setDeviceLocation(latitude: number, longitude: number, type: LocationAccuracyType): void;
+    forceContentUpdate(): void;
 }
 declare const leanplum: Leanplum;
 export default leanplum;

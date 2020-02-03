@@ -11,4 +11,5 @@
     RCT_EXTERN_METHOD(trackPurchase: (NSString *)purchaseEvent value:(double *)value currencyCode:(NSString *)currencyCode purchaseParams:(NSDictionary *)purchaseParams)
     RCT_EXTERN_METHOD(disableLocationCollection)
     RCT_EXTERN_METHOD(setDeviceLocation: (double *)latitude longitude:(double *)longitude type:(NSInteger *)type)
+    RCT_EXTERN_METHOD(forceContentUpdate)
 @end

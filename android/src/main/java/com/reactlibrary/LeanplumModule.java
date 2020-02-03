@@ -77,4 +77,9 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         LeanplumLocationAccuracyType accuracyType = LeanplumLocationAccuracyType.values()[type];
         Leanplum.setDeviceLocation(location, accuracyType);
     }
+
+    @ReactMethod
+    public void forceContentUpdate() {
+        Leanplum.forceContentUpdate();
+    }
 }
