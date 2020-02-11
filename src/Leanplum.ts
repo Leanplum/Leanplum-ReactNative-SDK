@@ -1,10 +1,11 @@
-import {NativeModules, Platform} from 'react-native';
+import {NativeModules, NativeModulesStatic, Platform} from 'react-native';
+import {LocationAccuracyType} from './location-accuracy-type';
 
-class Leanplum {
-  nativeModule;
-  PURCHASE_EVENT_NAME = 'Purchase';
+class LeanplumSdkModule {
+  private nativeModule: NativeModulesStatic = {};
+  PURCHASE_EVENT_NAME: string = 'Purchase';
 
-  constructor(nativeModule) {
+  constructor(nativeModule: NativeModulesStatic) {
     if (Platform.OS === 'android' || Platform.OS === 'ios') {
       this.nativeModule = nativeModule;
     } else {
@@ -16,39 +17,39 @@ class Leanplum {
     throw new Error('Unsupported Platform');
   }
 
-  setAppIdForDevelopmentMode(appId, accessKey) {
+  setAppIdForDevelopmentMode(appId: string, accessKey: string): void {
     this.nativeModule.setAppIdForDevelopmentMode(appId, accessKey);
   }
 
-  setAppIdForProductionMode(appId, accessKey) {
+  setAppIdForProductionMode(appId: string, accessKey: string): void {
     this.nativeModule.setAppIdForProductionMode(appId, accessKey);
   }
 
-  setDeviceId(id) {
+  setDeviceId(id: string) {
     this.nativeModule.setDeviceId(id);
   }
 
-  setUserId(id) {
+  setUserId(id: string) {
     this.nativeModule.setUserId(id);
   }
 
-  setUserAttributes(attributes) {
+  setUserAttributes(attributes: any) {
     this.nativeModule.setUserAttributes(attributes);
   }
 
-  start() {
+  start(): void {
     this.nativeModule.start();
   }
 
-  track(event, params = {}) {
+  track(event: string, params: any = {}): void {
     this.nativeModule.track(event, params);
   }
 
   trackPurchase(
-    value,
-    currencyCode,
-    purchaseParams,
-    purchaseEvent = this.PURCHASE_EVENT_NAME,
+    value: number,
+    currencyCode: string,
+    purchaseParams: any,
+    purchaseEvent: string = this.PURCHASE_EVENT_NAME,
   ) {
     this.nativeModule.trackPurchase(
       purchaseEvent,
@@ -63,17 +64,13 @@ class Leanplum {
   }
 
   setDeviceLocation(
-    latitude,
-    longitude,
-    type = 1,
+    latitude: number,
+    longitude: number,
+    type: LocationAccuracyType = LocationAccuracyType.CELL,
   ) {
     this.nativeModule.setDeviceLocation(latitude, longitude, type);
   }
-
-  forceContentUpdate() {
-    this.nativeModule.forceContentUpdate();
-  }
 }
 
-const leanplum = new Leanplum(NativeModules.Leanplum);
-export default leanplum;
+const Leanplum = new LeanplumSdkModule(NativeModules.LeanplumSdk);
+export default Leanplum;

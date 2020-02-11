@@ -8,6 +8,12 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# Typescript v1 declaration files
+typings/
+
+# Distribution code
+dist/
+
 # Xcode
 #
 build/
