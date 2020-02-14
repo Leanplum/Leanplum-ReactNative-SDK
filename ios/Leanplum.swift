@@ -27,8 +27,13 @@ class RNLeanplum: RCTEventEmitter {
     override func supportedEvents() -> [String]! {
         return self.allSupportedEvents
     }
-    
-    
+
+    @objc
+    func setListenersNames(_ onVariableChangedListenerName: String, onVariablesChangedListenerName: String) {
+        self.onVariableChangedListenerName = onVariableChangedListenerName;
+        self.onVariablesChangedListenerName = onVariablesChangedListenerName;
+    }
+
     @objc
     func setAppIdForDevelopmentMode(_ appId: String, accessKey: String) -> Void {
         Leanplum.setAppId(appId, withDevelopmentKey: accessKey)

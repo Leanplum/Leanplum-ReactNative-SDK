@@ -3,6 +3,7 @@ package com.reactlibrary;
 import android.location.Location;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -13,7 +14,9 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.leanplum.Leanplum;
 import com.leanplum.LeanplumLocationAccuracyType;
 import com.leanplum.Var;
+import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariableCallback;
+import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
 import com.reactlibrary.utils.ArrayUtil;
 import com.reactlibrary.utils.MapUtil;
@@ -195,6 +198,54 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     public void getVariableAsset(String name, Promise promise) {
         Var<?> variable = (Var<?>) variables.get(name);
         promise.resolve(getRnAssetPath(variable.fileValue()));
+    }
+
+    /**
+     * add value change callback for specific variable
+     *
+     * @param name name of the variable on which we will register the handler
+     */
+    @ReactMethod
+    public void onValueChanged(final String name) {
+        Var<Object> var = (Var<Object>) variables.get(name);
+        var.addValueChangedHandler(new VariableCallback<Object>() {
+            @Override
+            public void handle(Var<Object> var) {
+                reactContext
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit(onVariableChangedListenerName + "." + name, getVariableValue(name));
+            }
+        });
+    }
+
+    /**
+     * add callback when start finishes
+     *
+     * @param successCallback Success Callback
+     */
+    @ReactMethod
+    public void onStartResponse(final Callback successCallback) {
+        Leanplum.addStartResponseHandler(new StartCallback() {
+            @Override
+            public void onResponse(boolean success) {
+                successCallback.invoke(success);
+            }
+        });
+    }
+
+    /**
+     * add callback when all variables are ready
+     */
+    @ReactMethod
+    public void onVariablesChanged() {
+        Leanplum.addVariablesChangedHandler(new VariablesChangedCallback() {
+            @Override
+            public void variablesChanged() {
+                reactContext
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit(onVariablesChangedListenerName, getVariablesValues());
+            }
+        });
     }
 
 
