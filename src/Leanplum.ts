@@ -72,5 +72,4 @@ class LeanplumSdkModule {
   }
 }
 
-const Leanplum = new LeanplumSdkModule(NativeModules.LeanplumSdk);
-export default Leanplum;
+export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);
