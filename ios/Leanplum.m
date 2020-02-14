@@ -1,6 +1,7 @@
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface RCT_EXTERN_REMAP_MODULE(Leanplum, RNLeanplum, NSObject)
+@interface RCT_EXTERN_REMAP_MODULE(Leanplum, RNLeanplum, RCTEventEmitter)
 RCT_EXTERN_METHOD(setAppIdForDevelopmentMode: (NSString *)appId accessKey:(NSString *)accessKey)
 RCT_EXTERN_METHOD(setAppIdForProductionMode: (NSString *)appId accessKey:(NSString *)accessKey)
 RCT_EXTERN_METHOD(setDeviceId: (NSString *)id)
