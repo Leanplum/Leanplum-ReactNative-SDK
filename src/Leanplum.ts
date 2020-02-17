@@ -184,6 +184,30 @@ class LeanplumSdkModule extends NativeEventEmitter {
   ) {
     this.nativeModule.setDeviceLocation(latitude, longitude, type);
   }
+
+  pauseState(): void {
+    this.nativeModule.pauseState();
+  }
+
+  resumeState(): void {
+    this.nativeModule.resumeState();
+  }
+
+  trackAllAppScreens(): void {
+    this.nativeModule.trackAllAppScreens();
+  }
+  advanceTo(name: string | null, info?: string, params?: any) {
+      if (!info && !params) {
+        this.nativeModule.advanceTo(name);
+      } else if (info && !params) {
+        this.nativeModule.advanceToWithInfo(name, info);
+      } else if (!info && params) {
+        this.nativeModule.advanceToWithParams(name, params);
+      } else {
+        this.nativeModule.advanceToWithInfoAndParams(name, info, params)
+      }
+  }
+
 }
 
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);

@@ -180,4 +180,46 @@ class RNLeanplum: RCTEventEmitter {
             reject(self.undefinedVariableErrorMessage, "\(undefinedVariableErrorMessage): '\(name)'", self.undefinedVariableError)
         }
     }
+
+    @objc
+    func pauseState() {
+        Leanplum.pauseState();
+    }
+
+    @objc
+    func resumeState() {
+        Leanplum.resumeState();
+    }
+
+    @objc
+    func trackAllAppScreens() {
+        Leanplum.trackAllAppScreens();
+    }
+    
+    @objc
+    func advanceTo(_ state: String) {
+        Leanplum.advance(to: state)
+    }
+    
+    @objc
+    func advanceToWithInfo(_ state: String, info: String) {
+        Leanplum.advance(to: state, withInfo: info)
+    }
+    
+    @objc
+    func advanceToWithParams(_ state: String, params: NSDictionary) {
+        guard let paramsDict = params as? Dictionary<String, Any> else {
+            return
+        }
+        Leanplum.advance(to: state, withParameters: paramsDict)
+    }
+    
+    
+    @objc
+    func advanceToWithInfoAndParams(_ state: String, info: String, params: NSDictionary) {
+        guard let paramsDict = params as? Dictionary<String, Any> else {
+            return
+        }
+        Leanplum.advance(to: state, withInfo: info, andParameters: paramsDict)
+    }
 }
