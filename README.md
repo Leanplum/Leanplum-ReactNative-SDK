@@ -2,15 +2,17 @@
 
 ## Getting started
 
-1. Add `"react-native-leanplum": "file:../react-native-leanplum"` to the `package.json` file inside `dependencies` property
+1. Build this project executing `$ yarn build` or `$ npm run build`
 
-2. `$ yarn install` or `$ npm install`
+2. Add in your app `"react-native-leanplum": "file:../react-native-leanplum"` to the `package.json` file inside `dependencies` property
 
-3. `$ react-native link react-native-leanplum`
+3. `$ yarn install` or `$ npm install`
 
-4. `$ cd ios && pod install`
+4. `$ react-native link react-native-leanplum`
 
-5. Please refer to https://docs.leanplum.com/reference#leanplum-sdk-setup for iOS or Android configuration
+5. `$ cd ios && pod install`
+
+6. Please refer to https://docs.leanplum.com/reference#leanplum-sdk-setup for iOS or Android configuration
 
 ## Usage
 ```javascript
