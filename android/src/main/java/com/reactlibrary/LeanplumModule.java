@@ -248,5 +248,39 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void pauseState() {
+        Leanplum.pauseState();
+    }
+
+    @ReactMethod
+    public void resumeState() {
+        Leanplum.resumeState();
+    }
+
+    @ReactMethod
+    public void trackAllAppScreens() {
+        Leanplum.trackAllAppScreens();
+    }
+
+    @ReactMethod
+    public void advanceTo(String state) {
+        Leanplum.advanceTo(state);
+    }
+
+    @ReactMethod
+    public void advanceToWithInfo(String state, String info) {
+        Leanplum.advanceTo(state, info);
+    }
+
+    @ReactMethod
+    public void advanceToWithParams(String state, ReadableMap params) {
+        Leanplum.advanceTo(state, params.toHashMap());
+    }
+
+    @ReactMethod
+    public void advanceToWithInfoAndParams(String state, String info, ReadableMap params) {
+        Leanplum.advanceTo(state, info, params.toHashMap());
+    }
 
 }
