@@ -3,9 +3,11 @@
   "title": "React Native Leanplum",
   "version": "1.0.0",
   "description": "TODO",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "./typings/index.d.ts",
   "scripts": {
+    "build": "rm -rf dist && rm -rf typings && ./node_modules/.bin/tsc",
+    "postinstall": "rm -rf node_modules",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,7 +30,9 @@
     "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
+    "@types/react-native": "^0.61.14",
     "react": "^16.8.3",
-    "react-native": "^0.59.10"
+    "react-native": "^0.59.10",
+    "typescript": "^3.7.5"
   }
 }
