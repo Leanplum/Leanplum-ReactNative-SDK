@@ -12,17 +12,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-leanplum.git",
-    "baseUrl": "https://github.com/github_account/react-native-leanplum"
+    "url": "git+https://github.com/Leanplum/Leanplum-ReactNative-SDK.git",
+    "baseUrl": "https://github.com/Leanplum/Leanplum-ReactNative-SDK"
   },
   "keywords": [
     "react-native"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "yourname@email.com"
+    "name": "Leanplum",
+    "email": "e2@leanplum.com"
   },
-  "license": "MIT",
+  "license": "Commercial",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
