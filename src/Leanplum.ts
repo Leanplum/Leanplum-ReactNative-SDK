@@ -1,5 +1,5 @@
-import {NativeModules, Platform, NativeEventEmitter} from 'react-native';
-import {LocationAccuracyType} from './location-accuracy-type';
+import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
+import { LocationAccuracyType } from './location-accuracy-type';
 
 export type VariableValue = string | boolean | number | Array<any> | object;
 
@@ -90,7 +90,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
   setVariableAsset(
     name: string,
     filename: string,
-    onAssetReadyCallback: (path: string) => void,
+    onAssetReadyCallback: (path: string) => void
   ): void {
     this.nativeModule.setVariableAsset(name, filename);
     this.addListener(name, onAssetReadyCallback);
@@ -117,7 +117,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    */
   onValueChanged(
     variableName: string,
-    callback: (value: VariableValue) => void,
+    callback: (value: VariableValue) => void
   ): void {
     this.nativeModule.onValueChanged(variableName);
     this.addListener(
@@ -152,13 +152,13 @@ class LeanplumSdkModule extends NativeEventEmitter {
     value: number,
     currencyCode: string,
     purchaseParams: any,
-    purchaseEvent: string = LeanplumSdkModule.PURCHASE_EVENT_NAME,
+    purchaseEvent: string = LeanplumSdkModule.PURCHASE_EVENT_NAME
   ) {
     this.nativeModule.trackPurchase(
       purchaseEvent,
       value,
       currencyCode,
-      purchaseParams,
+      purchaseParams
     );
   }
 
@@ -169,7 +169,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
   setDeviceLocation(
     latitude: number,
     longitude: number,
-    type: LocationAccuracyType = LocationAccuracyType.CELL,
+    type: LocationAccuracyType = LocationAccuracyType.CELL
   ) {
     this.nativeModule.setDeviceLocation(latitude, longitude, type);
   }
@@ -186,17 +186,15 @@ class LeanplumSdkModule extends NativeEventEmitter {
     this.nativeModule.trackAllAppScreens();
   }
   advanceTo(name: string | null, info?: string, params?: any) {
-      if (!info && !params) {
-        this.nativeModule.advanceTo(name);
-      } else if (info && !params) {
-        this.nativeModule.advanceToWithInfo(name, info);
-      } else if (!info && params) {
-        this.nativeModule.advanceToWithParams(name, params);
-      } else {
-        this.nativeModule.advanceToWithInfoAndParams(name, info, params)
-      }
+    if (!info && !params) {
+      this.nativeModule.advanceTo(name);
+    } else if (info && !params) {
+      this.nativeModule.advanceToWithInfo(name, info);
+    } else if (!info && params) {
+      this.nativeModule.advanceToWithParams(name, params);
+    } else {
+      this.nativeModule.advanceToWithInfoAndParams(name, info, params);
+    }
   }
-
 }
-
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);
