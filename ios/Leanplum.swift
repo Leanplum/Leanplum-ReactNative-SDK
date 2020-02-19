@@ -27,13 +27,13 @@ class RNLeanplum: RCTEventEmitter {
     override func supportedEvents() -> [String]! {
         return self.allSupportedEvents
     }
-
+    
     @objc
     func setListenersNames(_ onVariableChangedListenerName: String, onVariablesChangedListenerName: String) {
         self.onVariableChangedListenerName = onVariableChangedListenerName;
         self.onVariablesChangedListenerName = onVariablesChangedListenerName;
     }
-
+    
     @objc
     func setAppIdForDevelopmentMode(_ appId: String, accessKey: String) -> Void {
         Leanplum.setAppId(appId, withDevelopmentKey: accessKey)
@@ -180,17 +180,17 @@ class RNLeanplum: RCTEventEmitter {
             reject(self.undefinedVariableErrorMessage, "\(undefinedVariableErrorMessage): '\(name)'", self.undefinedVariableError)
         }
     }
-
+    
     @objc
     func pauseState() {
         Leanplum.pauseState();
     }
-
+    
     @objc
     func resumeState() {
         Leanplum.resumeState();
     }
-
+    
     @objc
     func trackAllAppScreens() {
         Leanplum.trackAllAppScreens();
@@ -221,5 +221,39 @@ class RNLeanplum: RCTEventEmitter {
             return
         }
         Leanplum.advance(to: state, withInfo: info, andParameters: paramsDict)
+    }
+    
+    @objc
+    func getInbox(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+        var inbox = [String: Any]()
+        let leanplumInbox = Leanplum.inbox()
+        inbox["count"] = leanplumInbox?.count()
+        inbox["unreadCount"] = leanplumInbox?.unreadCount
+        inbox["messagesIds"] = leanplumInbox?.messagesIds()
+        inbox["allMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox?.allMessages() as! [LPInboxMessage])
+        inbox["unreadMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox?.unreadMessages() as! [LPInboxMessage])
+        resolve(inbox)
+    }
+    
+    @objc
+    func messageForId(_ messageId: String, resolver resolve: RCTPromiseResolveBlock,
+                      rejecter reject: RCTPromiseRejectBlock
+    ) {
+        if let message = Leanplum.inbox()?.message(forId: messageId) {
+            resolve(LeanplumTypeUtils.leanplumMessageToDict(message))
+        }
+        resolve(nil)
+    }
+    
+    @objc
+    func read(_ messageId: String) -> Void {
+        let message = Leanplum.inbox()?.message(forId: messageId)
+        message?.read()
+    }
+    
+    @objc
+    func remove(_ messageId: String) -> Void {
+        let message = Leanplum.inbox()?.message(forId: messageId)
+        message?.remove()
     }
 }
