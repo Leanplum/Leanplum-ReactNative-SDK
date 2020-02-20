@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 
 class LeanplumMessage {
   messageId: string;
@@ -20,10 +20,12 @@ class LeanplumInboxValue {
   unreadMessages: LeanplumMessage[];
 }
 
-class LeanplumInboxManager {
+class LeanplumInboxManager extends NativeEventEmitter {
   private readonly nativeModule: any;
+  private static readonly ON_INBOX_CHANGED_LISTENER: string = 'inboxChanged';
 
   constructor(nativeModule: any) {
+    super(nativeModule);
     this.nativeModule = nativeModule;
   }
 
@@ -40,6 +42,11 @@ class LeanplumInboxManager {
   }
   remove(messageId: string): void {
     this.nativeModule.remove(messageId);
+  }
+
+  onChanged(callback: (leanplumMessage: LeanplumMessage) => void) {
+    this.nativeModule.onInboxChanged(LeanplumInboxManager.ON_INBOX_CHANGED_LISTENER);
+    this.addListener(LeanplumInboxManager.ON_INBOX_CHANGED_LISTENER, callback);
   }
 }
 

@@ -32,4 +32,5 @@ RCT_EXTERN_METHOD(getInbox: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 RCT_EXTERN_METHOD(messageForId: (NSString *)messageId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(read: (NSString *)messageId)
 RCT_EXTERN_METHOD(remove: (NSString *)messageId)
+RCT_EXTERN_METHOD(onInboxChanged: (NSString *)listener)
 @end

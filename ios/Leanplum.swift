@@ -214,6 +214,10 @@ class RNLeanplum: RCTEventEmitter {
     
     @objc
     func getInbox(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+        resolve(self.getInboxValue())
+    }
+    
+    func getInboxValue() -> [String: Any] {
         var inbox = [String: Any]()
         let leanplumInbox = Leanplum.inbox()
         inbox["count"] = leanplumInbox?.count()
@@ -221,7 +225,7 @@ class RNLeanplum: RCTEventEmitter {
         inbox["messagesIds"] = leanplumInbox?.messagesIds()
         inbox["allMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox?.allMessages() as! [LPInboxMessage])
         inbox["unreadMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox?.unreadMessages() as! [LPInboxMessage])
-        resolve(inbox)
+        return inbox
     }
     
     @objc
@@ -241,9 +245,21 @@ class RNLeanplum: RCTEventEmitter {
         message?.read()
     }
     
+    
     @objc
     func remove(_ messageId: String) -> Void {
         let message = Leanplum.inbox()?.message(forId: messageId)
         message?.remove()
+    }
+    
+    @objc
+    func onInboxChanged(_ listener: String) -> Void {
+        self.allSupportedEvents.append(listener)
+        Leanplum.inbox()?.onForceContentUpdate({ (Bool) in
+            self.sendEvent(withName: listener, body: self.getInboxValue())
+        })
+        Leanplum.inbox()?.onChanged({
+            self.sendEvent(withName: listener, body: self.getInboxValue())
+        })
     }
 }
