@@ -50,6 +50,7 @@ class LeanplumTypeUtils {
             messageDict["expirationTimestamp"] = stringFromDate(expirationTimestamp)
         }
         messageDict["isRead"] = leanplumMessage.isRead
+        messageDict["data"] = leanplumMessage.data()
         return messageDict
     }
     
