@@ -241,8 +241,9 @@ class RNLeanplum: RCTEventEmitter {
     ) {
         if let message = Leanplum.inbox()?.message(forId: messageId) {
             resolve(LeanplumTypeUtils.leanplumMessageToDict(message))
+        } else {
+            resolve(nil)
         }
-        resolve(nil)
     }
     
     @objc
