@@ -13,10 +13,6 @@ import Leanplum
 class RNLeanplum: RCTEventEmitter {
     
     var variables = [String: LPVar]()
-    let undefinedVariableErrorMessage = "Undefined Variable"
-    let undefinedVariableError = NSError(domain: "Undefined Variable", code: 404)
-    var onVariableChangedListenerName = "onVariableChanged"
-    var onVariablesChangedListenerName = "onVariablesChanged"
     var allSupportedEvents: [String] = []
     
     @objc
@@ -26,12 +22,6 @@ class RNLeanplum: RCTEventEmitter {
     
     override func supportedEvents() -> [String]! {
         return self.allSupportedEvents
-    }
-
-    @objc
-    func setListenersNames(_ onVariableChangedListenerName: String, onVariablesChangedListenerName: String) {
-        self.onVariableChangedListenerName = onVariableChangedListenerName;
-        self.onVariablesChangedListenerName = onVariablesChangedListenerName;
     }
 
     @objc
@@ -113,7 +103,7 @@ class RNLeanplum: RCTEventEmitter {
         if let lpVar = self.variables[variableName] {
             resolve(lpVar.value)
         } else {
-            reject(self.undefinedVariableErrorMessage, "\(undefinedVariableErrorMessage): '\(variableName)'", self.undefinedVariableError)
+            resolve(nil)
         }
     }
     
@@ -144,19 +134,18 @@ class RNLeanplum: RCTEventEmitter {
     @objc
     func onValueChanged(_ variableName: String) {
         if let lpVar = self.variables[variableName] {
-            let listenerName = "\(self.onVariableChangedListenerName).\(variableName)"
-            self.allSupportedEvents.append(listenerName)
+            self.allSupportedEvents.append(variableName)
             lpVar.onValueChanged {
-                self.sendEvent(withName: listenerName, body: lpVar.value)
+                self.sendEvent(withName: variableName, body: lpVar.value)
             }
         }
     }
     
     @objc
-    func onVariablesChanged() {
-        self.allSupportedEvents.append(self.onVariablesChangedListenerName)
+    func onVariablesChanged(_ listener: String) {
+        self.allSupportedEvents.append(listener)
         Leanplum.onVariablesChanged {
-            self.sendEvent(withName: self.onVariablesChangedListenerName, body: self.getVariablesValues())
+            self.sendEvent(withName: listener, body: self.getVariablesValues())
         }
     }
     
@@ -177,7 +166,7 @@ class RNLeanplum: RCTEventEmitter {
         if let lpVar = self.variables[name] {
             resolve(lpVar.fileValue())
         } else {
-            reject(self.undefinedVariableErrorMessage, "\(undefinedVariableErrorMessage): '\(name)'", self.undefinedVariableError)
+            resolve(nil)
         }
     }
 

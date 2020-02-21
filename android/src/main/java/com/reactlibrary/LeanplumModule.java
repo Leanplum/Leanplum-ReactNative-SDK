@@ -31,8 +31,6 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
     public static Map<String, Object> variables = new HashMap<String, Object>();
-    private static String onVariableChangedListenerName;
-    private static String onVariablesChangedListenerName;
 
     public LeanplumModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -102,12 +100,6 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void forceContentUpdate() {
         Leanplum.forceContentUpdate();
-    }
-
-    @ReactMethod
-    public void setListenersNames(String onVariableChangedListenerName, String onVariablesChangedListenerName) {
-        LeanplumModule.onVariableChangedListenerName = onVariableChangedListenerName;
-        LeanplumModule.onVariablesChangedListenerName = onVariablesChangedListenerName;
     }
 
     /**
@@ -213,7 +205,7 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
             public void handle(Var<Object> var) {
                 reactContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(onVariableChangedListenerName + "." + name, getVariableValue(name));
+                        .emit(name, getVariableValue(name));
             }
         });
     }
@@ -237,13 +229,13 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
      * add callback when all variables are ready
      */
     @ReactMethod
-    public void onVariablesChanged() {
+    public void onVariablesChanged(final String listener) {
         Leanplum.addVariablesChangedHandler(new VariablesChangedCallback() {
             @Override
             public void variablesChanged() {
                 reactContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(onVariablesChangedListenerName, getVariablesValues());
+                        .emit(listener, getVariablesValues());
             }
         });
     }

@@ -10,8 +10,6 @@ export interface AllVariablesValue {
 class LeanplumSdkModule extends NativeEventEmitter {
   private readonly nativeModule: any;
   private static readonly PURCHASE_EVENT_NAME: string = 'Purchase';
-  private static readonly ON_VARIABLE_CHANGE_LISTENER: string =
-    'onVariableChanged';
   private static readonly ON_VARIABLES_CHANGE_LISTENER: string =
     'onVariablesChanged';
 
@@ -22,15 +20,6 @@ class LeanplumSdkModule extends NativeEventEmitter {
     } else {
       this.throwUnsupportedPlatform();
     }
-
-    this.setListenersNames();
-  }
-
-  setListenersNames(): void {
-    this.nativeModule.setListenersNames(
-      LeanplumSdkModule.ON_VARIABLE_CHANGE_LISTENER,
-      LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER,
-    );
   }
 
   throwUnsupportedPlatform() {
@@ -132,7 +121,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
   ): void {
     this.nativeModule.onValueChanged(variableName);
     this.addListener(
-      `${LeanplumSdkModule.ON_VARIABLE_CHANGE_LISTENER}.${variableName}`,
+      variableName,
       callback,
     );
   }
@@ -143,7 +132,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param handler callback that is going to be invoked when all variables are ready
    */
   onVariablesChanged(callback: (value: AllVariablesValue) => void): void {
-    this.nativeModule.onVariablesChanged();
+    this.nativeModule.onVariablesChanged(LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER);
     this.addListener(LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER, callback);
   }
 
