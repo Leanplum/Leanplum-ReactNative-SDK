@@ -33,4 +33,5 @@ RCT_EXTERN_METHOD(messageForId: (NSString *)messageId resolver:(RCTPromiseResolv
 RCT_EXTERN_METHOD(read: (NSString *)messageId)
 RCT_EXTERN_METHOD(remove: (NSString *)messageId)
 RCT_EXTERN_METHOD(onInboxChanged: (NSString *)listener)
+RCT_EXTERN_METHOD(onInboxForceContentUpdate: (NSString *)listener)
 @end
