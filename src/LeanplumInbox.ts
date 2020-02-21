@@ -23,6 +23,7 @@ class LeanplumInboxValue {
 class LeanplumInboxManager extends NativeEventEmitter {
   private readonly nativeModule: any;
   private static readonly ON_INBOX_CHANGED_LISTENER: string = 'inboxChanged';
+  private static readonly ON_INBOX_FORCE_CONTENT_UPDATE_LISTENER: string = 'onForceContentUpdate';
 
   constructor(nativeModule: any) {
     super(nativeModule);
@@ -47,6 +48,11 @@ class LeanplumInboxManager extends NativeEventEmitter {
   onChanged(callback: (leanplumMessage: LeanplumMessage) => void) {
     this.nativeModule.onInboxChanged(LeanplumInboxManager.ON_INBOX_CHANGED_LISTENER);
     this.addListener(LeanplumInboxManager.ON_INBOX_CHANGED_LISTENER, callback);
+  }
+
+  onForceContentUpdate(callback: (leanplumMessage: LeanplumMessage) => void) {
+    this.nativeModule.onInboxForceContentUpdate(LeanplumInboxManager.ON_INBOX_FORCE_CONTENT_UPDATE_LISTENER);
+    this.addListener(LeanplumInboxManager.ON_INBOX_FORCE_CONTENT_UPDATE_LISTENER, callback);
   }
 }
 
