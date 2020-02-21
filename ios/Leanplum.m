@@ -28,10 +28,13 @@ RCT_EXTERN_METHOD(advanceTo: (NSString *)state)
 RCT_EXTERN_METHOD(advanceToWithInfo: (NSString *)state info:(NSString *)info)
 RCT_EXTERN_METHOD(advanceToWithParams: (NSString *)state params:(NSDictionary *)params)
 RCT_EXTERN_METHOD(advanceToWithInfoAndParams: (NSString *)state info:(NSString *)info params:(NSDictionary *)params)
+@end
+
+@interface RCT_EXTERN_REMAP_MODULE(LeanplumInbox, RNLeanplumInbox, RCTEventEmitter)
 RCT_EXTERN_METHOD(getInbox: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(messageForId: (NSString *)messageId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(read: (NSString *)messageId)
 RCT_EXTERN_METHOD(remove: (NSString *)messageId)
-RCT_EXTERN_METHOD(onInboxChanged: (NSString *)listener)
-RCT_EXTERN_METHOD(onInboxForceContentUpdate: (NSString *)listener)
+RCT_EXTERN_METHOD(onChanged: (NSString *)listener)
+RCT_EXTERN_METHOD(onForceContentUpdate: (NSString *)listener)
 @end
