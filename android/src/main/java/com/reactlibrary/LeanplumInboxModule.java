@@ -30,7 +30,7 @@ public class LeanplumInboxModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getInbox(String name, Promise promise) {
+    public void getInbox(Promise promise) {
         promise.resolve(getInboxValue());
     }
 
@@ -63,9 +63,8 @@ public class LeanplumInboxModule extends ReactContextBaseJavaModule {
             @Override
             public void inboxChanged() {
                 LeanplumInboxMapper leanplumInboxMapper = new LeanplumInboxMapper(new LeanplumInboxMessageMapper());
-                reactContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(listener, leanplumInboxMapper.toWritableMap(Leanplum.getInbox()));
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                        leanplumInboxMapper.toWritableMap(Leanplum.getInbox()));
             }
         });
     }
@@ -78,9 +77,8 @@ public class LeanplumInboxModule extends ReactContextBaseJavaModule {
             public void onForceContentUpdate(boolean success) {
                 if (success) {
                     LeanplumInboxMapper leanplumInboxMapper = new LeanplumInboxMapper(new LeanplumInboxMessageMapper());
-                    reactContext
-                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit(listener, leanplumInboxMapper.toWritableMap(Leanplum.getInbox()));
+                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                            leanplumInboxMapper.toWritableMap(Leanplum.getInbox()));
                 }
             }
         });
