@@ -56,7 +56,6 @@ public class LeanplumInboxModule extends ReactContextBaseJavaModule {
         return null;
     }
 
-
     @ReactMethod
     public void onChanged(final String listener) {
         Leanplum.getInbox().addChangedHandler(new InboxChangedCallback() {
