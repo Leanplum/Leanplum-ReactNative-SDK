@@ -82,7 +82,6 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         Leanplum.trackPurchase(purchaseEvent, value, currencyCode, purchaseParams.toHashMap());
     }
 
-
     @ReactMethod
     public void disableLocationCollection() {
         Leanplum.disableLocationCollection();
@@ -103,7 +102,8 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Define/Set variables using JSON object, we can use this method if we want to define multiple variables at once
+     * Define/Set variables using JSON object, we can use this method if we want to
+     * define multiple variables at once
      *
      * @param object RN object
      */
@@ -179,9 +179,8 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         var.addFileReadyHandler(new VariableCallback<String>() {
             @Override
             public void handle(Var<String> var) {
-                reactContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(name, getRnAssetPath(var.fileValue()));
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(name,
+                        getRnAssetPath(var.fileValue()));
             }
         });
     }
@@ -203,9 +202,8 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         var.addValueChangedHandler(new VariableCallback<Object>() {
             @Override
             public void handle(Var<Object> var) {
-                reactContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(name, getVariableValue(name));
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(name,
+                        getVariableValue(name));
             }
         });
     }
@@ -233,9 +231,8 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         Leanplum.addVariablesChangedHandler(new VariablesChangedCallback() {
             @Override
             public void variablesChanged() {
-                reactContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(listener, getVariablesValues());
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                        getVariablesValues());
             }
         });
     }
