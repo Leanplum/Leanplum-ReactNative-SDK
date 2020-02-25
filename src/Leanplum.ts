@@ -204,5 +204,4 @@ class LeanplumSdkModule extends NativeEventEmitter {
     }
   }
 }
-
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);

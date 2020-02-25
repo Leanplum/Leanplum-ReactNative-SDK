@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* Leanplum.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Leanplum.m */; };
 		C64E3CC723E32D0500F79791 /* Leanplum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64E3CC623E32D0500F79791 /* Leanplum.swift */; };
+		C661AB6C23FFFC3700F6A4F5 /* LeanplumInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C661AB6B23FFFC3700F6A4F5 /* LeanplumInbox.swift */; };
 		C6CAC1D623F58B04001E50F7 /* LeanplumTypeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CAC1D523F58B04001E50F7 /* LeanplumTypeUtils.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		B3E7B5891CC2AC0600A0062D /* Leanplum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Leanplum.m; sourceTree = "<group>"; };
 		C64E3CC523E32D0400F79791 /* Leanplum-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Leanplum-Bridging-Header.h"; sourceTree = "<group>"; };
 		C64E3CC623E32D0500F79791 /* Leanplum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leanplum.swift; sourceTree = "<group>"; };
+		C661AB6B23FFFC3700F6A4F5 /* LeanplumInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeanplumInbox.swift; sourceTree = "<group>"; };
 		C6CAC1D523F58B04001E50F7 /* LeanplumTypeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeanplumTypeUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -54,6 +56,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				C661AB6B23FFFC3700F6A4F5 /* LeanplumInbox.swift */,
 				C6CAC1D523F58B04001E50F7 /* LeanplumTypeUtils.swift */,
 				C64E3CC623E32D0500F79791 /* Leanplum.swift */,
 				B3E7B5891CC2AC0600A0062D /* Leanplum.m */,
@@ -120,6 +123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C661AB6C23FFFC3700F6A4F5 /* LeanplumInbox.swift in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* Leanplum.m in Sources */,
 				C6CAC1D623F58B04001E50F7 /* LeanplumTypeUtils.swift in Sources */,
 				C64E3CC723E32D0500F79791 /* Leanplum.swift in Sources */,
