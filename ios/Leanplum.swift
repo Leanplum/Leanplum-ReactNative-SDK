@@ -49,6 +49,18 @@ class RNLeanplum: RCTEventEmitter {
         let attributesDict = attributes as! Dictionary<String,Any>
         Leanplum.setUserAttributes(attributesDict)
     }
+
+    @objc
+    func userId(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(Leanplum.userId())
+    }
+
+    @objc
+    func deviceId(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(Leanplum.deviceId())
+    }
+
+
     
     @objc
     func start() -> Void {
