@@ -38,7 +38,7 @@ describe("Leanplum SDK", () => {
   });
 
   it("should getMessage", async () => {
-    const value = await LeanplumInbox.messageForId("alpha");
+    const value = await LeanplumInbox.message("alpha");
     expect(LeanplumInboxSdk.getMessage).toHaveBeenCalledTimes(1);
     expect(LeanplumInboxSdk.getMessage).toHaveBeenCalledWith("alpha");
     expect(value).toEqual({ var1: "val1" });
