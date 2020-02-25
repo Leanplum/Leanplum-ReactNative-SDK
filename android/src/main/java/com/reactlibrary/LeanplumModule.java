@@ -31,8 +31,6 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
     public static Map<String, Object> variables = new HashMap<String, Object>();
-    private static String onVariableChangedListenerName;
-    private static String onVariablesChangedListenerName;
 
     public LeanplumModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -104,12 +102,6 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         Leanplum.forceContentUpdate();
     }
 
-    @ReactMethod
-    public void setListenersNames(String onVariableChangedListenerName, String onVariablesChangedListenerName) {
-        LeanplumModule.onVariableChangedListenerName = onVariableChangedListenerName;
-        LeanplumModule.onVariablesChangedListenerName = onVariablesChangedListenerName;
-    }
-
     /**
      * Define/Set variables using JSON object, we can use this method if we want to define multiple variables at once
      *
@@ -127,6 +119,16 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getVariable(String name, Promise promise) {
         promise.resolve(getVariableValue(name));
+    }
+
+    @ReactMethod
+    public void userId(Promise promise) {
+        promise.resolve(Leanplum.getUserId());
+    }
+
+    @ReactMethod
+    public void deviceId(Promise promise) {
+        promise.resolve(Leanplum.getDeviceId());
     }
 
     private Object getVariableValue(String name) {
@@ -213,7 +215,7 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
             public void handle(Var<Object> var) {
                 reactContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(onVariableChangedListenerName + "." + name, getVariableValue(name));
+                        .emit(name, getVariableValue(name));
             }
         });
     }
@@ -237,13 +239,13 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
      * add callback when all variables are ready
      */
     @ReactMethod
-    public void onVariablesChanged() {
+    public void onVariablesChanged(final String listener) {
         Leanplum.addVariablesChangedHandler(new VariablesChangedCallback() {
             @Override
             public void variablesChanged() {
                 reactContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(onVariablesChangedListenerName, getVariablesValues());
+                        .emit(listener, getVariablesValues());
             }
         });
     }
