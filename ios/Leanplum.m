@@ -40,7 +40,7 @@ RCT_EXTERN_METHOD(onInboxForceContentUpdate: (NSString *)listener)
 
 @interface RCT_EXTERN_REMAP_MODULE(LeanplumInbox, RNLeanplumInbox, RCTEventEmitter)
 RCT_EXTERN_METHOD(getInbox: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(messageForId: (NSString *)messageId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getMessage: (NSString *)messageId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(read: (NSString *)messageId)
 RCT_EXTERN_METHOD(remove: (NSString *)messageId)
 RCT_EXTERN_METHOD(onChanged: (NSString *)listener)

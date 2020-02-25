@@ -40,7 +40,7 @@ class RNLeanplumInbox: RCTEventEmitter {
     }
     
     @objc
-    func messageForId(_ messageId: String, resolver resolve: RCTPromiseResolveBlock,
+    func getMessage(_ messageId: String, resolver resolve: RCTPromiseResolveBlock,
                       rejecter reject: RCTPromiseRejectBlock
     ) {
         if let message = Leanplum.inbox()?.message(forId: messageId) {

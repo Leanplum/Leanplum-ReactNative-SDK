@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter } from "react-native";
+import { NativeModules, NativeEventEmitter } from 'react-native';
 
 class LeanplumMessage {
   messageId: string;
@@ -22,9 +22,9 @@ class LeanplumInboxValue {
 
 class LeanplumInboxManager extends NativeEventEmitter {
   private readonly nativeModule: any;
-  private static readonly ON_CHANGED_LISTENER: string = "onChanged";
+  private static readonly ON_CHANGED_LISTENER: string = 'onChanged';
   private static readonly ON_FORCE_CONTENT_UPDATE_LISTENER: string =
-    "onForceContentUpdate";
+    'onForceContentUpdate';
 
   constructor(nativeModule: any) {
     super(nativeModule);
@@ -35,7 +35,7 @@ class LeanplumInboxManager extends NativeEventEmitter {
     return await this.nativeModule.getInbox();
   }
 
-  async messageForId(messageId: string): Promise<LeanplumMessage> {
+  async message(messageId: string): Promise<LeanplumMessage> {
     return await this.nativeModule.getMessage(messageId);
   }
 
