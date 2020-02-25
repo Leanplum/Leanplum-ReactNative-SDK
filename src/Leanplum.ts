@@ -50,6 +50,14 @@ class LeanplumSdkModule extends NativeEventEmitter {
     this.nativeModule.setUserAttributes(attributes);
   }
 
+  async userId(): Promise<string> {
+    return await this.nativeModule.userId();
+  }
+
+  async deviceId(): Promise<string> {
+    return await this.nativeModule.deviceId();
+  }
+
   /**
    * Define/Set multiple primitive variables using JSON object, we can use this method if we want to define multiple variables at once
    *
@@ -120,10 +128,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
     callback: (value: VariableValue) => void
   ): void {
     this.nativeModule.onValueChanged(variableName);
-    this.addListener(
-      variableName,
-      callback,
-    );
+    this.addListener(variableName, callback);
   }
 
   /**
@@ -132,7 +137,9 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param handler callback that is going to be invoked when all variables are ready
    */
   onVariablesChanged(callback: (value: AllVariablesValue) => void): void {
-    this.nativeModule.onVariablesChanged(LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER);
+    this.nativeModule.onVariablesChanged(
+      LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER
+    );
     this.addListener(LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER, callback);
   }
 

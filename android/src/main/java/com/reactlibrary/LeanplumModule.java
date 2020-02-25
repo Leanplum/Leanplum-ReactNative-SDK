@@ -121,6 +121,16 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         promise.resolve(getVariableValue(name));
     }
 
+    @ReactMethod
+    public void userId(Promise promise) {
+        promise.resolve(Leanplum.getUserId());
+    }
+
+    @ReactMethod
+    public void deviceId(Promise promise) {
+        promise.resolve(Leanplum.getDeviceId());
+    }
+
     private Object getVariableValue(String name) {
         if (variables.containsKey(name)) {
             Var<?> variable = (Var<?>) variables.get(name);
