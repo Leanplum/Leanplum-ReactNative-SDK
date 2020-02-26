@@ -7,8 +7,9 @@
   "types": "./typings/index.d.ts",
   "scripts": {
     "watch": "npx -w",
-    "build": "npx tsc",
-    "test": "jest"
+    "build": "rm -rf typings dist && npx tsc",
+    "test": "jest",
+    "postinstall": "rm -rf node_modules/react-native-leanplum/node_modules"
   },
   "repository": {
     "type": "git",
@@ -30,18 +31,9 @@
     "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "@types/react-native": "^0.61.14",
-    "babel-jest": "^25.1.0",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "jest": "^25.1.0",
     "react": "^16.8.3",
-    "react-native": "^0.61.5",
-    "react-native-gesture-handler": "^1.6.0",
-    "react-native-reanimated": "^1.7.0",
+    "react-native": "^0.59.10",
     "typescript": "^3.7.5",
-    "@types/jest": "^25.1.2",
-    "core-js": "^3.6.4"
+    "@types/react-native": "^0.61.14"
   }
 }
