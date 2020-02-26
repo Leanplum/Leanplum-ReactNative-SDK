@@ -1,23 +1,23 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 
-class LeanplumMessage {
+export class Message {
   messageId: string;
   title: string;
   subtitle: string;
   imageFilePath: string;
   imageUrl: string;
   data: any;
-  deliveryTimestamp: Date;
-  expirationTimestamp: Date;
+  deliveryTimestamp: string;
+  expirationTimestamp: string;
   isRead: boolean;
 }
 
-class LeanplumInboxValue {
+export class Inbox {
   count: number;
   unreadCount: number;
   messagesIds: string[];
-  allMessages: LeanplumMessage[];
-  unreadMessages: LeanplumMessage[];
+  allMessages: Message[];
+  unreadMessages: Message[];
 }
 
 class LeanplumInboxManager extends NativeEventEmitter {
@@ -31,11 +31,11 @@ class LeanplumInboxManager extends NativeEventEmitter {
     this.nativeModule = nativeModule;
   }
 
-  async inbox(): Promise<LeanplumInboxValue> {
+  async inbox(): Promise<Inbox> {
     return await this.nativeModule.getInbox();
   }
 
-  async message(messageId: string): Promise<LeanplumMessage> {
+  async message(messageId: string): Promise<Message> {
     return await this.nativeModule.getMessage(messageId);
   }
 
@@ -46,12 +46,12 @@ class LeanplumInboxManager extends NativeEventEmitter {
     this.nativeModule.remove(messageId);
   }
 
-  onChanged(callback: (leanplumMessage: LeanplumMessage) => void) {
+  onChanged(callback: (leanplumMessage: Message) => void) {
     this.nativeModule.onChanged(LeanplumInboxManager.ON_CHANGED_LISTENER);
     this.addListener(LeanplumInboxManager.ON_CHANGED_LISTENER, callback);
   }
 
-  onForceContentUpdate(callback: (leanplumMessage: LeanplumMessage) => void) {
+  onForceContentUpdate(callback: (leanplumMessage: Message) => void) {
     this.nativeModule.onForceContentUpdate(
       LeanplumInboxManager.ON_FORCE_CONTENT_UPDATE_LISTENER
     );
