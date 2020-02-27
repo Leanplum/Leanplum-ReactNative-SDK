@@ -8,8 +8,9 @@
   "scripts": {
     "watch": "npx -w",
     "build": "rm -rf typings dist && npx tsc",
-    "test": "jest",
-    "postinstall": "rm -rf node_modules/react-native-leanplum/node_modules"
+    "local-publish": "npx yalc publish --push",
+    "prepublish": "yarn build",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -31,9 +32,10 @@
     "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
+    "@types/react-native": "^0.61.14",
     "react": "^16.8.3",
     "react-native": "^0.59.10",
     "typescript": "^3.7.5",
-    "@types/react-native": "^0.61.14"
+    "yalc": "^1.0.0-pre.35"
   }
 }
