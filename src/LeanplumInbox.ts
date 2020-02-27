@@ -4,9 +4,9 @@ export class Message {
   messageId: string;
   title: string;
   subtitle: string;
-  imageFilePath: string;
-  imageUrl: string;
-  data: any;
+  imageFilePath?: string;
+  imageUrl?: string;
+  data?: any;
   deliveryTimestamp: string;
   expirationTimestamp: string;
   isRead: boolean;

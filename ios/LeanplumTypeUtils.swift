@@ -62,4 +62,14 @@ class LeanplumTypeUtils {
         dateFormatter.calendar = Calendar(identifier: .gregorian)
         return dateFormatter.string(from: date)
     }
+
+    static func LPMessageArchiveDataToDict(_ lPMessageArchiveData: LPMessageArchiveData) -> [String: Any] {
+               var messageDataDict = [String: Any]()
+        messageDataDict["messageID"] = lPMessageArchiveData.messageID;
+        messageDataDict["messageBody"] = lPMessageArchiveData.messageBody;
+        messageDataDict["recipientUserID"] = lPMessageArchiveData.recipientUserID;
+        messageDataDict["deliveryDateTime"] = stringFromDate(lPMessageArchiveData.deliveryDateTime)
+               return messageDataDict;
+       }
+
 }

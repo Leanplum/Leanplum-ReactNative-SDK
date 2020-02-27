@@ -14,12 +14,15 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.leanplum.Leanplum;
 import com.leanplum.LeanplumLocationAccuracyType;
 import com.leanplum.Var;
+import com.leanplum.callbacks.MessageDisplayedCallback;
 import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariableCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
+import com.leanplum.models.MessageArchiveData;
 import com.reactlibrary.utils.ArrayUtil;
 import com.reactlibrary.utils.MapUtil;
+import com.reactlibrary.utils.MessageArchiveDataUtil;
 
 import org.json.JSONException;
 
@@ -282,4 +285,41 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         Leanplum.advanceTo(state, info, params.toHashMap());
     }
 
+    @ReactMethod
+    public void onVariablesChangedAndNoDownloadsPending(final String listener) {
+        Leanplum.addVariablesChangedAndNoDownloadsPendingHandler(
+                new VariablesChangedCallback() {
+                    @Override
+                    public void variablesChanged() {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                                null);
+                    }
+                }
+        );
+    }
+
+    @ReactMethod
+    public void onceVariablesChangedAndNoDownloadsPending(final String listener) {
+        Leanplum.addOnceVariablesChangedAndNoDownloadsPendingHandler(
+                new VariablesChangedCallback() {
+                    @Override
+                    public void variablesChanged() {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                                null);
+                    }
+                }
+        );
+    }
+
+    @ReactMethod
+    public void onMessageDisplayed(final String listener) {
+        Leanplum.addMessageDisplayedHandler(new MessageDisplayedCallback() {
+            @Override
+            public void messageDisplayed(MessageArchiveData messageArchiveData) {
+
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                        MessageArchiveDataUtil.toWriteableMap(messageArchiveData));
+            }
+        });
+    }
 }

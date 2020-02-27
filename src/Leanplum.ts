@@ -7,11 +7,25 @@ export interface AllVariablesValue {
   [name: string]: VariableValue;
 }
 
+export class MessageArchiveData {
+  messageID: string;
+  messageBody: string;
+  recipientUserID: string;
+  deliveryDateTime: string;
+}
+
 class LeanplumSdkModule extends NativeEventEmitter {
   private readonly nativeModule: any;
   private static readonly PURCHASE_EVENT_NAME: string = 'Purchase';
   private static readonly ON_VARIABLES_CHANGE_LISTENER: string =
     'onVariablesChanged';
+  private static readonly ON_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING =
+    'onVariablesChangedAndNoDownloadsPending';
+
+  private static readonly ONCE_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING =
+    'onceVariablesChangedAndNoDownloadsPending';
+
+  private static readonly ON_MESSAGE_DISPLAYED = 'onMessageDisplayed';
 
   constructor(nativeModule: any) {
     super(nativeModule);
@@ -202,6 +216,33 @@ class LeanplumSdkModule extends NativeEventEmitter {
     } else {
       this.nativeModule.advanceToWithInfoAndParams(name, info, params);
     }
+  }
+
+  onVariablesChangedAndNoDownloadsPending(callback: () => void): void {
+    this.nativeModule.onVariablesChangedAndNoDownloadsPending(
+      LeanplumSdkModule.ON_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING
+    );
+    this.addListener(
+      LeanplumSdkModule.ON_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING,
+      callback
+    );
+  }
+
+  onceVariablesChangedAndNoDownloadsPending(callback: () => void): void {
+    this.nativeModule.onVariablesChangedAndNoDownloadsPending(
+      LeanplumSdkModule.ONCE_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING
+    );
+    this.addListener(
+      LeanplumSdkModule.ONCE_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING,
+      callback
+    );
+  }
+
+  onMessageDisplayed(callback: (data: MessageArchiveData) => void): void {
+    this.nativeModule.onMessageDisplayed(
+      LeanplumSdkModule.ON_MESSAGE_DISPLAYED
+    );
+    this.addListener(LeanplumSdkModule.ON_MESSAGE_DISPLAYED, callback);
   }
 }
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);

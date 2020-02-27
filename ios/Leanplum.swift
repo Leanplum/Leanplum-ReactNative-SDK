@@ -223,60 +223,29 @@ class RNLeanplum: RCTEventEmitter {
         }
         Leanplum.advance(to: state, withInfo: info, andParameters: paramsDict)
     }
-    
+
     @objc
-    func getInbox(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
-        resolve(self.getInboxValue())
-    }
-    
-    func getInboxValue() -> [String: Any] {
-        var inbox = [String: Any]()
-        let leanplumInbox = Leanplum.inbox()
-        inbox["count"] = leanplumInbox?.count()
-        inbox["unreadCount"] = leanplumInbox?.unreadCount
-        inbox["messagesIds"] = leanplumInbox?.messagesIds()
-        inbox["allMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox?.allMessages() as! [LPInboxMessage])
-        inbox["unreadMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox?.unreadMessages() as! [LPInboxMessage])
-        return inbox
-    }
-    
-    @objc
-    func messageForId(_ messageId: String, resolver resolve: RCTPromiseResolveBlock,
-                      rejecter reject: RCTPromiseRejectBlock
-    ) {
-        if let message = Leanplum.inbox()?.message(forId: messageId) {
-            resolve(LeanplumTypeUtils.leanplumMessageToDict(message))
-        } else {
-            resolve(nil)
-        }
-    }
-    
-    @objc
-    func read(_ messageId: String) -> Void {
-        let message = Leanplum.inbox()?.message(forId: messageId)
-        message?.read()
-    }
-    
-    
-    @objc
-    func remove(_ messageId: String) -> Void {
-        let message = Leanplum.inbox()?.message(forId: messageId)
-        message?.remove()
-    }
-    
-    @objc
-    func onInboxChanged(_ listener: String) -> Void {
+    func onVariablesChangedAndNoDownloadsPending(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.inbox()?.onChanged({
-            self.sendEvent(withName: listener, body: self.getInboxValue())
-        })
+        Leanplum.onVariablesChangedAndNoDownloadsPending {
+            self.sendEvent(withName: listener, body: nil)
+        }
     }
 
     @objc
-    func onInboxForceContentUpdate(_ listener: String) -> Void {
+    func onceVariablesChangedAndNoDownloadsPending(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.inbox()?.onForceContentUpdate({ (Bool) in
-            self.sendEvent(withName: listener, body: self.getInboxValue())
-        })
+        Leanplum.onceVariablesChangedAndNoDownloadsPending {
+            self.sendEvent(withName: listener, body: nil)
+        }
+    }
+
+    @objc
+    func onMessageDisplayed(_ listener: String) {
+        self.allSupportedEvents.append(listener)
+         Leanplum.onMessageDisplayed { (lPMessageArchiveData: LPMessageArchiveData?) in
+                        self.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
+            
+        }
     }
 }
