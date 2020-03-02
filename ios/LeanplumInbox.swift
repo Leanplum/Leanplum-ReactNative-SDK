@@ -74,8 +74,8 @@ class RNLeanplumInbox: RCTEventEmitter {
     @objc
     func onForceContentUpdate(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.inbox()?.onForceContentUpdate({ (Bool) in
-            self.sendEvent(withName: listener, body: self.getInboxValue())
+        Leanplum.inbox()?.onForceContentUpdate({ [weak self] (Bool) in
+            self?.sendEvent(withName: listener, body: self?.getInboxValue())
         })
     }
 }
