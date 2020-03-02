@@ -24,7 +24,7 @@ class RNLeanplumInbox: RCTEventEmitter {
     }
     
     @objc
-    func getInbox(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+    func getInbox(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
         resolve(self.getInboxValue())
     }
     
@@ -51,20 +51,20 @@ class RNLeanplumInbox: RCTEventEmitter {
     }
     
     @objc
-    func read(_ messageId: String) -> Void {
+    func read(_ messageId: String) {
         let message = Leanplum.inbox()?.message(forId: messageId)
         message?.read()
     }
     
     
     @objc
-    func remove(_ messageId: String) -> Void {
+    func remove(_ messageId: String) {
         let message = Leanplum.inbox()?.message(forId: messageId)
         message?.remove()
     }
     
     @objc
-    func onChanged(_ listener: String) -> Void {
+    func onChanged(_ listener: String) {
         self.allSupportedEvents.append(listener)
         Leanplum.inbox()?.onChanged({
             self.sendEvent(withName: listener, body: self.getInboxValue())
@@ -72,7 +72,7 @@ class RNLeanplumInbox: RCTEventEmitter {
     }
 
     @objc
-    func onForceContentUpdate(_ listener: String) -> Void {
+    func onForceContentUpdate(_ listener: String) {
         self.allSupportedEvents.append(listener)
         Leanplum.inbox()?.onForceContentUpdate({ (Bool) in
             self.sendEvent(withName: listener, body: self.getInboxValue())

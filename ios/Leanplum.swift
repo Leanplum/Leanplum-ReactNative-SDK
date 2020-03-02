@@ -20,32 +20,32 @@ class RNLeanplum: RCTEventEmitter {
         return true
     }
     
-    override func supportedEvents() -> [String]! {
+    override func supportedEvents() -> [String] {
         return self.allSupportedEvents
     }
     
     @objc
-    func setAppIdForDevelopmentMode(_ appId: String, accessKey: String) -> Void {
+    func setAppIdForDevelopmentMode(_ appId: String, accessKey: String) {
         Leanplum.setAppId(appId, withDevelopmentKey: accessKey)
     }
     
     @objc
-    func setAppIdForProductionMode(_ appId: String, accessKey: String) -> Void {
+    func setAppIdForProductionMode(_ appId: String, accessKey: String) {
         Leanplum.setAppId(appId, withProductionKey: accessKey)
     }
     
     @objc
-    func setDeviceId(_ id: String) -> Void {
+    func setDeviceId(_ id: String) {
         Leanplum.setDeviceId(id)
     }
     
     @objc
-    func setUserId(_ id: String) -> Void {
+    func setUserId(_ id: String) {
         Leanplum.setUserId(id)
     }
     
     @objc
-    func setUserAttributes(_ attributes: NSDictionary) -> Void {
+    func setUserAttributes(_ attributes: NSDictionary) {
         let attributesDict = attributes as! Dictionary<String,Any>
         Leanplum.setUserAttributes(attributesDict)
     }
@@ -63,41 +63,41 @@ class RNLeanplum: RCTEventEmitter {
 
     
     @objc
-    func start() -> Void {
+    func start() {
         Leanplum.start()
     }
     
     @objc
-    func track(_ event: String, params: NSDictionary) -> Void {
+    func track(_ event: String, params: NSDictionary) {
         let withParameters = params as! Dictionary<String,Any>
         Leanplum.track(event, withParameters: withParameters)
     }
     
     @objc
-    func trackPurchase(_ purchaseEvent: String, value: Double, currencyCode: String, purchaseParams: NSDictionary) -> Void {
+    func trackPurchase(_ purchaseEvent: String, value: Double, currencyCode: String, purchaseParams: NSDictionary) {
         let parameters = purchaseParams as! Dictionary<String,Any>
         Leanplum.trackPurchase(purchaseEvent, withValue: value, andCurrencyCode: currencyCode, andParameters: parameters)
     }
     
     @objc
-    func disableLocationCollection() -> Void {
+    func disableLocationCollection() {
         Leanplum.disableLocationCollection()
     }
     
     @objc
-    func setDeviceLocation(_ latitude: Double, longitude: Double, type: Int) -> Void {
+    func setDeviceLocation(_ latitude: Double, longitude: Double, type: Int) {
         let accuracyType = LPLocationAccuracyType(rawValue: UInt32(type))
         Leanplum.setDeviceLocationWithLatitude(latitude, longitude: longitude, type: accuracyType)
     }
     
     @objc
-    func forceContentUpdate() -> Void {
+    func forceContentUpdate() {
         Leanplum.forceContentUpdate();
     }
     
     
     @objc
-    func setVariables(_ variables: NSDictionary) -> Void {
+    func setVariables(_ variables: NSDictionary) {
         guard let variablesDict = variables as? Dictionary<String, Any> else {
             return
         }
@@ -162,7 +162,7 @@ class RNLeanplum: RCTEventEmitter {
     }
     
     @objc
-    func setVariableAsset(_ name: String, filename: String) -> Void {
+    func setVariableAsset(_ name: String, filename: String) {
         self.allSupportedEvents.append(name)
         let lpVar = LPVar.define(name, withFile: filename)
         self.variables[name] = lpVar
