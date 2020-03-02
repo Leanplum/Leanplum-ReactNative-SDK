@@ -86,6 +86,12 @@ class RNLeanplum: RCTEventEmitter {
     }
     
     @objc
+    func trackInAppPurchases() {
+        Leanplum.trackInAppPurchases()
+    }
+    
+    
+    @objc
     func disableLocationCollection() {
         Leanplum.disableLocationCollection()
     }

@@ -183,6 +183,12 @@ class LeanplumSdkModule extends NativeEventEmitter {
     );
   }
 
+  trackInAppPurchases(): void {
+    if (Platform.OS === 'ios') {
+      this.nativeModule.trackInAppPurchases();
+    }
+  }
+
   disableLocationCollection() {
     this.nativeModule.disableLocationCollection();
   }
