@@ -46,7 +46,9 @@ class RNLeanplum: RCTEventEmitter {
     
     @objc
     func setUserAttributes(_ attributes: NSDictionary) {
-        let attributesDict = attributes as! Dictionary<String,Any>
+        guard let attributesDict = attributes as? Dictionary<String, Any> else {
+            return
+        }
         Leanplum.setUserAttributes(attributesDict)
     }
 
@@ -69,14 +71,18 @@ class RNLeanplum: RCTEventEmitter {
     
     @objc
     func track(_ event: String, params: NSDictionary) {
-        let withParameters = params as! Dictionary<String,Any>
-        Leanplum.track(event, withParameters: withParameters)
+        guard let parametersDict = params as? Dictionary<String, Any> else {
+            return
+        }
+        Leanplum.track(event, withParameters: parametersDict)
     }
     
     @objc
     func trackPurchase(_ purchaseEvent: String, value: Double, currencyCode: String, purchaseParams: NSDictionary) {
-        let parameters = purchaseParams as! Dictionary<String,Any>
-        Leanplum.trackPurchase(purchaseEvent, withValue: value, andCurrencyCode: currencyCode, andParameters: parameters)
+        guard let parametersDict = purchaseParams as? Dictionary<String, Any> else {
+            return
+        }
+        Leanplum.trackPurchase(purchaseEvent, withValue: value, andCurrencyCode: currencyCode, andParameters: parametersDict)
     }
     
     @objc
@@ -147,8 +153,8 @@ class RNLeanplum: RCTEventEmitter {
     func onValueChanged(_ variableName: String) {
         if let lpVar = self.variables[variableName] {
             self.allSupportedEvents.append(variableName)
-            lpVar.onValueChanged {
-                self.sendEvent(withName: variableName, body: lpVar.value)
+            lpVar.onValueChanged { [weak self] in
+                self?.sendEvent(withName: variableName, body: lpVar.value)
             }
         }
     }
@@ -156,8 +162,8 @@ class RNLeanplum: RCTEventEmitter {
     @objc
     func onVariablesChanged(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.onVariablesChanged {
-            self.sendEvent(withName: listener, body: self.getVariablesValues())
+        Leanplum.onVariablesChanged { [weak self] in
+            self?.sendEvent(withName: listener, body: self?.getVariablesValues())
         }
     }
     
@@ -166,8 +172,8 @@ class RNLeanplum: RCTEventEmitter {
         self.allSupportedEvents.append(name)
         let lpVar = LPVar.define(name, withFile: filename)
         self.variables[name] = lpVar
-        lpVar?.onFileReady({
-            self.sendEvent(withName: name, body: lpVar?.fileValue())
+        lpVar?.onFileReady({ [weak self] in
+            self?.sendEvent(withName: name, body: lpVar?.fileValue())
         })
     }
     
@@ -227,16 +233,16 @@ class RNLeanplum: RCTEventEmitter {
     @objc
     func onVariablesChangedAndNoDownloadsPending(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.onVariablesChangedAndNoDownloadsPending {
-            self.sendEvent(withName: listener, body: nil)
+        Leanplum.onVariablesChangedAndNoDownloadsPending { [weak self] in
+            self?.sendEvent(withName: listener, body: nil)
         }
     }
 
     @objc
     func onceVariablesChangedAndNoDownloadsPending(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.onceVariablesChangedAndNoDownloadsPending {
-            self.sendEvent(withName: listener, body: nil)
+        Leanplum.onceVariablesChangedAndNoDownloadsPending { [weak self] in
+            self?.sendEvent(withName: listener, body: nil)
         }
     }
 

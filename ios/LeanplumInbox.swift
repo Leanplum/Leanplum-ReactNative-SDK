@@ -19,7 +19,7 @@ class RNLeanplumInbox: RCTEventEmitter {
         return true
     }
     
-    override func supportedEvents() -> [String]! {
+    override func supportedEvents() -> [String] {
         return self.allSupportedEvents
     }
     
@@ -66,8 +66,8 @@ class RNLeanplumInbox: RCTEventEmitter {
     @objc
     func onChanged(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.inbox()?.onChanged({
-            self.sendEvent(withName: listener, body: self.getInboxValue())
+        Leanplum.inbox()?.onChanged({ [weak self] in
+            self?.sendEvent(withName: listener, body: self?.getInboxValue())
         })
     }
 
