@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "12.16"
+script:
+  - npm install
+  - npm run build
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email: <Leanplum-emial>
+  api_key:
+    secure: <API_KEY>
+  on:
+    tags: true
+    repo: Leanplum/Leanplum-ReactNative-SDK
