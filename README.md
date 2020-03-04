@@ -2,7 +2,7 @@
 
 If you have already installed Node on your system, make sure it is Node 8.3 or newer.
 
-## Getting started
+## Getting started using npm registry
 
 ### Inside the React Native App
 1. `$ yarn add react-native-leanplum` or `$ npm install react-native-leanplum`
