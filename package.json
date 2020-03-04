@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "TODO",
   "main": "dist/index.js",
-  "types": "./typings/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "watch": "npx tsc -w",
     "build": "yarn clean && npx tsc",
@@ -12,8 +12,8 @@
     "prepublish": "yarn build",
     "test": "npx jest",
     "clean": "run-script-os",
-    "clean:windows": "rmdir /q /s typings && rmdir /q /s dist",
-    "clean:nix": "rm -rf typings dist"
+    "clean:windows": "if exist dist rmdir /q /s dist",
+    "clean:nix": "rm -rf dist"
   },
   "repository": {
     "type": "git",
