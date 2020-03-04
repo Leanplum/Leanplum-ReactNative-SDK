@@ -7,10 +7,13 @@
   "types": "./typings/index.d.ts",
   "scripts": {
     "watch": "npx tsc -w",
-    "build": "rm -rf typings dist && npx tsc",
+    "build": "yarn clean && npx tsc",
     "local-publish": "npx yalc publish --push",
     "prepublish": "yarn build",
-    "test": "jest"
+    "test": "npx jest",
+    "clean": "run-script-os",
+    "clean:windows": "rmdir /q /s typings && rmdir /q /s dist",
+    "clean:nix": "rm -rf typings dist"
   },
   "repository": {
     "type": "git",
@@ -35,6 +38,7 @@
     "@types/react-native": "^0.61.14",
     "react": "^16.8.3",
     "react-native": "^0.59.10",
+    "run-script-os": "^1.1.1",
     "typescript": "^3.7.5",
     "yalc": "^1.0.0-pre.35"
   }
