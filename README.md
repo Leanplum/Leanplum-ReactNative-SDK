@@ -1,11 +1,13 @@
 # react-native-leanplum
 
+If you have already installed Node on your system, make sure it is Node 8.3 or newer.
+
 ## Getting started
 
 ### Inside the React Native App
 1. `$ yarn add react-native-leanplum` or `$ npm install react-native-leanplum`
 
-2. `$ react-native link react-native-leanplum`
+2. `$ npx react-native link react-native-leanplum`
 
 3. For iOS only `$ cd ios && pod install`
 
@@ -26,10 +28,13 @@ const inbox = await LeanplumInbox.inbox();
 ```
 
 ## Local development
-1. Install dependencies for generating builds `$ yarn install` or `$ npm run install`
+1. Install yarn global `$ npm install -g yarn`
 
-2. Build the sdk and publish it for local development purposes `$ yarn local-publish` or `$ npm run local-publish`
+2. Install dependencies for generating builds `$ yarn install`
+
+3. Build the sdk and publish it for local development purposes `$ yarn local-publish`
 
 ### Inside the React Native App repository
 
 1. Add this sdk build to the app: `$ npx yalc add react-native-leanplum`
+2. `$ npx react-native link react-native-leanplum`
