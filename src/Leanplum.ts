@@ -183,6 +183,53 @@ class LeanplumSdkModule extends NativeEventEmitter {
     );
   }
 
+  trackInAppPurchasesIos(): void {
+    if (Platform.OS === 'ios') {
+      this.nativeModule.trackInAppPurchases();
+    }
+  }
+
+  trackGooglePlayPurchase(
+    item: string,
+    priceMicros: number,
+    currencyCode: string,
+    purchaseData: string,
+    dataSignature: string,
+    params?: any,
+    eventName?: string
+  ): void {
+    if (Platform.OS === 'android') {
+      if (!params && !eventName) {
+        this.nativeModule.trackGooglePlayPurchase(
+          item,
+          priceMicros,
+          currencyCode,
+          purchaseData,
+          dataSignature
+        );
+      } else if (params && !eventName) {
+        this.nativeModule.trackGooglePlayPurchaseWithParams(
+          item,
+          priceMicros,
+          currencyCode,
+          purchaseData,
+          dataSignature,
+          params
+        );
+      } else if (eventName && params) {
+        this.nativeModule.trackGooglePlayPurchaseWithEvent(
+          eventName,
+          item,
+          priceMicros,
+          currencyCode,
+          purchaseData,
+          dataSignature,
+          params
+        );
+      }
+    }
+  }
+
   disableLocationCollection() {
     this.nativeModule.disableLocationCollection();
   }

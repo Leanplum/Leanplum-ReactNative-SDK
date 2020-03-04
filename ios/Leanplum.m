@@ -12,6 +12,7 @@ RCT_EXTERN_METHOD(deviceId: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 RCT_EXTERN_METHOD(start)
 RCT_EXTERN_METHOD(track: (NSString *)event params:(NSDictionary *)params)
 RCT_EXTERN_METHOD(trackPurchase: (NSString *)purchaseEvent value:(double *)value currencyCode:(NSString *)currencyCode purchaseParams:(NSDictionary *)purchaseParams)
+RCT_EXTERN_METHOD(trackInAppPurchases)
 RCT_EXTERN_METHOD(disableLocationCollection)
 RCT_EXTERN_METHOD(setDeviceLocation: (double *)latitude longitude:(double *)longitude type:(NSInteger *)type)
 RCT_EXTERN_METHOD(forceContentUpdate)
