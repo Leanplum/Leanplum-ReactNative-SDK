@@ -7,9 +7,9 @@
   "types": "./typings/index.d.ts",
   "scripts": {
     "watch": "npx tsc -w",
-    "build": "yarn clean && npx tsc",
+    "build": "npm run clean && npx tsc",
     "local-publish": "npx yalc publish --push",
-    "prepublish": "yarn build",
+    "prepublish": "npm run build",
     "test": "npx jest",
     "clean": "run-script-os",
     "clean:windows": "rmdir /q /s typings && rmdir /q /s dist",
