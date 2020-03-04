@@ -83,6 +83,26 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void trackPurchase(String purchaseEvent, Double value, String currencyCode, ReadableMap purchaseParams) {
         Leanplum.trackPurchase(purchaseEvent, value, currencyCode, purchaseParams.toHashMap());
+
+    }
+
+    @ReactMethod
+    public void trackGooglePlayPurchase(String item, Integer priceMicros, String currencyCode,
+                                        String purchaseData, String dataSignature) {
+        Leanplum.trackGooglePlayPurchase(item, priceMicros, currencyCode, purchaseData, dataSignature);
+    }
+    @ReactMethod
+    public void trackGooglePlayPurchaseWithParams(String item, Integer priceMicros, String currencyCode,
+                                                  String purchaseData, String dataSignature, ReadableMap params) {
+        Leanplum.trackGooglePlayPurchase(item, priceMicros, currencyCode, purchaseData, dataSignature, params.toHashMap());
+
+    }
+
+    @ReactMethod
+    public void trackGooglePlayPurchaseWithEvent(String eventName, String item, Integer priceMicros, String currencyCode,
+                                                  String purchaseData, String dataSignature, ReadableMap params) {
+        Leanplum.trackGooglePlayPurchase(eventName, item, priceMicros, currencyCode, purchaseData, dataSignature, params.toHashMap());
+
     }
 
     @ReactMethod
