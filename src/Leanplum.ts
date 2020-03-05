@@ -31,7 +31,10 @@ class LeanplumSdkModule extends NativeEventEmitter {
   /** Listener name used when a message is displayed. */
   private static readonly ON_MESSAGE_DISPLAYED = 'onMessageDisplayed';
 
-  /** @param nativeModule the NativeModule of react-native. */
+  /**
+   * Creates an instance of LeanplumSdkModule.
+   * @param nativeModule the NativeModule of react-native
+   */
   constructor(nativeModule: any) {
     super(nativeModule);
     if (Platform.OS === 'android' || Platform.OS === 'ios') {
