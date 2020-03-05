@@ -1,18 +1,5 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import { LocationAccuracyType } from './location-accuracy-type';
-
-export type VariableValue = string | boolean | number | Array<any> | object;
-
-export interface AllVariablesValue {
-  [name: string]: VariableValue;
-}
-
-export class MessageArchiveData {
-  messageID: string;
-  messageBody: string;
-  recipientUserID: string;
-  deliveryDateTime: string;
-}
+import { Variables, Variable, Parameters, LocationAccuracyType, MessageArchiveData } from './leanplum-types';
 
 class LeanplumSdkModule extends NativeEventEmitter {
   private readonly nativeModule: any;
@@ -48,19 +35,19 @@ class LeanplumSdkModule extends NativeEventEmitter {
     this.nativeModule.setAppIdForProductionMode(appId, accessKey);
   }
 
-  setDeviceId(id: string) {
+  setDeviceId(id: string): void {
     this.nativeModule.setDeviceId(id);
   }
 
-  parseVariables() {
+  parseVariables(): void {
     this.nativeModule.parseVariables();
   }
 
-  setUserId(id: string) {
+  setUserId(id: string): void {
     this.nativeModule.setUserId(id);
   }
 
-  setUserAttributes(attributes: any) {
+  setUserAttributes(attributes: Parameters): void {
     this.nativeModule.setUserAttributes(attributes);
   }
 
@@ -77,8 +64,8 @@ class LeanplumSdkModule extends NativeEventEmitter {
    *
    * @param object object with multiple variables
    */
-  setVariables(variablesObject: AllVariablesValue): void {
-    this.nativeModule.setVariables(variablesObject);
+  setVariables(variables: Variables): void {
+    this.nativeModule.setVariables(variables);
   }
 
   /**
@@ -88,7 +75,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param name name of the variable
    * @returns a Promise with variable value
    */
-  async getVariable(name: String): Promise<VariableValue> {
+  async getVariable(name: String): Promise<Variable> {
     return await this.nativeModule.getVariable(name);
   }
 
@@ -99,7 +86,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param name name of the variable
    * @param defaultValue default value of the variable
    */
-  async getVariables(): Promise<AllVariablesValue> {
+  async getVariables(): Promise<Variables> {
     return await this.nativeModule.getVariables();
   }
 
@@ -139,7 +126,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    */
   onValueChanged(
     variableName: string,
-    callback: (value: VariableValue) => void
+    callback: (value: Variable) => void
   ): void {
     this.nativeModule.onValueChanged(variableName);
     this.addListener(variableName, callback);
@@ -150,7 +137,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    *
    * @param handler callback that is going to be invoked when all variables are ready
    */
-  onVariablesChanged(callback: (value: AllVariablesValue) => void): void {
+  onVariablesChanged(callback: (value: Variables) => void): void {
     this.nativeModule.onVariablesChanged(
       LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER
     );
@@ -165,16 +152,16 @@ class LeanplumSdkModule extends NativeEventEmitter {
     this.nativeModule.forceContentUpdate();
   }
 
-  track(event: string, params: any = {}): void {
+  track(event: string, params: Parameters = {}): void {
     this.nativeModule.track(event, params);
   }
 
   trackPurchase(
     value: number,
     currencyCode: string,
-    purchaseParams: any,
+    purchaseParams: Parameters,
     purchaseEvent: string = LeanplumSdkModule.PURCHASE_EVENT_NAME
-  ) {
+  ): void {
     this.nativeModule.trackPurchase(
       purchaseEvent,
       value,
@@ -197,7 +184,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
     currencyCode: string,
     purchaseData: string,
     dataSignature: string,
-    params?: any,
+    params?: Parameters,
     eventName?: string
   ): void {
     if (Platform.OS === 'android') {
@@ -234,7 +221,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
     }
   }
 
-  disableLocationCollection() {
+  disableLocationCollection(): void {
     this.nativeModule.disableLocationCollection();
   }
 
@@ -242,7 +229,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
     latitude: number,
     longitude: number,
     type: LocationAccuracyType = LocationAccuracyType.CELL
-  ) {
+  ): void {
     this.nativeModule.setDeviceLocation(latitude, longitude, type);
   }
 
@@ -257,7 +244,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
   trackAllAppScreens(): void {
     this.nativeModule.trackAllAppScreens();
   }
-  advanceTo(name: string | null, info?: string, params?: any) {
+  advanceTo(name: string | null, info?: string, params?: Parameters): void {
     if (!info && !params) {
       this.nativeModule.advanceTo(name);
     } else if (info && !params) {
