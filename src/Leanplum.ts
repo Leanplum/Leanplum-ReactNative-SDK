@@ -186,6 +186,8 @@ class LeanplumSdkModule extends NativeEventEmitter {
   trackInAppPurchasesIos(): void {
     if (Platform.OS === 'ios') {
       this.nativeModule.trackInAppPurchases();
+    } else {
+      this.throwUnsupportedPlatform();
     }
   }
 
@@ -227,6 +229,8 @@ class LeanplumSdkModule extends NativeEventEmitter {
           params
         );
       }
+    } else {
+      this.throwUnsupportedPlatform();
     }
   }
 
