@@ -1,17 +1,17 @@
 export type Primitive = string | boolean | number;
-export type LeanplumVariable =
+export type Variable =
   | string
   | boolean
   | number
   | Primitive[]
-  | LeanplumParams;
+  | Parameters;
 
-export interface LeanplumParams {
+export interface Parameters {
   [name: string]: Primitive;
 }
 
-export interface LeanplumVariables {
-  [name: string]: LeanplumVariable;
+export interface Variables {
+  [name: string]: Variable;
 }
 
 export class MessageArchiveData {

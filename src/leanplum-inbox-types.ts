@@ -1,4 +1,4 @@
-import { LeanplumVariables } from './leanplum-types';
+import { Variables } from './leanplum-types';
 
 export class Message {
   messageId: string;
@@ -6,7 +6,7 @@ export class Message {
   subtitle: string;
   imageFilePath?: string;
   imageUrl?: string;
-  data?: LeanplumVariables;
+  data?: Variables;
   deliveryTimestamp: string;
   expirationTimestamp: string;
   isRead: boolean;

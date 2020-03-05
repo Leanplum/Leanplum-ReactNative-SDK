@@ -1,5 +1,5 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import { LeanplumVariables, LeanplumVariable, LeanplumParams, LocationAccuracyType, MessageArchiveData } from './leanplum-types';
+import { Variables, Variable, Parameters, LocationAccuracyType, MessageArchiveData } from './leanplum-types';
 
 class LeanplumSdkModule extends NativeEventEmitter {
   private readonly nativeModule: any;
@@ -47,7 +47,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
     this.nativeModule.setUserId(id);
   }
 
-  setUserAttributes(attributes: LeanplumParams): void {
+  setUserAttributes(attributes: Parameters): void {
     this.nativeModule.setUserAttributes(attributes);
   }
 
@@ -64,7 +64,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    *
    * @param object object with multiple variables
    */
-  setVariables(variables: LeanplumVariables): void {
+  setVariables(variables: Variables): void {
     this.nativeModule.setVariables(variables);
   }
 
@@ -75,7 +75,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param name name of the variable
    * @returns a Promise with variable value
    */
-  async getVariable(name: String): Promise<LeanplumVariable> {
+  async getVariable(name: String): Promise<Variable> {
     return await this.nativeModule.getVariable(name);
   }
 
@@ -86,7 +86,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param name name of the variable
    * @param defaultValue default value of the variable
    */
-  async getVariables(): Promise<LeanplumVariables> {
+  async getVariables(): Promise<Variables> {
     return await this.nativeModule.getVariables();
   }
 
@@ -126,7 +126,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    */
   onValueChanged(
     variableName: string,
-    callback: (value: LeanplumVariable) => void
+    callback: (value: Variable) => void
   ): void {
     this.nativeModule.onValueChanged(variableName);
     this.addListener(variableName, callback);
@@ -137,7 +137,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    *
    * @param handler callback that is going to be invoked when all variables are ready
    */
-  onVariablesChanged(callback: (value: LeanplumVariables) => void): void {
+  onVariablesChanged(callback: (value: Variables) => void): void {
     this.nativeModule.onVariablesChanged(
       LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER
     );
@@ -152,14 +152,14 @@ class LeanplumSdkModule extends NativeEventEmitter {
     this.nativeModule.forceContentUpdate();
   }
 
-  track(event: string, params: LeanplumParams = {}): void {
+  track(event: string, params: Parameters = {}): void {
     this.nativeModule.track(event, params);
   }
 
   trackPurchase(
     value: number,
     currencyCode: string,
-    purchaseParams: LeanplumParams,
+    purchaseParams: Parameters,
     purchaseEvent: string = LeanplumSdkModule.PURCHASE_EVENT_NAME
   ): void {
     this.nativeModule.trackPurchase(
@@ -182,7 +182,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
     currencyCode: string,
     purchaseData: string,
     dataSignature: string,
-    params?: LeanplumParams,
+    params?: Parameters,
     eventName?: string
   ): void {
     if (Platform.OS === 'android') {
@@ -240,7 +240,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
   trackAllAppScreens(): void {
     this.nativeModule.trackAllAppScreens();
   }
-  advanceTo(name: string | null, info?: string, params?: LeanplumParams): void {
+  advanceTo(name: string | null, info?: string, params?: Parameters): void {
     if (!info && !params) {
       this.nativeModule.advanceTo(name);
     } else if (info && !params) {
