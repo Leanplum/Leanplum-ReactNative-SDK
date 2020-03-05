@@ -13,7 +13,8 @@
     "test": "npx jest",
     "clean": "run-script-os",
     "clean:windows": "if exist dist rmdir /q /s dist",
-    "clean:nix": "rm -rf dist"
+    "clean:nix": "rm -rf dist",
+    "typedoc": "npx typedoc"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "react": "^16.8.3",
     "react-native": "^0.59.10",
     "run-script-os": "^1.1.1",
+    "typedoc": "^0.16.11",
     "typescript": "^3.7.5",
     "yalc": "^1.0.0-pre.35"
   }
