@@ -1,19 +1,37 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import { Variables, Variable, Parameters, LocationAccuracyType, MessageArchiveData } from './leanplum-types';
+import {
+  Variables,
+  Variable,
+  Parameters,
+  LocationAccuracyType,
+  MessageArchiveData
+} from './leanplum-types';
 
+/**
+ * Leanplum React Native Sdk
+ */
 class LeanplumSdkModule extends NativeEventEmitter {
+  /** NativeModule of react-native. */
   private readonly nativeModule: any;
+  /** Default value for the name of the Purchase event. */
   private static readonly PURCHASE_EVENT_NAME: string = 'Purchase';
+
+  /** Listener name used when the variables receive new values from the server. */
   private static readonly ON_VARIABLES_CHANGE_LISTENER: string =
     'onVariablesChanged';
+
+  /** Listener name used when no more file downloads are pending. */
   private static readonly ON_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING =
     'onVariablesChangedAndNoDownloadsPending';
 
+  /** Listener name used once when no more file downloads are pending. */
   private static readonly ONCE_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING =
     'onceVariablesChangedAndNoDownloadsPending';
 
+  /** Listener name used when a message is displayed. */
   private static readonly ON_MESSAGE_DISPLAYED = 'onMessageDisplayed';
 
+  /** @param nativeModule the NativeModule of react-native. */
   constructor(nativeModule: any) {
     super(nativeModule);
     if (Platform.OS === 'android' || Platform.OS === 'ios') {
@@ -22,79 +40,100 @@ class LeanplumSdkModule extends NativeEventEmitter {
       this.throwUnsupportedPlatform();
     }
   }
-
+  /** Throw an exception with unsupported platform message. */
   throwUnsupportedPlatform() {
     throw new Error('Unsupported Platform');
   }
 
+  /**
+   * Must call either this or [[LeanplumSdkModule.setAppIdForProductionMode]] before issuing any calls to
+   * the API, including start.
+   *
+   * @param appId Your app ID.
+   * @param accessKey Your development key.
+   */
   setAppIdForDevelopmentMode(appId: string, accessKey: string): void {
     this.nativeModule.setAppIdForDevelopmentMode(appId, accessKey);
   }
 
+  /**
+   * Must call either this or [[LeanplumSdkModule.setAppIdForDevelopmentMode]] before issuing any calls
+   * to the API, including start.
+   *
+   * @param appId Your app ID.
+   * @param accessKey Your production key.
+   */
   setAppIdForProductionMode(appId: string, accessKey: string): void {
     this.nativeModule.setAppIdForProductionMode(appId, accessKey);
   }
-
+  /**
+   * Sets a custom device ID.
+   * @param id.
+   */
   setDeviceId(id: string): void {
     this.nativeModule.setDeviceId(id);
   }
-
-  parseVariables(): void {
-    this.nativeModule.parseVariables();
-  }
-
+  /**
+   * Updates the user ID.
+   * @param id.
+   */
   setUserId(id: string): void {
     this.nativeModule.setUserId(id);
   }
-
+  /**
+   * Adds or modifies user attributes.
+   * @param attributes.
+   */
   setUserAttributes(attributes: Parameters): void {
     this.nativeModule.setUserAttributes(attributes);
   }
-
+  /**
+   * Returns the userId in the current Leanplum session. This should only be called after [[LeanplumSdkModule.start]].
+   * @returns userId in the current Leanplum session.
+   */
   async userId(): Promise<string> {
     return await this.nativeModule.userId();
   }
-
+  /**
+   * Gets the deviceId in the current Leanplum session. This should only be called after [[LeanplumSdkModule.start]].
+   * @returns deviceId in the current Leanplum session.
+   */
   async deviceId(): Promise<string> {
     return await this.nativeModule.deviceId();
   }
-
   /**
-   * Define/Set multiple primitive variables using JSON object, we can use this method if we want to define multiple variables at once
-   *
-   * @param object object with multiple variables
+   * Define/Set new variables with default values. This should only be called after [[LeanplumSdkModule.start]].
+   * @param variables with default values.
    */
   setVariables(variables: Variables): void {
     this.nativeModule.setVariables(variables);
   }
 
   /**
-   * Get value for specific variable, if we want to be sure that the method will return latest variable value
-   * we need to invoke forceContentUpdate() before invoking getVariable
+   * Get value for specific variable previously defined.
    *
-   * @param name name of the variable
-   * @returns a Promise with variable value
+   * @param name of the variable.
+   * @returns a Promise with the variable value.
    */
   async getVariable(name: String): Promise<Variable> {
     return await this.nativeModule.getVariable(name);
   }
 
   /**
-   * Get value for specific variable, if we want to be sure that the method will return latest variable value
-   * we need to invoke forceContentUpdate() before invoking getVariable
+   * Get the values for all the variables previously defined.
    *
-   * @param name name of the variable
-   * @param defaultValue default value of the variable
+   * @returns a Promise with the values of the variables.
    */
   async getVariables(): Promise<Variables> {
     return await this.nativeModule.getVariables();
   }
 
   /**
-   * Define/Set asset, we can use this method if we want to define asset
+   * Define/Set asset with the default filename value. This should only be called after [[LeanplumSdkModule.start]].
    *
-   * @param name name of the variable
-   * @param defaultValue default filename of the asset
+   * @param name of the variable.
+   * @param defaultValue default filename of the asset.
+   * @param onAssetReadyCallback callback with the path of the asset as a parameter that will be invoked when the asset is already downloaded.
    */
   setVariableAsset(
     name: string,
@@ -104,25 +143,29 @@ class LeanplumSdkModule extends NativeEventEmitter {
     this.nativeModule.setVariableAsset(name, filename);
     this.addListener(name, onAssetReadyCallback);
   }
-
+  /**
+   * Gets variable asset path previously defined.
+   * @param name.
+   * @returns variable asset.
+   */
   async getVariableAsset(name: string): Promise<string> {
     return await this.nativeModule.getVariableAsset(name);
   }
 
   /**
-   * add callback when start finishes
+   * Add callback when start finishes. This should only be called after [[LeanplumSdkModule.start]].
    *
-   * @param handler callback that is going to be invoked when start finishes
+   * @param callback to be invoked with a boolean value as parameter when start finishes.
    */
   onStartResponse(callback: (success: boolean) => void) {
     this.nativeModule.onStartResponse(callback);
   }
 
   /**
-   * add value change handler for specific variable
+   * Register a callback when a specific variable receive new value from the server.
    *
-   * @param name name of the variable on which we will register the handler
-   * @param handler function that is going to be invoked when value is changed
+   * @param name of the variable previously defined.
+   * @param callback to be invoked with the value of the variable as parameter.
    */
   onValueChanged(
     variableName: string,
@@ -133,9 +176,9 @@ class LeanplumSdkModule extends NativeEventEmitter {
   }
 
   /**
-   * add callback when all variables are ready
+   * Register a callback when the variables receive new values from the server.
    *
-   * @param handler callback that is going to be invoked when all variables are ready
+   * @param callback to be invoked with the values of the variables as parameter.
    */
   onVariablesChanged(callback: (value: Variables) => void): void {
     this.nativeModule.onVariablesChanged(
@@ -143,19 +186,42 @@ class LeanplumSdkModule extends NativeEventEmitter {
     );
     this.addListener(LeanplumSdkModule.ON_VARIABLES_CHANGE_LISTENER, callback);
   }
-
+  /**
+   * Call this when your application starts. This will initiate a call to Leanplum's servers to get
+   * the values of the variables used in your app.
+   */
   start(): void {
     this.nativeModule.start();
   }
 
+  /**
+   * Forces content to update from the server. If variables have changed, the appropriate callbacks
+   * will fire. Use sparingly as if the app is updated, you'll have to deal with potentially
+   * inconsistent state or user experience.
+   */
   forceContentUpdate(): void {
     this.nativeModule.forceContentUpdate();
   }
-
+  /**
+   * Logs a particular event in your application. The string can be any value of your choosing, and
+   * will show up in the dashboard.
+   * @param event Name of the event.
+   * @param [params] Key-value pairs with metrics or data associated with the event. Parameters can be
+   * strings or numbers. You can use up to 200 different parameter names in your app.
+   */
   track(event: string, params: Parameters = {}): void {
     this.nativeModule.track(event, params);
   }
 
+  /**
+   * Manually track purchase event with currency code in your application.
+   *
+   * @param value The value of the event. Can be price.
+   * @param currencyCode The currency code corresponding to the price.
+   * @param purchaseParams Key-value pairs with metrics or data associated with the event. Parameters can be
+   * strings or numbers. You can use up to 200 different parameter names in your app.
+   * @param purchaseEvent Name of the event.
+   */
   trackPurchase(
     value: number,
     currencyCode: string,
@@ -169,7 +235,9 @@ class LeanplumSdkModule extends NativeEventEmitter {
       purchaseParams
     );
   }
-
+  /**
+   * Automatically tracks in app purchases ios. Only for iOS.
+   */
   trackInAppPurchasesIos(): void {
     if (Platform.OS === 'ios') {
       this.nativeModule.trackInAppPurchases();
@@ -177,7 +245,16 @@ class LeanplumSdkModule extends NativeEventEmitter {
       this.throwUnsupportedPlatform();
     }
   }
-
+  /**
+   * Tracks an in-app purchase as a Purchase event. Only for Android.
+   * @param item The name of the item that was purchased.
+   * @param priceMicros The price in micros in the user's local currency.
+   * @param currencyCode The currency code corresponding to the price.
+   * @param purchaseData Purchase data from purchase.
+   * @param dataSignature Signature from purchase.
+   * @param [params] Any additional parameters to track with the event.
+   * @param [eventName] The name of the event to record the purchase under.
+   */
   trackGooglePlayPurchase(
     item: string,
     priceMicros: number,
@@ -220,11 +297,21 @@ class LeanplumSdkModule extends NativeEventEmitter {
       this.throwUnsupportedPlatform();
     }
   }
-
+  /**
+   * Disable automatically location collection
+   */
   disableLocationCollection(): void {
     this.nativeModule.disableLocationCollection();
   }
 
+  /**
+   * Set location manually. Best if used in after calling [[LeanplumSdkModule.disableLocationCollection]]. Useful if you
+   * want to apply additional logic before sending in the location.
+   *
+   * @param latitude Device latitude.
+   * @param longitude Device longitude.
+   * @param type of the location.
+   */
   setDeviceLocation(
     latitude: number,
     longitude: number,
@@ -232,18 +319,35 @@ class LeanplumSdkModule extends NativeEventEmitter {
   ): void {
     this.nativeModule.setDeviceLocation(latitude, longitude, type);
   }
-
+  /**
+   * Pauses the current state. You can use this if your game has a "pause" mode. You shouldn't call
+   * it when someone switches out of your app because that's done automatically.
+   */
   pauseState(): void {
     this.nativeModule.pauseState();
   }
-
+  /**
+   * Resumes the current state.
+   */
   resumeState(): void {
     this.nativeModule.resumeState();
   }
-
+  /**
+   * Enable screen tracking.
+   */
   trackAllAppScreens(): void {
     this.nativeModule.trackAllAppScreens();
   }
+  /**
+   * Advances to a particular state in your application. The string can be any value of your
+   * choosing, and will show up in the dashboard. A state is a section of your app that the user is
+   * currently in.
+   * @param name of the state. State may be empty for message impression events.
+   * @param [info] Basic context associated with the state, such as the item purchased. info is
+   * treated like a default parameter.
+   * @param [params] Key-value pairs with metrics or data associated with the state. Parameters can be
+   * strings or numbers. You can use up to 200 different parameter names in your app.
+   */
   advanceTo(name: string | null, info?: string, params?: Parameters): void {
     if (!info && !params) {
       this.nativeModule.advanceTo(name);
@@ -255,7 +359,11 @@ class LeanplumSdkModule extends NativeEventEmitter {
       this.nativeModule.advanceToWithInfoAndParams(name, info, params);
     }
   }
-
+  /**
+   * Register a callback for when no more file downloads are pending (either when no files needed to be
+   * downloaded or all downloads have been completed).
+   * @param callback to be invoked
+   */
   onVariablesChangedAndNoDownloadsPending(callback: () => void): void {
     this.nativeModule.onVariablesChangedAndNoDownloadsPending(
       LeanplumSdkModule.ON_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING
@@ -265,7 +373,11 @@ class LeanplumSdkModule extends NativeEventEmitter {
       callback
     );
   }
-
+  /**
+   * Register a callback to call ONCE when no more file downloads are pending (either when no files
+   * needed to be downloaded or all downloads have been completed).
+   * @param callback to be invoked
+   */
   onceVariablesChangedAndNoDownloadsPending(callback: () => void): void {
     this.nativeModule.onVariablesChangedAndNoDownloadsPending(
       LeanplumSdkModule.ONCE_VARIABLES_CHANGED_AND_NO_DOWNLOADS_PENDING
@@ -275,7 +387,10 @@ class LeanplumSdkModule extends NativeEventEmitter {
       callback
     );
   }
-
+  /**
+   * Register a callback for when a message is displayed.
+   * @param callback to be invoked with the message data as parameter
+   */
   onMessageDisplayed(callback: (data: MessageArchiveData) => void): void {
     this.nativeModule.onMessageDisplayed(
       LeanplumSdkModule.ON_MESSAGE_DISPLAYED
