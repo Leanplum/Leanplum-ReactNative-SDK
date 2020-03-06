@@ -29,9 +29,20 @@ class RNLeanplum: RCTEventEmitter {
         Leanplum.setAppId(appId, withDevelopmentKey: accessKey)
     }
     
+    
     @objc
     func setAppIdForProductionMode(_ appId: String, accessKey: String) {
         Leanplum.setAppId(appId, withProductionKey: accessKey)
+    }
+
+    @objc
+    func setApiConnectionSettings(_ hostName: String, servletName: String, ssl: Bool) {
+        Leanplum.setApiHostName(hostName, withServletName: servletName, usingSsl: ssl)
+    }
+
+    @objc
+    func setSocketConnectionSettings(_ hostName: String, port: Int) {
+        // Leanplum.setApiHostName(hostName, withServletName: servletName, usingSsl: ssl)
     }
     
     @objc

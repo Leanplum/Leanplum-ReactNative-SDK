@@ -56,6 +56,17 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setApiConnectionSettings(String hostName, String servletName, Boolean ssl) {
+        Leanplum.setApiConnectionSettings(hostName, servletName, ssl);
+    }
+
+    @ReactMethod
+    public void setSocketConnectionSettings(String hostName, Integer port) {
+        Leanplum.setSocketConnectionSettings(hostName, port);
+    }
+
+
+    @ReactMethod
     public void setDeviceId(String id) {
         Leanplum.setDeviceId(id);
     }
@@ -91,6 +102,7 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
                                         String purchaseData, String dataSignature) {
         Leanplum.trackGooglePlayPurchase(item, priceMicros, currencyCode, purchaseData, dataSignature);
     }
+
     @ReactMethod
     public void trackGooglePlayPurchaseWithParams(String item, Integer priceMicros, String currencyCode,
                                                   String purchaseData, String dataSignature, ReadableMap params) {
@@ -100,7 +112,7 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void trackGooglePlayPurchaseWithEvent(String eventName, String item, Integer priceMicros, String currencyCode,
-                                                  String purchaseData, String dataSignature, ReadableMap params) {
+                                                 String purchaseData, String dataSignature, ReadableMap params) {
         Leanplum.trackGooglePlayPurchase(eventName, item, priceMicros, currencyCode, purchaseData, dataSignature, params.toHashMap());
 
     }
@@ -138,6 +150,7 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
             variables.put(key, Var.define(key, value));
         }
     }
+
 
     @ReactMethod
     public void getVariable(String name, Promise promise) {

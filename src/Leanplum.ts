@@ -90,6 +90,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
   setUserAttributes(attributes: Parameters): void {
     this.nativeModule.setUserAttributes(attributes);
   }
+
   /**
    * Returns the userId in the current Leanplum session. This should only be called after [[LeanplumSdkModule.start]].
    * @returns userId in the current Leanplum session.
@@ -110,6 +111,30 @@ class LeanplumSdkModule extends NativeEventEmitter {
    */
   setVariables(variables: Variables): void {
     this.nativeModule.setVariables(variables);
+  }
+  /**
+   * Optional. Sets the API server. The API path is of the form http[s]://hostname/servletName
+   *
+   * @param hostName The name of the API host, such as www.leanplum.com
+   * @param servletName The name of the API servlet, such as api
+   * @param ssl Whether to use SSL
+   */
+  setApiConnectionSettings(
+    hostName: string,
+    servletName: string,
+    ssl: boolean
+  ): void {
+    this.nativeModule.setApiConnectionSettings(hostName, servletName, ssl);
+  }
+
+  /**
+   * Optional. Sets the socket server path for Development mode. Path is of the form hostName:port
+   *
+   * @param hostName The host name of the socket server.
+   * @param port The port to connect to.
+   */
+  setSocketConnectionSettings(hostName: string, port: number): void {
+    this.nativeModule.setSocketConnectionSettings(hostName, port);
   }
 
   /**

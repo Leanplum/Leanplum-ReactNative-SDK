@@ -4,6 +4,8 @@
 @interface RCT_EXTERN_REMAP_MODULE(Leanplum, RNLeanplum, RCTEventEmitter)
 RCT_EXTERN_METHOD(setAppIdForDevelopmentMode: (NSString *)appId accessKey:(NSString *)accessKey)
 RCT_EXTERN_METHOD(setAppIdForProductionMode: (NSString *)appId accessKey:(NSString *)accessKey)
+RCT_EXTERN_METHOD(setApiConnectionSettings: (NSString *)hostName servletName:(NSString *)servletName ssl:(BOOL)ssl)
+RCT_EXTERN_METHOD(setSocketConnectionSettings: (NSString *)hostName port:(NSInteger *)port)
 RCT_EXTERN_METHOD(setDeviceId: (NSString *)id)
 RCT_EXTERN_METHOD(setUserId: (NSString *)id)
 RCT_EXTERN_METHOD(setUserAttributes: (NSDictionary *)attributes)
