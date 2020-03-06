@@ -41,8 +41,8 @@ class RNLeanplum: RCTEventEmitter {
     }
 
     @objc
-    func setSocketConnectionSettings(_ hostName: String, port: Int) {
-        // Leanplum.setApiHostName(hostName, withServletName: servletName, usingSsl: ssl)
+    func setSocketConnectionSettings(_ hostName: String, port: Int32) {
+        Leanplum.setSocketHostName(hostName, withPortNumber: port)
     }
     
     @objc
