@@ -7,7 +7,7 @@ script:
 deploy:
   skip_cleanup: true
   provider: npm
-  email: <Leanplum-emial>
+  email: e2@leanplum.com
   api_key:
     secure: <API_KEY>
   on:
