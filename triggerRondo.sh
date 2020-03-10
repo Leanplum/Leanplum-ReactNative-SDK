@@ -4,8 +4,7 @@ version=`cat package.json | grep version | awk '{$1=$1};1' | cut -b 13-17`
 body="{
 \"request\": {
 \"branch\" : \"travis-build\",
-\"message\" : \"Building and uploading $version\"
-}"
+\"message\" : \"Building and uploading $version\"}}"
 
 curl -s -X POST \
    -H "Content-Type: application/json" \
