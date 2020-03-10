@@ -3,6 +3,7 @@ node_js:
   - "12.16"
 script:
   - npm install
+  - npm test
   - npm run build
 deploy:
   skip_cleanup: true
