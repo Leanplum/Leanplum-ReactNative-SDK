@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - "12.16"
 script:
-  - echo $TRAVIS_TOKEN
   - npm install
   - npm test
   - npm run build
