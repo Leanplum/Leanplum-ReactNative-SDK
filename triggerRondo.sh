@@ -3,7 +3,7 @@ set -x
 version=`cat package.json | grep version | awk '{$1=$1};1' | cut -b 13-17`
 body="{
 \"request\": {
-\"branch\" : \"master\",
+\"branch\" : \"travis-build\",
 \"message\" : \"Building and uploading $version\"
 }"
 
