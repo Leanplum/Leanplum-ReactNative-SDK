@@ -10,7 +10,7 @@ deploy:
   provider: npm
   email: a.andov@yahoo.com
   api_key:
-    secure: pl67NmuB9BNsikp6F7f2FKLNWxf9tKEiSIkcA8i0p5jKDFRWAv89stxwlIEGjsFgI4DVQ9Cqu+5gEmFW+CKZiA1NWuRgRpY3v2pGabs+YTT9Ry3ZbDmZABWa0WlFdDJMjvpWunCiltXpSFr27feErQnAOR3T85gX2oyASGdTwGkaadN8SxjB+DU8eFXprOp8sbVK3LZ7SZpFqBd632RtNQf5ju1JC+9s8uht7xkf151Pw1zBftpV6g+3Op29hldCDZm3rtiALojtDqpB77JfJVIVGi3iwNUFytJDbM0frDkhGvRdCtg1xTUrw++8u57aoUx3ystkKwA/MLqt4sqzMHGtJ+7g+QIdEhJy5v1/CjZ8J+QMXt4tE3Xc8waDn9xyjhfTG++4FEbVUvTYagrdu7YdSIoyqUsEJ4kJZCd40UXzsoFhCYQHsSj3GO0qdx2HbzeSm9TnvKUY/eARvq2amporf/1LYc6w7llVTfr1YtTZVJHcVTXLAhbESGRPPU2HiZ16sibsFX9a05Wm8NGOtAnuXXSN0Cl7R6Z4teeugzNVG3ob0rNe241wo/WV8HD/DWHLatrYHLrSaJH5TQPHzRMtNCUHsV1UCQCsFbT+Sa+dKdpdsNw/N4Ss5Ho0XmraioQJYgAM6jcd+1Nrzep7j1ojC2/vyesePgWmaCEnXkc=
+    secure: $NPM_TOKEN
   on:
     tags: true
     repo: Leanplum/Leanplum-ReactNative-SDK
