@@ -28,6 +28,9 @@
     "name": "Leanplum",
     "email": "e2@leanplum.com"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "Commercial",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
