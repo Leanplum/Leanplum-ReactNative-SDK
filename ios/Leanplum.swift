@@ -13,10 +13,6 @@ import Leanplum
 class RNLeanplum: RCTEventEmitter {
     
     var variables = [String: LPVar]()
-    let undefinedVariableErrorMessage = "Undefined Variable"
-    let undefinedVariableError = NSError(domain: "Undefined Variable", code: 404)
-    var onVariableChangedListenerName = "onVariableChanged"
-    var onVariablesChangedListenerName = "onVariablesChanged"
     var allSupportedEvents: [String] = []
     
     @objc
@@ -24,78 +20,107 @@ class RNLeanplum: RCTEventEmitter {
         return true
     }
     
-    override func supportedEvents() -> [String]! {
+    override func supportedEvents() -> [String] {
         return self.allSupportedEvents
     }
-
+    
     @objc
-    func setListenersNames(_ onVariableChangedListenerName: String, onVariablesChangedListenerName: String) {
-        self.onVariableChangedListenerName = onVariableChangedListenerName;
-        self.onVariablesChangedListenerName = onVariablesChangedListenerName;
-    }
-
-    @objc
-    func setAppIdForDevelopmentMode(_ appId: String, accessKey: String) -> Void {
+    func setAppIdForDevelopmentMode(_ appId: String, accessKey: String) {
         Leanplum.setAppId(appId, withDevelopmentKey: accessKey)
     }
     
+    
     @objc
-    func setAppIdForProductionMode(_ appId: String, accessKey: String) -> Void {
+    func setAppIdForProductionMode(_ appId: String, accessKey: String) {
         Leanplum.setAppId(appId, withProductionKey: accessKey)
+    }
+
+    @objc
+    func setApiConnectionSettings(_ hostName: String, servletName: String, ssl: Bool) {
+        Leanplum.setApiHostName(hostName, withServletName: servletName, usingSsl: ssl)
+    }
+
+    @objc
+    func setSocketConnectionSettings(_ hostName: String, port: Int32) {
+        Leanplum.setSocketHostName(hostName, withPortNumber: port)
     }
     
     @objc
-    func setDeviceId(_ id: String) -> Void {
+    func setDeviceId(_ id: String) {
         Leanplum.setDeviceId(id)
     }
     
     @objc
-    func setUserId(_ id: String) -> Void {
+    func setUserId(_ id: String) {
         Leanplum.setUserId(id)
     }
     
     @objc
-    func setUserAttributes(_ attributes: NSDictionary) -> Void {
-        let attributesDict = attributes as! Dictionary<String,Any>
+    func setUserAttributes(_ attributes: NSDictionary) {
+        guard let attributesDict = attributes as? Dictionary<String, Any> else {
+            return
+        }
         Leanplum.setUserAttributes(attributesDict)
     }
+
+    @objc
+    func userId(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(Leanplum.userId())
+    }
+
+    @objc
+    func deviceId(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(Leanplum.deviceId())
+    }
+
+
     
     @objc
-    func start() -> Void {
+    func start() {
         Leanplum.start()
     }
     
     @objc
-    func track(_ event: String, params: NSDictionary) -> Void {
-        let withParameters = params as! Dictionary<String,Any>
-        Leanplum.track(event, withParameters: withParameters)
+    func track(_ event: String, params: NSDictionary) {
+        guard let parametersDict = params as? Dictionary<String, Any> else {
+            return
+        }
+        Leanplum.track(event, withParameters: parametersDict)
     }
     
     @objc
-    func trackPurchase(_ purchaseEvent: String, value: Double, currencyCode: String, purchaseParams: NSDictionary) -> Void {
-        let parameters = purchaseParams as! Dictionary<String,Any>
-        Leanplum.trackPurchase(purchaseEvent, withValue: value, andCurrencyCode: currencyCode, andParameters: parameters)
+    func trackPurchase(_ purchaseEvent: String, value: Double, currencyCode: String, purchaseParams: NSDictionary) {
+        guard let parametersDict = purchaseParams as? Dictionary<String, Any> else {
+            return
+        }
+        Leanplum.trackPurchase(purchaseEvent, withValue: value, andCurrencyCode: currencyCode, andParameters: parametersDict)
     }
     
     @objc
-    func disableLocationCollection() -> Void {
+    func trackInAppPurchases() {
+        Leanplum.trackInAppPurchases()
+    }
+    
+    
+    @objc
+    func disableLocationCollection() {
         Leanplum.disableLocationCollection()
     }
     
     @objc
-    func setDeviceLocation(_ latitude: Double, longitude: Double, type: Int) -> Void {
+    func setDeviceLocation(_ latitude: Double, longitude: Double, type: Int) {
         let accuracyType = LPLocationAccuracyType(rawValue: UInt32(type))
         Leanplum.setDeviceLocationWithLatitude(latitude, longitude: longitude, type: accuracyType)
     }
     
     @objc
-    func forceContentUpdate() -> Void {
+    func forceContentUpdate() {
         Leanplum.forceContentUpdate();
     }
     
     
     @objc
-    func setVariables(_ variables: NSDictionary) -> Void {
+    func setVariables(_ variables: NSDictionary) {
         guard let variablesDict = variables as? Dictionary<String, Any> else {
             return
         }
@@ -113,7 +138,7 @@ class RNLeanplum: RCTEventEmitter {
         if let lpVar = self.variables[variableName] {
             resolve(lpVar.value)
         } else {
-            reject(self.undefinedVariableErrorMessage, "\(undefinedVariableErrorMessage): '\(variableName)'", self.undefinedVariableError)
+            resolve(nil)
         }
     }
     
@@ -144,29 +169,28 @@ class RNLeanplum: RCTEventEmitter {
     @objc
     func onValueChanged(_ variableName: String) {
         if let lpVar = self.variables[variableName] {
-            let listenerName = "\(self.onVariableChangedListenerName).\(variableName)"
-            self.allSupportedEvents.append(listenerName)
-            lpVar.onValueChanged {
-                self.sendEvent(withName: listenerName, body: lpVar.value)
+            self.allSupportedEvents.append(variableName)
+            lpVar.onValueChanged { [weak self] in
+                self?.sendEvent(withName: variableName, body: lpVar.value)
             }
         }
     }
     
     @objc
-    func onVariablesChanged() {
-        self.allSupportedEvents.append(self.onVariablesChangedListenerName)
-        Leanplum.onVariablesChanged {
-            self.sendEvent(withName: self.onVariablesChangedListenerName, body: self.getVariablesValues())
+    func onVariablesChanged(_ listener: String) {
+        self.allSupportedEvents.append(listener)
+        Leanplum.onVariablesChanged { [weak self] in
+            self?.sendEvent(withName: listener, body: self?.getVariablesValues())
         }
     }
     
     @objc
-    func setVariableAsset(_ name: String, filename: String) -> Void {
+    func setVariableAsset(_ name: String, filename: String) {
         self.allSupportedEvents.append(name)
         let lpVar = LPVar.define(name, withFile: filename)
         self.variables[name] = lpVar
-        lpVar?.onFileReady({
-            self.sendEvent(withName: name, body: lpVar?.fileValue())
+        lpVar?.onFileReady({ [weak self] in
+            self?.sendEvent(withName: name, body: lpVar?.fileValue())
         })
     }
     
@@ -177,7 +201,74 @@ class RNLeanplum: RCTEventEmitter {
         if let lpVar = self.variables[name] {
             resolve(lpVar.fileValue())
         } else {
-            reject(self.undefinedVariableErrorMessage, "\(undefinedVariableErrorMessage): '\(name)'", self.undefinedVariableError)
+            resolve(nil)
+        }
+    }
+    
+    @objc
+    func pauseState() {
+        Leanplum.pauseState();
+    }
+    
+    @objc
+    func resumeState() {
+        Leanplum.resumeState();
+    }
+    
+    @objc
+    func trackAllAppScreens() {
+        Leanplum.trackAllAppScreens();
+    }
+    
+    @objc
+    func advanceTo(_ state: String) {
+        Leanplum.advance(to: state)
+    }
+    
+    @objc
+    func advanceToWithInfo(_ state: String, info: String) {
+        Leanplum.advance(to: state, withInfo: info)
+    }
+    
+    @objc
+    func advanceToWithParams(_ state: String, params: NSDictionary) {
+        guard let paramsDict = params as? Dictionary<String, Any> else {
+            return
+        }
+        Leanplum.advance(to: state, withParameters: paramsDict)
+    }
+    
+    
+    @objc
+    func advanceToWithInfoAndParams(_ state: String, info: String, params: NSDictionary) {
+        guard let paramsDict = params as? Dictionary<String, Any> else {
+            return
+        }
+        Leanplum.advance(to: state, withInfo: info, andParameters: paramsDict)
+    }
+
+    @objc
+    func onVariablesChangedAndNoDownloadsPending(_ listener: String) {
+        self.allSupportedEvents.append(listener)
+        Leanplum.onVariablesChangedAndNoDownloadsPending { [weak self] in
+            self?.sendEvent(withName: listener, body: nil)
+        }
+    }
+
+    @objc
+    func onceVariablesChangedAndNoDownloadsPending(_ listener: String) {
+        self.allSupportedEvents.append(listener)
+        Leanplum.onceVariablesChangedAndNoDownloadsPending { [weak self] in
+            self?.sendEvent(withName: listener, body: nil)
+        }
+    }
+
+    @objc
+    func onMessageDisplayed(_ listener: String) {
+        self.allSupportedEvents.append(listener)
+         Leanplum.onMessageDisplayed { [weak self] (lPMessageArchiveData: LPMessageArchiveData?) in
+                        self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
+            
         }
     }
 }

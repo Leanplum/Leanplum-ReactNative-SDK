@@ -12,7 +12,10 @@ import com.facebook.react.uimanager.ViewManager;
 public class LeanplumPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(new LeanplumModule(reactContext));
+        return Arrays.<NativeModule>asList(
+                new LeanplumModule(reactContext),
+                new LeanplumInboxModule(reactContext)
+        );
     }
 
     @Override

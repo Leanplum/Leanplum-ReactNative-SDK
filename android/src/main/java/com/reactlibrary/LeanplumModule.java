@@ -14,12 +14,15 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.leanplum.Leanplum;
 import com.leanplum.LeanplumLocationAccuracyType;
 import com.leanplum.Var;
+import com.leanplum.callbacks.MessageDisplayedCallback;
 import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariableCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
+import com.leanplum.models.MessageArchiveData;
 import com.reactlibrary.utils.ArrayUtil;
 import com.reactlibrary.utils.MapUtil;
+import com.reactlibrary.utils.MessageArchiveDataUtil;
 
 import org.json.JSONException;
 
@@ -31,8 +34,6 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
     public static Map<String, Object> variables = new HashMap<String, Object>();
-    private static String onVariableChangedListenerName;
-    private static String onVariablesChangedListenerName;
 
     public LeanplumModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -53,6 +54,17 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     public void setAppIdForProductionMode(String appId, String accessKey) {
         Leanplum.setAppIdForProductionMode(appId, accessKey);
     }
+
+    @ReactMethod
+    public void setApiConnectionSettings(String hostName, String servletName, Boolean ssl) {
+        Leanplum.setApiConnectionSettings(hostName, servletName, ssl);
+    }
+
+    @ReactMethod
+    public void setSocketConnectionSettings(String hostName, Integer port) {
+        Leanplum.setSocketConnectionSettings(hostName, port);
+    }
+
 
     @ReactMethod
     public void setDeviceId(String id) {
@@ -82,8 +94,28 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void trackPurchase(String purchaseEvent, Double value, String currencyCode, ReadableMap purchaseParams) {
         Leanplum.trackPurchase(purchaseEvent, value, currencyCode, purchaseParams.toHashMap());
+
     }
 
+    @ReactMethod
+    public void trackGooglePlayPurchase(String item, Integer priceMicros, String currencyCode,
+                                        String purchaseData, String dataSignature) {
+        Leanplum.trackGooglePlayPurchase(item, priceMicros, currencyCode, purchaseData, dataSignature);
+    }
+
+    @ReactMethod
+    public void trackGooglePlayPurchaseWithParams(String item, Integer priceMicros, String currencyCode,
+                                                  String purchaseData, String dataSignature, ReadableMap params) {
+        Leanplum.trackGooglePlayPurchase(item, priceMicros, currencyCode, purchaseData, dataSignature, params.toHashMap());
+
+    }
+
+    @ReactMethod
+    public void trackGooglePlayPurchaseWithEvent(String eventName, String item, Integer priceMicros, String currencyCode,
+                                                 String purchaseData, String dataSignature, ReadableMap params) {
+        Leanplum.trackGooglePlayPurchase(eventName, item, priceMicros, currencyCode, purchaseData, dataSignature, params.toHashMap());
+
+    }
 
     @ReactMethod
     public void disableLocationCollection() {
@@ -104,14 +136,9 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         Leanplum.forceContentUpdate();
     }
 
-    @ReactMethod
-    public void setListenersNames(String onVariableChangedListenerName, String onVariablesChangedListenerName) {
-        LeanplumModule.onVariableChangedListenerName = onVariableChangedListenerName;
-        LeanplumModule.onVariablesChangedListenerName = onVariablesChangedListenerName;
-    }
-
     /**
-     * Define/Set variables using JSON object, we can use this method if we want to define multiple variables at once
+     * Define/Set variables using JSON object, we can use this method if we want to
+     * define multiple variables at once
      *
      * @param object RN object
      */
@@ -124,9 +151,20 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         }
     }
 
+
     @ReactMethod
     public void getVariable(String name, Promise promise) {
         promise.resolve(getVariableValue(name));
+    }
+
+    @ReactMethod
+    public void userId(Promise promise) {
+        promise.resolve(Leanplum.getUserId());
+    }
+
+    @ReactMethod
+    public void deviceId(Promise promise) {
+        promise.resolve(Leanplum.getDeviceId());
     }
 
     private Object getVariableValue(String name) {
@@ -187,9 +225,8 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         var.addFileReadyHandler(new VariableCallback<String>() {
             @Override
             public void handle(Var<String> var) {
-                reactContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(name, getRnAssetPath(var.fileValue()));
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(name,
+                        getRnAssetPath(var.fileValue()));
             }
         });
     }
@@ -211,9 +248,8 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         var.addValueChangedHandler(new VariableCallback<Object>() {
             @Override
             public void handle(Var<Object> var) {
-                reactContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(onVariableChangedListenerName + "." + name, getVariableValue(name));
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(name,
+                        getVariableValue(name));
             }
         });
     }
@@ -237,16 +273,86 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
      * add callback when all variables are ready
      */
     @ReactMethod
-    public void onVariablesChanged() {
+    public void onVariablesChanged(final String listener) {
         Leanplum.addVariablesChangedHandler(new VariablesChangedCallback() {
             @Override
             public void variablesChanged() {
-                reactContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(onVariablesChangedListenerName, getVariablesValues());
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                        getVariablesValues());
             }
         });
     }
 
+    @ReactMethod
+    public void pauseState() {
+        Leanplum.pauseState();
+    }
 
+    @ReactMethod
+    public void resumeState() {
+        Leanplum.resumeState();
+    }
+
+    @ReactMethod
+    public void trackAllAppScreens() {
+        Leanplum.trackAllAppScreens();
+    }
+
+    @ReactMethod
+    public void advanceTo(String state) {
+        Leanplum.advanceTo(state);
+    }
+
+    @ReactMethod
+    public void advanceToWithInfo(String state, String info) {
+        Leanplum.advanceTo(state, info);
+    }
+
+    @ReactMethod
+    public void advanceToWithParams(String state, ReadableMap params) {
+        Leanplum.advanceTo(state, params.toHashMap());
+    }
+
+    @ReactMethod
+    public void advanceToWithInfoAndParams(String state, String info, ReadableMap params) {
+        Leanplum.advanceTo(state, info, params.toHashMap());
+    }
+
+    @ReactMethod
+    public void onVariablesChangedAndNoDownloadsPending(final String listener) {
+        Leanplum.addVariablesChangedAndNoDownloadsPendingHandler(
+                new VariablesChangedCallback() {
+                    @Override
+                    public void variablesChanged() {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                                null);
+                    }
+                }
+        );
+    }
+
+    @ReactMethod
+    public void onceVariablesChangedAndNoDownloadsPending(final String listener) {
+        Leanplum.addOnceVariablesChangedAndNoDownloadsPendingHandler(
+                new VariablesChangedCallback() {
+                    @Override
+                    public void variablesChanged() {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                                null);
+                    }
+                }
+        );
+    }
+
+    @ReactMethod
+    public void onMessageDisplayed(final String listener) {
+        Leanplum.addMessageDisplayedHandler(new MessageDisplayedCallback() {
+            @Override
+            public void messageDisplayed(MessageArchiveData messageArchiveData) {
+
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
+                        MessageArchiveDataUtil.toWriteableMap(messageArchiveData));
+            }
+        });
+    }
 }

@@ -10,9 +10,8 @@
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
     "declaration": true,
-    "declarationDir": "./typings",
     "jsx": "react-native"
   },
-  "include": ["/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "typings"]
 }

@@ -1,28 +1,37 @@
 {
-  "name": "react-native-leanplum",
+  "name": "@leanplum/react-native-sdk",
   "title": "React Native Leanplum",
   "version": "1.0.0",
   "description": "TODO",
   "main": "dist/index.js",
-  "types": "./typings/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "rm -rf dist && rm -rf typings && ./node_modules/.bin/tsc",
-    "postinstall": "rm -rf node_modules",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "npx tsc -w",
+    "build": "yarn clean && npx tsc",
+    "local-publish": "npx yalc publish --push",
+    "prepublish": "yarn build",
+    "test": "npx jest",
+    "clean": "run-script-os",
+    "clean:windows": "if exist dist rmdir /q /s dist",
+    "clean:nix": "rm -rf dist",
+    "typedoc": "npx typedoc"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-leanplum.git",
-    "baseUrl": "https://github.com/github_account/react-native-leanplum"
+    "url": "git+https://github.com/Leanplum/Leanplum-ReactNative-SDK.git",
+    "baseUrl": "https://github.com/Leanplum/Leanplum-ReactNative-SDK"
   },
   "keywords": [
     "react-native"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "yourname@email.com"
+    "name": "Leanplum",
+    "email": "e2@leanplum.com"
   },
-  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Commercial",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
@@ -30,9 +39,19 @@
     "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@types/jest": "^25.1.3",
     "@types/react-native": "^0.61.14",
+    "babel-jest": "^25.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "jest": "^25.1.0",
     "react": "^16.8.3",
     "react-native": "^0.59.10",
-    "typescript": "^3.7.5"
+    "react-native-gesture-handler": "^1.6.0",
+    "react-native-reanimated": "^1.7.0",
+    "run-script-os": "^1.1.1",
+    "typedoc": "^0.16.11",
+    "typescript": "^3.7.5",
+    "yalc": "^1.0.0-pre.35"
   }
 }

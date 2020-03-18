@@ -9,12 +9,11 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   react-native-leanplum
                    DESC
-  s.homepage     = "https://github.com/github_account/react-native-leanplum"
-  s.license      = "MIT"
-  # s.license    = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.authors      = { "Your Name" => "yourname@email.com" }
+  s.homepage = 'https://www.leanplum.com'
+  s.license = { :type => 'Commercial', :text => 'See https://www.leanplum.com/tos' }  
+  s.authors      = { "Leanplum" => "e2@leanplum.com" }
   s.platforms    = { :ios => "9.0" }
-  s.source       = { :git => "https://github.com/github_account/react-native-leanplum.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/Leanplum/Leanplum-ReactNative-SDK", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,swift}"
   s.requires_arc = true
@@ -24,4 +23,3 @@ Pod::Spec.new do |s|
   # ...
   # s.dependency "..."
 end
-
