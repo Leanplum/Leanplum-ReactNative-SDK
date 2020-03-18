@@ -14,6 +14,6 @@ deploy:
   on:
     tags: true
     repo: Leanplum/Leanplum-ReactNative-SDK
-    branch: travis-build
+    branch: develop
 after_deploy:
   - ./triggerRondo.sh
