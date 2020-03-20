@@ -1,6 +1,7 @@
 #!/bin/bash
 set -x
 version=`cat package.json | grep version | awk '{$1=$1};1' | cut -b 13-17`
+
 body="{
 \"request\": {
 \"branch\" : \"develop\",
