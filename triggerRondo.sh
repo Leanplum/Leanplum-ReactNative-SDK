@@ -3,8 +3,14 @@ set -x
 version=`cat package.json | grep version | awk '{$1=$1};1' | cut -b 13-17`
 body="{
 \"request\": {
-\"branch\" : \"travis-build\",
-\"message\" : \"Building and uploading $version\"}}"
+\"branch\" : \"develop\",
+\"message\" : \"Building and uploading $version\",
+ \"config\": {
+   \"env\": {
+     \"LEANPLUM_SDK_VERSION\": \"$version\"
+   }
+  }
+}}'"
 
 curl -s -X POST \
    -H "Content-Type: application/json" \
