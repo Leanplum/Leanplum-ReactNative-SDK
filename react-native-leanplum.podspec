@@ -20,7 +20,6 @@ Pod::Spec.new do |s|
 
   s.dependency "React"
   s.dependency 'Leanplum-iOS-SDK', '2.6.4'
-  s.dependency 'Leanplum-iOS-Location', '2.6.4'
   # ...
   # s.dependency "..."
 end
