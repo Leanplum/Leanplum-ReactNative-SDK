@@ -60,7 +60,9 @@ class RNLeanplum: RCTEventEmitter {
         guard let attributesDict = attributes as? Dictionary<String, Any> else {
             return
         }
-        Leanplum.setUserAttributes(attributesDict)
+        DispatchQueue.main.async {
+            Leanplum.setUserAttributes(attributesDict)
+        }
     }
 
     @objc
@@ -222,12 +224,16 @@ class RNLeanplum: RCTEventEmitter {
     
     @objc
     func advanceTo(_ state: String) {
-        Leanplum.advance(to: state)
+        DispatchQueue.main.async {
+            Leanplum.advance(to: state)
+        }
     }
     
     @objc
     func advanceToWithInfo(_ state: String, info: String) {
-        Leanplum.advance(to: state, withInfo: info)
+        DispatchQueue.main.async {
+            Leanplum.advance(to: state, withInfo: info)
+        }
     }
     
     @objc
@@ -235,7 +241,9 @@ class RNLeanplum: RCTEventEmitter {
         guard let paramsDict = params as? Dictionary<String, Any> else {
             return
         }
-        Leanplum.advance(to: state, withParameters: paramsDict)
+        DispatchQueue.main.async {
+            Leanplum.advance(to: state, withParameters: paramsDict)
+        }
     }
     
     
@@ -244,7 +252,9 @@ class RNLeanplum: RCTEventEmitter {
         guard let paramsDict = params as? Dictionary<String, Any> else {
             return
         }
-        Leanplum.advance(to: state, withInfo: info, andParameters: paramsDict)
+        DispatchQueue.main.async {
+            Leanplum.advance(to: state, withInfo: info, andParameters: paramsDict)
+        }
     }
 
     @objc
