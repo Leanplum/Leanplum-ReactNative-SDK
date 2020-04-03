@@ -1,8 +1,8 @@
 {
   "name": "@leanplum/react-native-sdk",
   "title": "React Native Leanplum",
-  "version": "1.0.8",
-  "description": "TODO",
+  "version": "1.0.9",
+  "description": "Mobile Marketing Platform. Integrated. ROI Engine.",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
