@@ -4,7 +4,7 @@ version=`cat package.json | grep version | awk '{$1=$1};1' | cut -b 13-17`
 
 body="{
 \"request\": {
-\"branch\" : \"develop\",
+\"branch\" : \"master\",
 \"message\" : \"Building and uploading $version\",
  \"config\": {\"env\": { \"LEANPLUM_SDK_VERSION\": \"$version\" } }}}"
 
@@ -15,3 +15,4 @@ curl -s -X POST \
    -H "Authorization: token $TRAVIS_TOKEN" \
    -d "$body" \
    https://api.travis-ci.org/repo/Leanplum%2FRondo-ReactNative/requests
+   

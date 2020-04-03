@@ -13,7 +13,7 @@ deploy:
     secure: P8igyJR1y+zBOzpHKx7x069GIFw/KklkeWjrDVmmzRnz0iRDrtSduyZD4U784OrrKAiKstU4Jw92qsdXU7HZ4g8UZTkFaLWtz2Ed5GY9vMfD9saTcTJFlamg7/pM+YIqFRg6P8qMjlF/4JcOc4N/rK+jsU3Kp46utDcmyqtvjI6SKcNyaq8A214X+jNDhxd7QeuFFMveSl1FZlYxPcv9QiBjG3bMxL1oHrLZphhGiEWgX3xXxahUdXcYZKO/FSLMPsFB28qvMqISsiK6ozgIzPBWD7IWXEYH6xXWRAxT1hX3K49/z1YjKv4Bfg/lNDvKJ8XBb7yZzt2Cpz1emlP5bD17QB5/i5FNcFhWvYv9CQ7hTMdx2v4uUojhWdflVcE8dGR7cPTKdIT1ZPYWbj4bM4P6aOw9j1fCfbBsl8Ml9b8gOpspNNazxXMPeIL2QTSQPZqv+63uVdJlsVhFWBqb2nnIQQUwSlkGW+0hmetCw3UDLInun7O9azuadb21/10DXCvKZPUiWEZmRNieVIvh7lYgw/aWAb5vGmMtALY0JKE9Gv2r9nu3v3v9pfJKpgUmpyCeM+q3k8K+WRCs6DjNoEPoDpI9cm6gb38bxUm1F1v+V/x4xodA12uc+A5EkjbXpfQ93myvQgQjPgkVcg4meQd+D47IJsfYRQ5dC+TnTFc=
   on:
     repo: Leanplum/Leanplum-ReactNative-SDK
-    branch: develop
+    branch: master
     tags: true
 after_deploy:
   - ./triggerRondo.sh
