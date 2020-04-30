@@ -28,9 +28,11 @@ then
 	echo "skipping tagging"
 else
 	# bump sdk-version to beta
+	git checkout master
 	git add android/build.gradle
 	git add react-native-leanplum.podspec
 	incrementBetaNumber
+	git add sdk-version.txt
 	git commit -m "Bump wrapped SDK Version"
 	git tag `cat sdk-version.txt`
 	git push https://${GITHUB_TOKEN}@github.com/Leanplum/Leanplum-ReactNative-SDK.git master
