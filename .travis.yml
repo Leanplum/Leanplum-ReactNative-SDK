@@ -3,9 +3,14 @@ node_js:
   - "12.16"
 
 script:
+  - ./Tools/setLPAndroidVersion.sh
+  - ./Tools/setLPiOSVersion.sh
   - npm install
   - npm test
   - npm run build
+
+after_success:
+  - ./Tools/createTag.sh
 
 deploy:
   skip_cleanup: true
