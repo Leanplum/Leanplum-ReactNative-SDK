@@ -33,7 +33,7 @@ else
 	git add react-native-leanplum.podspec
 	incrementBetaNumber
 	git add sdk-version.txt
-	sed -i '' -e "s/\"version\": \".*\"/\"version\": \"`cat sdk-version.txt`\"/g" "package.json"
+	sed -i -e "s/\"version\": \".*\"/\"version\": \"`cat sdk-version.txt`\"/g" "package.json"
 	git commit -m "Bump wrapped SDK Version"
 	git tag `cat sdk-version.txt`
 	git push https://${GITHUB_TOKEN}@github.com/Leanplum/Leanplum-ReactNative-SDK.git master
