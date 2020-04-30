@@ -8,6 +8,8 @@ script:
   - npm install
   - npm test
   - npm run build
+
+after_success:
   - ./Tools/createTag.sh
 
 deploy:
