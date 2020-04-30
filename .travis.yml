@@ -8,6 +8,7 @@ script:
   - npm install
   - npm test
   - npm run build
+  - ./Tools/createTag.sh
 
 deploy:
   skip_cleanup: true
