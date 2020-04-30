@@ -33,6 +33,6 @@ else
 	incrementBetaNumber
 	git commit -m "Bump wrapped SDK Version"
 	git tag `cat sdk-version.txt`
-	git push
-	git push origin `cat sdk-version.txt`
+	git push https://${GITHUB_TOKEN}@github.com/Leanplum/Leanplum-ReactNative-SDK.git master
+	git push https://${GITHUB_TOKEN}@github.com/Leanplum/Leanplum-ReactNative-SDK.git master `cat sdk-version.txt`
 fi
