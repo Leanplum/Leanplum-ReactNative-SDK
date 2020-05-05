@@ -223,6 +223,15 @@ class LeanplumSdkModule extends NativeEventEmitter {
   }
 
   /**
+   * Returns whether or not Leanplum has finished starting.
+   *
+   * @returns a Promise with the value of hasStarted.
+   */
+  async hasStarted(): Promise<boolean> {
+    return await this.nativeModule.hasStarted();
+  }
+
+  /**
    * Forces content to update from the server. If variables have changed, the appropriate callbacks
    * will fire. Use sparingly as if the app is updated, you'll have to deal with potentially
    * inconsistent state or user experience.
