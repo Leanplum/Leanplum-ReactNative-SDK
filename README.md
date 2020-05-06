@@ -21,8 +21,14 @@ Please refer to: https://github.com/react-native-community/react-native-push-not
 ```javascript
 import {Leanplum, LeanplumInbox} from 'react-native-leanplum';
 
-// TODO: What to do with the module?
-Leanplum.setAppIdForDevelopmentMode('APP_ID', 'DEVELOPMENT_KEY');
+
+
+// enable the below line only for development
+// Leanplum.setAppIdForDevelopmentMode('APP_ID', 'DEVELOPMENT_KEY');
+
+// use this in production
+Leanplum.setAppIdForProductionMode('APP_ID', 'PRODUCTION_KEY');
+
 Leanplum.start();
 const inbox = await LeanplumInbox.inbox();
 ```
