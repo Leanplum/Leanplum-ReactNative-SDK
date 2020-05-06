@@ -87,6 +87,11 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void hasStarted(Promise promise) {
+        promise.resolve(Leanplum.hasStarted());
+    }
+
+    @ReactMethod
     public void track(String event, ReadableMap params) {
         Leanplum.track(event, params.toHashMap());
     }

@@ -30,7 +30,6 @@ class RNLeanplumInbox: RCTEventEmitter {
     
     func getInboxValue() -> [String: Any] {
         var inbox = [String: Any]()
-        guard let leanplumInbox = Leanplum.inbox() else { return inbox }
         inbox["count"] = leanplumInbox.count()
         inbox["unreadCount"] = leanplumInbox.unreadCount
         inbox["messagesIds"] = leanplumInbox.messagesIds()
@@ -47,7 +46,7 @@ class RNLeanplumInbox: RCTEventEmitter {
     func getMessage(_ messageId: String, resolver resolve: RCTPromiseResolveBlock,
                       rejecter reject: RCTPromiseRejectBlock
     ) {
-        if let message = Leanplum.inbox()?.message(forId: messageId) {
+        if let message = Leanplum.inbox().message(forId: messageId) {
             resolve(LeanplumTypeUtils.leanplumMessageToDict(message))
         } else {
             resolve(nil)
@@ -56,21 +55,21 @@ class RNLeanplumInbox: RCTEventEmitter {
     
     @objc
     func read(_ messageId: String) {
-        let message = Leanplum.inbox()?.message(forId: messageId)
+        let message = Leanplum.inbox().message(forId: messageId)
         message?.read()
     }
     
     
     @objc
     func remove(_ messageId: String) {
-        let message = Leanplum.inbox()?.message(forId: messageId)
+        let message = Leanplum.inbox().message(forId: messageId)
         message?.remove()
     }
     
     @objc
     func onChanged(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.inbox()?.onChanged({ [weak self] in
+        Leanplum.inbox().onChanged({ [weak self] in
             self?.sendEvent(withName: listener, body: self?.getInboxValue())
         })
     }
@@ -78,7 +77,7 @@ class RNLeanplumInbox: RCTEventEmitter {
     @objc
     func onForceContentUpdate(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.inbox()?.onForceContentUpdate({ [weak self] (Bool) in
+        Leanplum.inbox().onForceContentUpdate({ [weak self] (Bool) in
             self?.sendEvent(withName: listener, body: self?.getInboxValue())
         })
     }
