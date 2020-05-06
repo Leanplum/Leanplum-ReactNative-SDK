@@ -110,7 +110,7 @@ class RNLeanplum: RCTEventEmitter {
     }
     
     @objc
-    func setDeviceLocation(_ latitude: Double, longitude: Double, type: UInt32) {
+    func setDeviceLocation(_ latitude: Double, longitude: Double, type: UInt) {
         let accuracyType = LPLocationAccuracyType(rawValue: type)
         Leanplum.setDeviceLocationWithLatitude(latitude, longitude: longitude, type: accuracyType)
     }
