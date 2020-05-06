@@ -110,8 +110,8 @@ class RNLeanplum: RCTEventEmitter {
     }
     
     @objc
-    func setDeviceLocation(_ latitude: Double, longitude: Double, type: Int) {
-        let accuracyType = LPLocationAccuracyType(rawValue: UInt32(type))
+    func setDeviceLocation(_ latitude: Double, longitude: Double, type: UInt32) {
+        let accuracyType = LPLocationAccuracyType(type)
         Leanplum.setDeviceLocationWithLatitude(latitude, longitude: longitude, type: accuracyType)
     }
     
@@ -191,8 +191,8 @@ class RNLeanplum: RCTEventEmitter {
         self.allSupportedEvents.append(name)
         let lpVar = LPVar.define(name, withFile: filename)
         self.variables[name] = lpVar
-        lpVar?.onFileReady({ [weak self] in
-            self?.sendEvent(withName: name, body: lpVar?.fileValue())
+        lpVar.onFileReady({ [weak self] in
+            self?.sendEvent(withName: name, body: lpVar.fileValue())
         })
     }
     

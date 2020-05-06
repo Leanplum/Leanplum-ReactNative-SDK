@@ -30,6 +30,7 @@ class RNLeanplumInbox: RCTEventEmitter {
     
     func getInboxValue() -> [String: Any] {
         var inbox = [String: Any]()
+        let leanplumInbox = Leanplum.inbox()
         inbox["count"] = leanplumInbox.count()
         inbox["unreadCount"] = leanplumInbox.unreadCount
         inbox["messagesIds"] = leanplumInbox.messagesIds()
