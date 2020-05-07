@@ -9,6 +9,10 @@ script:
   - npm test
   - npm run build
 
+branches:
+  only:
+  - master
+
 after_success:
   - ./Tools/createTag.sh
 
