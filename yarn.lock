@@ -824,6 +824,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@leanplum/react-native-sdk@^1.0.11-beta12":
+  version "1.0.11-beta12"
+  resolved "https://registry.yarnpkg.com/@leanplum/react-native-sdk/-/react-native-sdk-1.0.11-beta12.tgz#791b36824db557ea478ff49f953d068c80636101"
+
 "@react-native-community/cli@^1.2.1":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-1.12.0.tgz#f4cbc2204af63a87d5736d2fa6a018c1fd5efd44"

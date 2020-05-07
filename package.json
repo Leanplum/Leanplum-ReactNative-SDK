@@ -53,5 +53,8 @@
     "typedoc": "^0.16.11",
     "typescript": "^3.7.5",
     "yalc": "^1.0.0-pre.35"
+  },
+  "dependencies": {
+    "@leanplum/react-native-sdk": "^1.0.11-beta12"
   }
 }
