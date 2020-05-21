@@ -17,6 +17,7 @@ jest.mock('react-native', () => {
       ...ReactNative.NativeModules.Leanplum,
       setDeviceId: jest.fn(),
       start: jest.fn(),
+      setAppVersion: jest.fn(),
       setAppIdForDevelopmentMode: jest.fn(),
       setAppIdForProductionMode: jest.fn(),
       parseVariables: jest.fn(),
