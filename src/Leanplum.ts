@@ -54,7 +54,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param appVersion Your app version.
    */
   setAppVersion(appVersion: string): void {
-    this.nativeModule.setAppVersion(setAppVersion);
+    this.nativeModule.setAppVersion(appVersion);
   }
 
   /**
