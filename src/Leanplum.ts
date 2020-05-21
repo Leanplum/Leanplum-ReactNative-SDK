@@ -47,6 +47,15 @@ class LeanplumSdkModule extends NativeEventEmitter {
   throwUnsupportedPlatform() {
     throw new Error('Unsupported Platform');
   }
+  
+  /**
+   * Must call before issuing any calls to the API, including start.
+   *
+   * @param appVersion Your app version.
+   */
+  setAppVersion(appVersion: string): void {
+    this.nativeModule.setAppVersion(setAppVersion);
+  }
 
   /**
    * Must call either this or [[LeanplumSdkModule.setAppIdForProductionMode]] before issuing any calls to
