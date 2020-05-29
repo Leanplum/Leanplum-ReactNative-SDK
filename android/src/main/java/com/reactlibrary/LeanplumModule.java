@@ -46,6 +46,11 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setAppVersion(String appVersion) {
+        Leanplum.setAppVersion(appVersion);
+    }
+
+    @ReactMethod
     public void setAppIdForDevelopmentMode(String appId, String accessKey) {
         Leanplum.setAppIdForDevelopmentMode(appId, accessKey);
     }

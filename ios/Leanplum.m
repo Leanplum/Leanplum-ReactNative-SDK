@@ -2,6 +2,7 @@
 #import <React/RCTEventEmitter.h>
 
 @interface RCT_EXTERN_REMAP_MODULE(Leanplum, RNLeanplum, RCTEventEmitter)
+RCT_EXTERN_METHOD(setAppVersion: (NSString *)appVersion)
 RCT_EXTERN_METHOD(setAppIdForDevelopmentMode: (NSString *)appId accessKey:(NSString *)accessKey)
 RCT_EXTERN_METHOD(setAppIdForProductionMode: (NSString *)appId accessKey:(NSString *)accessKey)
 RCT_EXTERN_METHOD(setApiConnectionSettings: (NSString *)hostName servletName:(NSString *)servletName ssl:(BOOL)ssl)

@@ -17,6 +17,7 @@ jest.mock('react-native', () => {
       ...ReactNative.NativeModules.Leanplum,
       setDeviceId: jest.fn(),
       start: jest.fn(),
+      setAppVersion: jest.fn(),
       setAppIdForDevelopmentMode: jest.fn(),
       setAppIdForProductionMode: jest.fn(),
       parseVariables: jest.fn(),
@@ -59,7 +60,13 @@ describe('Leanplum', () => {
     expect(LeanplumSdk.setDeviceId).toHaveBeenCalledTimes(1);
     expect(LeanplumSdk.setDeviceId).toHaveBeenCalledWith('alpha');
   });
-
+  
+  it('should setAppVersion', () => {
+    Leanplum.setAppVersion('1.2.3');
+    expect(LeanplumSdk.setAppVersion).toHaveBeenCalledTimes(1);
+    expect(LeanplumSdk.setAppVersion).toHaveBeenCalledWith('1.2.3');
+  });
+  
   it('should start', () => {
     Leanplum.start();
     expect(LeanplumSdk.start).toHaveBeenCalledTimes(1);
