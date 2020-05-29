@@ -25,6 +25,11 @@ class RNLeanplum: RCTEventEmitter {
     }
     
     @objc
+    func setAppVersion(_ appVersion: String) {
+        Leanplum.setAppVersion(appVersion)
+    }
+    
+    @objc
     func setAppIdForDevelopmentMode(_ appId: String, accessKey: String) {
         Leanplum.setAppId(appId, withDevelopmentKey: accessKey)
     }
