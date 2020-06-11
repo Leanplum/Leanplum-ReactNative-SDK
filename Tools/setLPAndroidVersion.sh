@@ -4,5 +4,5 @@ then
 	version="latest"
 else 
 	sed -i -e "s/implementation 'com.leanplum:leanplum-core:.*'/implementation 'com.leanplum:leanplum-core:$LEANPLUM_ANDROID_SDK_VERSION'/g" "android/build.gradle"
-	rm android/build.gradle-e
+	rm android/build.gradle-e || echo "No change"
 fi
