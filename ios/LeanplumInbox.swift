@@ -31,13 +31,13 @@ class RNLeanplumInbox: RCTEventEmitter {
     func getInboxValue() -> [String: Any] {
         var inbox = [String: Any]()
         guard let leanplumInbox = Leanplum.inbox() else { return inbox }
-        inbox["count"] = leanplumInbox.count()
+        inbox["count"] = leanplumInbox.count
         inbox["unreadCount"] = leanplumInbox.unreadCount
-        inbox["messagesIds"] = leanplumInbox.messagesIds()
-        if let allMessages = leanplumInbox.allMessages() as? [LPInboxMessage] {
+        inbox["messagesIds"] = leanplumInbox.messagesIds
+        if let allMessages = leanplumInbox.allMessages as? [LPInboxMessage] {
            inbox["allMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(allMessages)
         }
-        if let unreadMessages = leanplumInbox.unreadMessages() as? [LPInboxMessage] {
+        if let unreadMessages = leanplumInbox.unreadMessages as? [LPInboxMessage] {
            inbox["unreadMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(unreadMessages)
         }
         return inbox
