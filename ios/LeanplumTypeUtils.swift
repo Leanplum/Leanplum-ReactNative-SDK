@@ -41,16 +41,16 @@ class LeanplumTypeUtils {
     static func leanplumMessageToDict(_ leanplumMessage: LPInboxMessage) -> Dictionary<String, Any> {
         var messageDict = [String: Any]()
         messageDict["messageId"] = leanplumMessage.messageId
-        messageDict["title"] = leanplumMessage.title()
-        messageDict["subtitle"] = leanplumMessage.subtitle()
-        messageDict["imageFilePath"] = leanplumMessage.imageFilePath()
-        messageDict["imageUrl"] = leanplumMessage.imageURL()?.absoluteString
+        messageDict["title"] = leanplumMessage.title
+        messageDict["subtitle"] = leanplumMessage.subtitle
+        messageDict["imageFilePath"] = leanplumMessage.imageFilePath
+        messageDict["imageUrl"] = leanplumMessage.imageURL?.absoluteString
         messageDict["deliveryTimestamp"] = stringFromDate(leanplumMessage.deliveryTimestamp)
         if let expirationTimestamp = leanplumMessage.expirationTimestamp {
             messageDict["expirationTimestamp"] = stringFromDate(expirationTimestamp)
         }
         messageDict["isRead"] = leanplumMessage.isRead
-        messageDict["data"] = leanplumMessage.data()
+        messageDict["data"] = leanplumMessage.data
         return messageDict
     }
     
