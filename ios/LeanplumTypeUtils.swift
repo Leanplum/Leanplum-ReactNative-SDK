@@ -45,7 +45,9 @@ class LeanplumTypeUtils {
         messageDict["subtitle"] = leanplumMessage.subtitle
         messageDict["imageFilePath"] = leanplumMessage.imageFilePath
         messageDict["imageUrl"] = leanplumMessage.imageURL?.absoluteString
-        messageDict["deliveryTimestamp"] = stringFromDate(leanplumMessage.deliveryTimestamp)
+        if let deliveryTimestamp = leanplumMessage.deliveryTimestamp {
+            messageDict["deliveryTimestamp"] = stringFromDate(deliveryTimestamp)
+        }
         if let expirationTimestamp = leanplumMessage.expirationTimestamp {
             messageDict["expirationTimestamp"] = stringFromDate(expirationTimestamp)
         }

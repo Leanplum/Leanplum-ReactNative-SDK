@@ -34,12 +34,8 @@ class RNLeanplumInbox: RCTEventEmitter {
         inbox["count"] = leanplumInbox.count
         inbox["unreadCount"] = leanplumInbox.unreadCount
         inbox["messagesIds"] = leanplumInbox.messagesIds
-        if let allMessages = leanplumInbox.allMessages as? [LPInboxMessage] {
-           inbox["allMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(allMessages)
-        }
-        if let unreadMessages = leanplumInbox.unreadMessages as? [LPInboxMessage] {
-           inbox["unreadMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(unreadMessages)
-        }
+        inbox["allMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox.allMessages)
+        inbox["unreadMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox.unreadMessages)
         return inbox
     }
     
