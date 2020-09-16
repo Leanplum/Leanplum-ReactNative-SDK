@@ -31,15 +31,11 @@ class RNLeanplumInbox: RCTEventEmitter {
     func getInboxValue() -> [String: Any] {
         var inbox = [String: Any]()
         let leanplumInbox = Leanplum.inbox()
-        inbox["count"] = leanplumInbox.count()
+        inbox["count"] = leanplumInbox.count
         inbox["unreadCount"] = leanplumInbox.unreadCount
-        inbox["messagesIds"] = leanplumInbox.messagesIds()
-        if let allMessages = leanplumInbox.allMessages() as? [LPInboxMessage] {
-           inbox["allMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(allMessages)
-        }
-        if let unreadMessages = leanplumInbox.unreadMessages() as? [LPInboxMessage] {
-           inbox["unreadMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(unreadMessages)
-        }
+        inbox["messagesIds"] = leanplumInbox.messagesIds
+        inbox["allMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox.allMessages)
+        inbox["unreadMessages"] = LeanplumTypeUtils.leanplumMessagesToArray(leanplumInbox.unreadMessages)
         return inbox
     }
     
@@ -47,7 +43,7 @@ class RNLeanplumInbox: RCTEventEmitter {
     func getMessage(_ messageId: String, resolver resolve: RCTPromiseResolveBlock,
                       rejecter reject: RCTPromiseRejectBlock
     ) {
-        if let message = Leanplum.inbox().message(forId: messageId) {
+        if let message = Leanplum.inbox().message(id: messageId) {
             resolve(LeanplumTypeUtils.leanplumMessageToDict(message))
         } else {
             resolve(nil)
@@ -56,21 +52,21 @@ class RNLeanplumInbox: RCTEventEmitter {
     
     @objc
     func read(_ messageId: String) {
-        let message = Leanplum.inbox().message(forId: messageId)
+        let message = Leanplum.inbox().message(id: messageId)
         message?.read()
     }
     
     
     @objc
     func remove(_ messageId: String) {
-        let message = Leanplum.inbox().message(forId: messageId)
+        let message = Leanplum.inbox().message(id: messageId)
         message?.remove()
     }
     
     @objc
     func onChanged(_ listener: String) {
         self.allSupportedEvents.append(listener)
-        Leanplum.inbox().onChanged({ [weak self] in
+        Leanplum.inbox().onInboxChanged(completion: { [weak self] in
             self?.sendEvent(withName: listener, body: self?.getInboxValue())
         })
     }
