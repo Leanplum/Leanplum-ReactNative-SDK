@@ -10,26 +10,26 @@ import Foundation
 import Leanplum
 
 class LeanplumTypeUtils {
-    static func createVar(key: String, value: Any) -> LPVar? {
-        var lpVar: LPVar;
+    static func createVar(key: String, value: Any) -> Var? {
+        var lpVar: Var
         switch value.self {
         case is Int, is Double, is Float:
-            lpVar = LPVar.define(key, with: value as? Double ?? 0.0)
+            lpVar = Var(name: key, double: value as? Double ?? 0.0)
         case is Bool:
-            lpVar = LPVar.define(key, with: value as? Bool ?? false)
+            lpVar = Var(name: key, boolean: value as? Bool ?? false)
         case is String:
-            lpVar = LPVar.define(key, with: value as? String)
+            lpVar = Var(name: key, string: value as? String)
         case is Array<Any>:
-            lpVar = LPVar.define(key, with: value as? Array)
+            lpVar = Var(name: key, array: value as? Array)
         case is Dictionary<String, Any>:
-            lpVar = LPVar.define(key, with: value as? Dictionary)
+            lpVar = Var(name: key, dictionary: value as? Dictionary)
         default:
             return nil
         }
-        return lpVar;
+        return lpVar
     }
     
-    static func leanplumMessagesToArray(_ messages: [LPInboxMessage]) -> [Dictionary<String, Any>] {
+    static func leanplumMessagesToArray(_ messages: [LeanplumInbox.Message]) -> [Dictionary<String, Any>] {
         var array: [Dictionary<String, Any>] = []
         for message in messages {
             array.append(leanplumMessageToDict(message))
@@ -38,19 +38,19 @@ class LeanplumTypeUtils {
     }
     
     
-    static func leanplumMessageToDict(_ leanplumMessage: LPInboxMessage) -> Dictionary<String, Any> {
+    static func leanplumMessageToDict(_ leanplumMessage: LeanplumInbox.Message) -> Dictionary<String, Any> {
         var messageDict = [String: Any]()
         messageDict["messageId"] = leanplumMessage.messageId
-        messageDict["title"] = leanplumMessage.title()
-        messageDict["subtitle"] = leanplumMessage.subtitle()
-        messageDict["imageFilePath"] = leanplumMessage.imageFilePath()
-        messageDict["imageUrl"] = leanplumMessage.imageURL()?.absoluteString
-        messageDict["deliveryTimestamp"] = stringFromDate(leanplumMessage.deliveryTimestamp)
+        messageDict["title"] = leanplumMessage.title
+        messageDict["subtitle"] = leanplumMessage.subtitle
+        messageDict["imageFilePath"] = leanplumMessage.imageFilePath
+        messageDict["imageUrl"] = leanplumMessage.imageURL?.absoluteString
+        messageDict["deliveryTimestamp"] = stringFromDate(leanplumMessage.deliveryTimestamp ?? Date())
         if let expirationTimestamp = leanplumMessage.expirationTimestamp {
             messageDict["expirationTimestamp"] = stringFromDate(expirationTimestamp)
         }
         messageDict["isRead"] = leanplumMessage.isRead
-        messageDict["data"] = leanplumMessage.data()
+        messageDict["data"] = leanplumMessage.data
         return messageDict
     }
     
@@ -65,11 +65,11 @@ class LeanplumTypeUtils {
 
     static func LPMessageArchiveDataToDict(_ lPMessageArchiveData: LPMessageArchiveData) -> [String: Any] {
         var messageDataDict = [String: Any]()
-        messageDataDict["messageID"] = lPMessageArchiveData.messageID;
-        messageDataDict["messageBody"] = lPMessageArchiveData.messageBody;
-        messageDataDict["recipientUserID"] = lPMessageArchiveData.recipientUserID;
+        messageDataDict["messageID"] = lPMessageArchiveData.messageID
+        messageDataDict["messageBody"] = lPMessageArchiveData.messageBody
+        messageDataDict["recipientUserID"] = lPMessageArchiveData.recipientUserID
         messageDataDict["deliveryDateTime"] = stringFromDate(lPMessageArchiveData.deliveryDateTime)
-        return messageDataDict;
+        return messageDataDict
        }
 
 }

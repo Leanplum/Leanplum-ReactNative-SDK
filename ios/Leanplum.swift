@@ -12,7 +12,7 @@ import Leanplum
 @objc(RNLeanplum)
 class RNLeanplum: RCTEventEmitter {
     
-    var variables = [String: LPVar]()
+    var variables = [String: Var]()
     var allSupportedEvents: [String] = []
     
     @objc
@@ -31,18 +31,18 @@ class RNLeanplum: RCTEventEmitter {
     
     @objc
     func setAppIdForDevelopmentMode(_ appId: String, accessKey: String) {
-        Leanplum.setAppId(appId, withDevelopmentKey: accessKey)
+        Leanplum.setAppId(appId, developmentKey: accessKey)
     }
     
     
     @objc
     func setAppIdForProductionMode(_ appId: String, accessKey: String) {
-        Leanplum.setAppId(appId, withProductionKey: accessKey)
+        Leanplum.setAppId(appId, productionKey: accessKey)
     }
 
     @objc
     func setApiConnectionSettings(_ hostName: String, servletName: String, ssl: Bool) {
-        Leanplum.setApiHostName(hostName, withServletName: servletName, usingSsl: ssl)
+        Leanplum.setApiHostName(hostName, servletName: servletName, ssl: ssl)
     }
 
     @objc
@@ -92,7 +92,7 @@ class RNLeanplum: RCTEventEmitter {
         guard let parametersDict = params as? Dictionary<String, Any> else {
             return
         }
-        Leanplum.track(event, withParameters: parametersDict)
+        Leanplum.track(event, params: parametersDict)
     }
     
     @objc
@@ -100,7 +100,7 @@ class RNLeanplum: RCTEventEmitter {
         guard let parametersDict = purchaseParams as? Dictionary<String, Any> else {
             return
         }
-        Leanplum.trackPurchase(purchaseEvent, withValue: value, andCurrencyCode: currencyCode, andParameters: parametersDict)
+        Leanplum.track(event: purchaseEvent, value: value, currencyCode: currencyCode, params: parametersDict)
     }
     
     @objc
@@ -116,14 +116,14 @@ class RNLeanplum: RCTEventEmitter {
     
     @objc
     func setDeviceLocation(_ latitude: Double, longitude: Double, type: UInt) {
-        if let accuracyType = LPLocationAccuracyType(rawValue: type) {
-            Leanplum.setDeviceLocationWithLatitude(latitude, longitude: longitude, type: accuracyType)
+        if let accuracyType = Leanplum.LocationAccuracyType(rawValue: type) {
+            Leanplum.setDeviceLocation(latitude: latitude, longitude: longitude, type: accuracyType)
         }
     }
     
     @objc
     func forceContentUpdate() {
-        Leanplum.forceContentUpdate();
+        Leanplum.forceContentUpdate()
     }
     
     
@@ -134,7 +134,7 @@ class RNLeanplum: RCTEventEmitter {
         }
         for (key, value) in variablesDict {
             if let lpVar = LeanplumTypeUtils.createVar(key: key, value: value) {
-                self.variables[key] = lpVar;
+                self.variables[key] = lpVar
             }
         }
     }
@@ -195,7 +195,7 @@ class RNLeanplum: RCTEventEmitter {
     @objc
     func setVariableAsset(_ name: String, filename: String) {
         self.allSupportedEvents.append(name)
-        let lpVar = LPVar.define(name, withFile: filename)
+        let lpVar = Var(name: name, file: filename)
         self.variables[name] = lpVar
         lpVar.onFileReady({ [weak self] in
             self?.sendEvent(withName: name, body: lpVar.fileValue())
@@ -215,30 +215,30 @@ class RNLeanplum: RCTEventEmitter {
     
     @objc
     func pauseState() {
-        Leanplum.pauseState();
+        Leanplum.pauseState()
     }
     
     @objc
     func resumeState() {
-        Leanplum.resumeState();
+        Leanplum.resumeState()
     }
     
     @objc
     func trackAllAppScreens() {
-        Leanplum.trackAllAppScreens();
+        Leanplum.trackAppScreens()
     }
     
     @objc
     func advanceTo(_ state: String) {
         DispatchQueue.main.async {
-            Leanplum.advance(to: state)
+            Leanplum.advance(state: state)
         }
     }
     
     @objc
     func advanceToWithInfo(_ state: String, info: String) {
         DispatchQueue.main.async {
-            Leanplum.advance(to: state, withInfo: info)
+            Leanplum.advance(state: state, info: info)
         }
     }
     
@@ -248,7 +248,7 @@ class RNLeanplum: RCTEventEmitter {
             return
         }
         DispatchQueue.main.async {
-            Leanplum.advance(to: state, withParameters: paramsDict)
+            Leanplum.advance(state: state, params: paramsDict)
         }
     }
     
@@ -259,7 +259,7 @@ class RNLeanplum: RCTEventEmitter {
             return
         }
         DispatchQueue.main.async {
-            Leanplum.advance(to: state, withInfo: info, andParameters: paramsDict)
+            Leanplum.advance(state: state, info: info, params: paramsDict)
         }
     }
 
