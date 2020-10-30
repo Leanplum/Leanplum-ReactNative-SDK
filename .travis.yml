@@ -2,12 +2,14 @@ language: node_js
 node_js:
   - "12.16"
 
+cache: yarn
+
 script:
   - ./Tools/setLPAndroidVersion.sh
   - ./Tools/setLPiOSVersion.sh
-  - npm install
-  - npm test
-  - npm run build
+  - yarn install --frozen-lockfile
+  - yarn test
+  - yarn build
 
 after_success:
   - ./Tools/createTag.sh
