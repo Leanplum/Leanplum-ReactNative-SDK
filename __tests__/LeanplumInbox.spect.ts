@@ -8,7 +8,7 @@ const LeanplumInboxSdk = NativeModules.LeanplumInbox;
 // that will be imported inside Leanplum.ts
 // and replace LeanplumSdk methods with mocks
 jest.mock('react-native', () => {
-  const ReactNative = require.requireActual('react-native');
+  const ReactNative = jest.requireActual('react-native');
 
   const NativeModules = {
     ...ReactNative.NativeModules,
