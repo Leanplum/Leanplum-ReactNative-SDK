@@ -14,5 +14,5 @@ curl -s -X POST \
    -H "Travis-API-Version: 3" \
    -H "Authorization: token $TRAVIS_TOKEN" \
    -d "$body" \
-   https://api.travis-ci.org/repo/Leanplum%2FRondo-ReactNative/requests
+   https://api.travis-ci.com/repo/Leanplum%2FRondo-ReactNative/requests
    
