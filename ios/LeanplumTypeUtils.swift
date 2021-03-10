@@ -13,10 +13,10 @@ class LeanplumTypeUtils {
     static func createVar(key: String, value: Any) -> Var? {
         var lpVar: Var
         switch value.self {
-        case is Int, is Double, is Float:
-            lpVar = Var(name: key, double: value as? Double ?? 0.0)
         case is Bool:
             lpVar = Var(name: key, boolean: value as? Bool ?? false)
+        case is Int, is Double, is Float:
+            lpVar = Var(name: key, double: value as? Double ?? 0.0)
         case is String:
             lpVar = Var(name: key, string: value as? String)
         case is Array<Any>:
