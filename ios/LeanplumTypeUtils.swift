@@ -13,6 +13,13 @@ class LeanplumTypeUtils {
     static func createVar(key: String, value: Any) -> Var? {
         var lpVar: Var
         switch value.self {
+        case is NSNumber:
+            let tmp = value as? NSNumber ?? 0
+            if isBoolNumber(num: tmp) {
+                lpVar = Var(name: key, boolean: value as? Bool ?? false)
+            } else {
+                lpVar = Var(name: key, double: value as? Double ?? 0.0)
+            }
         case is Bool:
             lpVar = Var(name: key, boolean: value as? Bool ?? false)
         case is Int, is Double, is Float:
@@ -72,4 +79,9 @@ class LeanplumTypeUtils {
         return messageDataDict
        }
 
+    private static func isBoolNumber(num: NSNumber) -> Bool {
+        let boolID = CFBooleanGetTypeID()
+        let numID = CFGetTypeID(num)
+        return numID == boolID
+    }
 }
