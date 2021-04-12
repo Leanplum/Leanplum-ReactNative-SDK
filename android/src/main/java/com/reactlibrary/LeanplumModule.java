@@ -365,4 +365,10 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
             }
         });
     }
+
+
+    @ReactMethod
+    public void registerForRemoteNotifications() {
+        // do nothing on Android
+    }
 }

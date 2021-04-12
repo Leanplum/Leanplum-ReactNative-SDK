@@ -38,6 +38,7 @@ RCT_EXTERN_METHOD(advanceToWithInfoAndParams: (NSString *)state info:(NSString *
 RCT_EXTERN_METHOD(onVariablesChangedAndNoDownloadsPending: (NSString *)listener)
 RCT_EXTERN_METHOD(onceVariablesChangedAndNoDownloadsPending: (NSString *)listener)
 RCT_EXTERN_METHOD(onMessageDisplayed: (NSString *)listener)
+RCT_EXTERN_METHOD(registerForRemoteNotifications)
 @end
 
 @interface RCT_EXTERN_REMAP_MODULE(LeanplumInbox, RNLeanplumInbox, RCTEventEmitter)

@@ -287,4 +287,8 @@ class RNLeanplum: RCTEventEmitter {
             
         }
     }
+
+    @objc func registerForRemoteNotifications() {
+        LPPushNotificationsManager.shared().enableSystemPush()
+    }
 }
