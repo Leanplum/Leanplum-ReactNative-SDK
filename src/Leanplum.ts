@@ -443,5 +443,9 @@ class LeanplumSdkModule extends NativeEventEmitter {
     );
     this.addListener(LeanplumSdkModule.ON_MESSAGE_DISPLAYED, callback);
   }
+
+  registerForRemoteNotifications(): void {
+    this.nativeModule.registerForRemoteNotifications();
+  }
 }
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);
