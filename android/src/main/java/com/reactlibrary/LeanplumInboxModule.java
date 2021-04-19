@@ -102,4 +102,14 @@ public class LeanplumInboxModule extends ReactContextBaseJavaModule {
             }
         }
     }
+
+    @ReactMethod
+    public void markAsRead(String messageId) {
+        LeanplumInbox inbox = Leanplum.getInbox();
+        for (LeanplumInboxMessage lim : inbox.allMessages()) {
+            if (lim.getMessageId().equals(messageId)) {
+                lim.markAsRead();
+            }
+        }
+    }
 }
