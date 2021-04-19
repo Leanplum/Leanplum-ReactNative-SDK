@@ -55,7 +55,12 @@ class RNLeanplumInbox: RCTEventEmitter {
         let message = Leanplum.inbox().message(id: messageId)
         message?.read()
     }
-    
+
+    @objc 
+    func markAsRead(_ messageId: String) {
+        let message = Leanplum.inbox().message(id: messageId)
+        message?.markAsRead()
+    }
     
     @objc
     func remove(_ messageId: String) {

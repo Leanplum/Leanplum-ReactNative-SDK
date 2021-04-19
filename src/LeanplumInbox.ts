@@ -42,6 +42,13 @@ class LeanplumInboxManager extends NativeEventEmitter {
     this.nativeModule.read(messageId);
   }
   /**
+   * Read the inbox message, marking it as read without invoking open action.
+   * @param messageId
+   */
+  markAsRead(messageId: string): void {
+    this.nativeModule.markAsRead(messageId);
+  }
+  /**
    * Remove the inbox message from the inbox.
    * @param messageId
    */
