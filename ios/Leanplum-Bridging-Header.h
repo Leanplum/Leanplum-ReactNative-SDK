@@ -4,10 +4,3 @@
 
 #import "React/RCTBridgeModule.h"
 #import "React/RCTEventEmitter.h"
-#import "Leanplum.h"
-
-@interface Leanplum(Socket)
-
-+ (void)setSocketHostName:(NSString *)hostName withPortNumber:(int)port;
-
-@end
