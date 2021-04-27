@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.leanplum.rn;
 
 import android.location.Location;
 
@@ -20,9 +20,9 @@ import com.leanplum.callbacks.VariableCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
 import com.leanplum.models.MessageArchiveData;
-import com.reactlibrary.utils.ArrayUtil;
-import com.reactlibrary.utils.MapUtil;
-import com.reactlibrary.utils.MessageArchiveDataUtil;
+import com.leanplum.rn.utils.ArrayUtil;
+import com.leanplum.rn.utils.MapUtil;
+import com.leanplum.rn.utils.MessageArchiveDataUtil;
 
 import org.json.JSONException;
 
