@@ -3,7 +3,7 @@
   ReadableMap (by React Native), Map<String, Object>, and JSONObject.
  */
 
-package com.reactlibrary.utils;
+package com.leanplum.rn.utils;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableMap;

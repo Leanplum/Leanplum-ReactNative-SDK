@@ -1,19 +1,18 @@
-package com.reactlibrary.inbox.mapper;
+package com.leanplum.rn.inbox.mapper;
 
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.Arguments;
-
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.leanplum.LeanplumInbox;
 import com.leanplum.LeanplumInboxMessage;
-import com.reactlibrary.inbox.mapper.def.BasicMapper;
+import com.leanplum.rn.inbox.mapper.def.BasicMapper;
 
 
 public class LeanplumInboxMapper implements BasicMapper<LeanplumInbox> {
 
     private LeanplumInboxMessageMapper leanplumInboxMessageMapper;
 
-    public LeanplumInboxMapper (LeanplumInboxMessageMapper leanplumInboxMessageMapper) {
+    public LeanplumInboxMapper(LeanplumInboxMessageMapper leanplumInboxMessageMapper) {
         this.leanplumInboxMessageMapper = leanplumInboxMessageMapper;
     }
 
@@ -24,7 +23,7 @@ public class LeanplumInboxMapper implements BasicMapper<LeanplumInbox> {
         writableMap.putInt("count", entity.count());
 
         WritableArray messageIdsArray = Arguments.createArray();
-        for (String messageId : entity.messagesIds()){
+        for (String messageId : entity.messagesIds()) {
             messageIdsArray.pushString(messageId);
         }
         writableMap.putArray("messagesIds", messageIdsArray);
