@@ -291,4 +291,16 @@ class RNLeanplum: RCTEventEmitter {
     @objc func registerForRemoteNotifications() {
         LPPushNotificationsManager.shared().enableSystemPush()
     }
+    
+    @objc func securedVars(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        guard let securedVars = Leanplum.securedVars() else {
+            resolve(nil)
+            return
+        }
+
+        var securedVarsDictionary: [String: Any] = [:]
+        securedVarsDictionary["json"] = securedVars.varsJson()
+        securedVarsDictionary["signature"] = securedVars.varsSignature()
+        resolve(securedVarsDictionary)
+    }
 }
