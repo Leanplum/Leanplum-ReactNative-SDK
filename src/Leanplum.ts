@@ -4,7 +4,8 @@ import {
   Variable,
   Parameters,
   LocationAccuracyType,
-  MessageArchiveData
+  MessageArchiveData,
+  SecuredVars
 } from './leanplum-types';
 
 /**
