@@ -374,10 +374,10 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public securedVars(Promise promise) {
+    public void securedVars(Promise promise) {
         SecuredVars sVars = Leanplum.securedVars();
         if (sVars != null) {
-            Map<String, Object> map = new HashMap();
+            HashMap<String, Object> map = new HashMap();
             map.put("json", sVars.getJson());
             map.put("signature", sVars.getSignature());
             promise.resolve(MapUtil.toWritableMap(map));
