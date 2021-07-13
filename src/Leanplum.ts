@@ -4,7 +4,8 @@ import {
   Variable,
   Parameters,
   LocationAccuracyType,
-  MessageArchiveData
+  MessageArchiveData,
+  SecuredVars
 } from './leanplum-types';
 
 /**
@@ -446,6 +447,10 @@ class LeanplumSdkModule extends NativeEventEmitter {
 
   registerForRemoteNotifications(): void {
     this.nativeModule.registerForRemoteNotifications();
+  }
+
+  async securedVars(): Promise<SecuredVars> {
+    return await this.nativeModule.securedVars();
   }
 }
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);

@@ -14,6 +14,11 @@ export interface Variables {
   [name: string]: Variable;
 }
 
+export class SecuredVars {
+  json: string;
+  signature: string;
+}
+
 export class MessageArchiveData {
   messageID: string;
   messageBody: string;

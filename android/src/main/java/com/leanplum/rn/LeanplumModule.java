@@ -14,6 +14,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.leanplum.Leanplum;
 import com.leanplum.LeanplumLocationAccuracyType;
 import com.leanplum.Var;
+import com.leanplum.SecuredVars;
 import com.leanplum.callbacks.MessageDisplayedCallback;
 import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariableCallback;
@@ -371,4 +372,17 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     public void registerForRemoteNotifications() {
         // do nothing on Android
     }
+
+    @ReactMethod
+    public securedVars(Promise promise) {
+        SecuredVars sVars = Leanplum.securedVars();
+        if (sVars != null) {
+            Map<String, Object> map = new HashMap();
+            map.put("json", sVars.getJson());
+            map.put("signature", sVars.getSignature());
+            promise.resolve(MapUtil.toWritableMap(map));
+            return;
+        }
+        promise.resolve(null);
+    } 
 }
