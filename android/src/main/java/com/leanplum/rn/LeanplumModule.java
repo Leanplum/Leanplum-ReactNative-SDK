@@ -385,7 +385,7 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
                 promise.resolve(MapUtil.toWritableMap(map));
                 return;
             } catch (JSONException e) {
-                promise.reject("401", e.getLocalizedMessage());
+                Log.e("failed to parse json");
             }
         }
         promise.resolve(null);
