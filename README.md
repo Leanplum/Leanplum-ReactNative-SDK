@@ -26,10 +26,6 @@ and running  `pod install` for iOS
 ### Documentation
 Please refer to https://docs.leanplum.com/reference#leanplum-sdk-setup for iOS or Android configuration and more usages
 
-## Push notifications
-
-Please refer to: https://github.com/react-native-community/react-native-push-notification-ios
-
 ## Usage
 ```javascript
 import {Leanplum, LeanplumInbox} from '@leanplum/react-native-sdk';
