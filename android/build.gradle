@@ -77,7 +77,7 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
-    implementation 'com.leanplum:leanplum-core:5.6.1'
+    implementation 'com.leanplum:leanplum-core:5.7.0'
 }
 
 
