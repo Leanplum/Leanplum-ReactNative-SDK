@@ -1,11 +1,8 @@
+if: tag IS present AND branch = release OR type = pull_request
+
 language: node_js
 node_js:
   - "12.16"
-
-branches:
-  only:
-    - master
-    - /^release\/.*$/
 
 cache: yarn
 
