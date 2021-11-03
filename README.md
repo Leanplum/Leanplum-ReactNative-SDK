@@ -42,6 +42,21 @@ Leanplum.start();
 const inbox = await LeanplumInbox.inbox();
 ```
 
+## Expo installation
+This package cannot be used in the "Expo Go" app because it requires custom native code.
+
+First install the package with yarn, npm, or expo install.
+
+expo install @leanplum/react-native-sdk
+After installing this npm package, add the config plugin to the plugins array of your app.json or app.config.js:
+
+{
+  "expo": {
+    "plugins": ["@leanplum/react-native-sdk"]
+  }
+}
+Next, rebuild your app as described in the "Adding custom native code" guide.
+
 ## Local development
 1. Install yarn global `$ npm install -g yarn`
 
