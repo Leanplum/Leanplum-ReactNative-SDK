@@ -80,11 +80,14 @@ class RNLeanplum: RCTEventEmitter {
         resolve(Leanplum.deviceId())
     }
 
-
-    
     @objc
     func start() {
         Leanplum.start()
+    }
+
+    @objc
+    func hasStarted(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(Leanplum.hasStarted())
     }
     
     @objc
