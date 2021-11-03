@@ -14,7 +14,10 @@
     "clean": "run-script-os",
     "clean:windows": "if exist dist rmdir /q /s dist",
     "clean:nix": "rm -rf dist",
-    "typedoc": "npx typedoc"
+    "typedoc": "npx typedoc",
+    "build:plugin": "tsc --build plugin",
+    "clean:plugin": "expo-module clean plugin",
+    "prepare": "yarn clean:plugin && yarn build:plugin"
   },
   "repository": {
     "type": "git",
@@ -31,7 +34,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "license": "Commercial",
+  "license": "SEE LICENSE IN LICENSE",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
@@ -40,10 +43,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
+    "@expo/config-types": "^43.0.1",
     "@types/jest": "^26.0.15",
     "@types/react-native": "^0.63.30",
     "babel-jest": "^26.6.1",
     "babel-plugin-module-resolver": "^4.0.0",
+    "expo-module-scripts": "^2.0.0",
     "jest": "^26.6.1",
     "react": "^17.0.1",
     "react-native": "<0.63.x",
@@ -53,5 +58,8 @@
     "typedoc": "^0.19.2",
     "typescript": "^4.0.5",
     "yalc": "^1.0.0-pre.45"
+  },
+  "dependencies": {
+    "@expo/config-plugins": "^4.0.6"
   }
 }
