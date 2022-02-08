@@ -58,13 +58,14 @@ After installing this npm package, add the config plugin to the plugins array of
 Next, rebuild your app as described in the "Adding custom native code" guide.
 
 ## Local development
-1. Install yarn global `$ npm install -g yarn`
+1. Install yarn global: `$ npm install -g yarn`
 
-2. Install dependencies for generating builds `$ yarn install`
+2. Install dependencies for generating builds: `$ yarn install`
 
-3. Build the sdk and publish it for local development purposes `$ yarn local-publish`
+3. Change `version` string from package.json to your `<<custom-version>>`
 
-### Inside the React Native App repository
+4. Build the sdk and publish it for local development purposes: `$ yarn local-publish`
 
-1. Add this sdk build to the app: `$ npx yalc add @leanplum/react-native-sdk`
-2. `$ npx react-native link @leanplum/react-native-sdk`
+5. Add your custom build to your app repository: `$ npx yalc add @leanplum/react-native-sdk@<<custom-version>>`
+
+Do not forget to change `<<custom-version>>` to your desired version.
