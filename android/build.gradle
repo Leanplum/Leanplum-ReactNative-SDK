@@ -10,6 +10,11 @@
 //   original location:
 //   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/app/build.gradle
 
+rootProject.ext {
+    // expose sdk version for consistency
+    LEANPLUM_SDK_VERSION = '5.9.0'
+}
+
 def DEFAULT_COMPILE_SDK_VERSION = 31
 def DEFAULT_BUILD_TOOLS_VERSION = '31.0.0'
 def DEFAULT_MIN_SDK_VERSION = 16
@@ -70,5 +75,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'  // From node_modules
-    implementation 'com.leanplum:leanplum-core:5.9.0'
+    implementation "com.leanplum:leanplum-core:${LEANPLUM_SDK_VERSION}"
 }

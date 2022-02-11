@@ -110,4 +110,14 @@ public class LeanplumInboxModule extends ReactContextBaseJavaModule {
             }
         }
     }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Needed to remove warning
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Needed to remove warning
+    }
 }
