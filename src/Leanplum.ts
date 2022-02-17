@@ -452,5 +452,19 @@ class LeanplumSdkModule extends NativeEventEmitter {
   async securedVars(): Promise<SecuredVars> {
     return await this.nativeModule.securedVars();
   }
+
+  /**
+   * Register application to enable Mi Push messages.
+   *
+   * @param miAppId Your Mi Push application ID.
+   * @param miAppKey Your Mi Push application key.
+   */
+  setMiPushApplication(miAppId: string, miAppKey: string): void {
+    if (Platform.OS === 'android') {
+      this.nativeModule.setMiPushApplication(miAppId, miAppKey);
+    } else {
+      this.throwUnsupportedPlatform();
+    }
+  }
 }
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);

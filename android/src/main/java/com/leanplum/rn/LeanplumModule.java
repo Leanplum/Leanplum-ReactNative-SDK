@@ -20,6 +20,7 @@ import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariableCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
+import com.leanplum.internal.Log;
 import com.leanplum.models.MessageArchiveData;
 import com.leanplum.rn.utils.ArrayUtil;
 import com.leanplum.rn.utils.MapUtil;
@@ -394,5 +395,17 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeListeners(Integer count) {
         // Needed to remove warning
+    }
+
+    @ReactMethod
+    public void setMiPushApplication(String miAppId, String miAppKey) {
+        try {
+            Class.forName("com.leanplum.LeanplumMiPushHandler")
+                .getDeclaredMethod("setApplication", String.class, String.class)
+                .invoke(null, miAppId, miAppKey);
+        } catch (Throwable t) {
+            Log.e("Did you forget to include Mi Push module? "
+                + "For Mi Push messaging include dependency \"com.leanplum:leanplum-mipush\".");
+        }
     }
 }
