@@ -71,6 +71,10 @@ repositories {
     maven {
         url "https://repo.leanplum.com/"
     }
+    maven {
+        // for clients with gradle below 4.1 (SDK-593)
+        url 'https://maven.google.com'
+    }
 }
 
 dependencies {
