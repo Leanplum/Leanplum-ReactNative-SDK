@@ -68,3 +68,6 @@ Next, rebuild your app as described in the "Adding custom native code" guide.
 
 1. Add this sdk build to the app: `$ npx yalc add @leanplum/react-native-sdk`
 2. `$ npx react-native link @leanplum/react-native-sdk`
+
+## Support
+Reach out directly to Leanplum support team if you have any usage questions or feature requests. [Open an issue](/issues) if you want to report a bug.
