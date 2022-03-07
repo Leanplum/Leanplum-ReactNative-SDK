@@ -384,5 +384,15 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
             return;
         }
         promise.resolve(null);
-    } 
+    }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Needed to remove warning
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Needed to remove warning
+    }
 }

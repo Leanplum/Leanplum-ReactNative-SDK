@@ -4,7 +4,10 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.Arguments;
 
 import com.leanplum.LeanplumInboxMessage;
+import com.leanplum.internal.Log;
 import com.leanplum.rn.inbox.mapper.def.BasicMapper;
+import com.leanplum.rn.utils.MapUtil;
+import org.json.JSONException;
 
 public class LeanplumInboxMessageMapper implements BasicMapper<LeanplumInboxMessage> {
 
@@ -30,7 +33,11 @@ public class LeanplumInboxMessageMapper implements BasicMapper<LeanplumInboxMess
         }
         writableMap.putBoolean("isRead", entity.isRead());
         if (entity.getData() != null) {
-            writableMap.putString("data", entity.getData().toString());
+            try {
+                writableMap.putMap("data", MapUtil.jsonVariableToWritableMap(entity.getData()));
+            } catch (JSONException e) {
+                Log.e("Error parsing LeanplumInboxMessage.data: " + entity.getData().toString(), e);
+            }
         }
 
         return writableMap;
