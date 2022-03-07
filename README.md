@@ -62,10 +62,13 @@ Next, rebuild your app as described in the "Adding custom native code" guide.
 
 2. Install dependencies for generating builds: `$ yarn install`
 
-3. Change `version` string from package.json to your `<<custom-version>>`
+3. Change `version` string from package.json to your `<custom-version>`
 
 4. Build the sdk and publish it for local development purposes: `$ yarn local-publish`
 
-5. Add your custom build to your app repository: `$ npx yalc add @leanplum/react-native-sdk@<<custom-version>>`
+5. Add your custom build to your app repository: `$ npx yalc add @leanplum/react-native-sdk@<custom-version>`
 
-Do not forget to change `<<custom-version>>` to your desired version.
+Do not forget to change `<custom-version>` to your desired version.
+
+## Support
+Reach out directly to Leanplum support team if you have any usage questions or feature requests. [Open an issue](../../issues) if you want to report a bug or need code-level support.
