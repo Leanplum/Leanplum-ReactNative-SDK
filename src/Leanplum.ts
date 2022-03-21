@@ -123,18 +123,18 @@ class LeanplumSdkModule extends NativeEventEmitter {
     this.nativeModule.setVariables(variables);
   }
   /**
-   * Optional. Sets the API server. The API path is of the form http[s]://hostname/servletName
+   * Optional. Sets the API server. The API path is of the form http[s]://hostname/apiPath
    *
    * @param hostName The name of the API host, such as www.leanplum.com
-   * @param servletName The name of the API servlet, such as api
+   * @param apiPath The name of the API servlet, such as api
    * @param ssl Whether to use SSL
    */
   setApiConnectionSettings(
     hostName: string,
-    servletName: string,
+    apiPath: string,
     ssl: boolean
   ): void {
-    this.nativeModule.setApiConnectionSettings(hostName, servletName, ssl);
+    this.nativeModule.setApiConnectionSettings(hostName, apiPath, ssl);
   }
 
   /**
