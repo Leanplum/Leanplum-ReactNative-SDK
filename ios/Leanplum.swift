@@ -41,8 +41,8 @@ class RNLeanplum: RCTEventEmitter {
     }
 
     @objc
-    func setApiConnectionSettings(_ hostName: String, servletName: String, ssl: Bool) {
-        Leanplum.setApiHostName(hostName, servletName: servletName, ssl: ssl)
+    func setApiConnectionSettings(_ hostName: String, apiPath: String, ssl: Bool) {
+        Leanplum.setApiHostName(hostName, apiPath: apiPath, ssl: ssl)
     }
 
     @objc
@@ -227,11 +227,6 @@ class RNLeanplum: RCTEventEmitter {
     }
     
     @objc
-    func trackAllAppScreens() {
-        Leanplum.trackAppScreens()
-    }
-    
-    @objc
     func advanceTo(_ state: String) {
         DispatchQueue.main.async {
             Leanplum.advance(state: state)
@@ -292,7 +287,7 @@ class RNLeanplum: RCTEventEmitter {
     }
 
     @objc func registerForRemoteNotifications() {
-        LPPushNotificationsManager.shared().enableSystemPush()
+        Leanplum.enablePushNotifications()
     }
     
     @objc func securedVars(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {

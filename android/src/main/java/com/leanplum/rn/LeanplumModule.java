@@ -62,8 +62,8 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setApiConnectionSettings(String hostName, String servletName, Boolean ssl) {
-        Leanplum.setApiConnectionSettings(hostName, servletName, ssl);
+    public void setApiConnectionSettings(String hostName, String apiPath, Boolean ssl) {
+        Leanplum.setApiConnectionSettings(hostName, apiPath, ssl);
     }
 
     @ReactMethod
@@ -384,5 +384,15 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
             return;
         }
         promise.resolve(null);
-    } 
+    }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Needed to remove warning
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Needed to remove warning
+    }
 }

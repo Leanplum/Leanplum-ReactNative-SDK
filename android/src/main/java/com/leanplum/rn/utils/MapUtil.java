@@ -142,4 +142,30 @@ public class MapUtil {
         }
         return writableMap;
     }
+
+    public static WritableMap jsonVariableToWritableMap(JSONObject jsonObject) throws JSONException {
+        WritableMap writableMap = Arguments.createMap();
+        Iterator<String> keys = jsonObject.keys();
+
+        while(keys.hasNext()) {
+            String key = keys.next();
+            Object value = jsonObject.get(key);
+
+            if (value instanceof Boolean) {
+                writableMap.putBoolean(key, (Boolean) value);
+            } else if (value instanceof Double) {
+                writableMap.putDouble(key, (Double) value);
+            } else if (value instanceof Integer) {
+                writableMap.putInt(key, (Integer) value);
+            } else if (value instanceof String) {
+                writableMap.putString(key, (String) value);
+            } else if (value instanceof JSONObject) {
+                WritableMap valueMap = jsonVariableToWritableMap((JSONObject) value);
+                writableMap.putMap(key, valueMap);
+            } else {
+                writableMap.putString(key, value.toString());
+            }
+        }
+        return writableMap;
+    }
 }
