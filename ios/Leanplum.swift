@@ -280,10 +280,6 @@ class RNLeanplum: RCTEventEmitter {
     @objc
     func onMessageDisplayed(_ listener: String) {
         self.allSupportedEvents.append(listener)
-         Leanplum.onMessageDisplayed { [weak self] (lPMessageArchiveData: LPMessageArchiveData?) in
-                        self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
-            
-        }
     }
 
     @objc func registerForRemoteNotifications() {
