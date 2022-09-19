@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency 'React-Core'
-  s.dependency 'Leanplum-iOS-SDK', '4.1.0'
+  s.dependency 'Leanplum-iOS-SDK', '5.0.0'
 end
