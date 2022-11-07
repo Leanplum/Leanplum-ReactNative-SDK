@@ -284,6 +284,25 @@ class RNLeanplum: RCTEventEmitter {
                         self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
             
         }
+        // TODO
+    }
+
+    @objc
+    func onMessageDismissed(_ listener: String) {
+//         self.allSupportedEvents.append(listener)
+//         Leanplum.onMessageDismissed { [weak self] (lPMessageArchiveData: LPMessageArchiveData?) in
+//             self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
+//         }
+        // TODO
+    }
+
+    @objc
+    func onMessageAction(_ listener: String) {
+//         self.allSupportedEvents.append(listener)
+//         Leanplum.onMessageAction { [weak self] (lPMessageArchiveData: LPMessageArchiveData?) in
+//             self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
+//         }
+        // TODO
     }
 
     @objc func registerForRemoteNotifications() {
@@ -301,4 +320,28 @@ class RNLeanplum: RCTEventEmitter {
         securedVarsDictionary["signature"] = securedVars.varsSignature()
         resolve(securedVarsDictionary)
     }
+
+    @objc
+    func isQueuePaused(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        // TODO
+        resolve(true)
+    }
+
+    @objc
+    func setQueuePaused(paused: Bool) {
+        // TODO
+    }
+
+    @objc
+    func isQueueEnabled(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        // TODO
+        resolve(true)
+    }
+
+    @objc
+    func setQueueEnabled(enabled: Bool) {
+        // TODO
+    }
+
+    @objc func
 }

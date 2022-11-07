@@ -15,15 +15,14 @@ import com.leanplum.Leanplum;
 import com.leanplum.LeanplumLocationAccuracyType;
 import com.leanplum.Var;
 import com.leanplum.SecuredVars;
-import com.leanplum.callbacks.MessageDisplayedCallback;
+import com.leanplum.actions.LeanplumActions;
 import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariableCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
-import com.leanplum.models.MessageArchiveData;
+import com.leanplum.rn.actions.RnMessageDisplayListener;
 import com.leanplum.rn.utils.ArrayUtil;
 import com.leanplum.rn.utils.MapUtil;
-import com.leanplum.rn.utils.MessageArchiveDataUtil;
 
 import org.json.JSONException;
 
@@ -35,10 +34,13 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
     public static Map<String, Object> variables = new HashMap<String, Object>();
+    private final RnMessageDisplayListener messageDisplayListener;
 
     public LeanplumModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+        this.messageDisplayListener = new RnMessageDisplayListener(reactContext);
+        LeanplumActions.setMessageDisplayListener(messageDisplayListener);
     }
 
     @Override
@@ -356,17 +358,19 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onMessageDisplayed(final String listener) {
-        Leanplum.addMessageDisplayedHandler(new MessageDisplayedCallback() {
-            @Override
-            public void messageDisplayed(MessageArchiveData messageArchiveData) {
-
-                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
-                        MessageArchiveDataUtil.toWriteableMap(messageArchiveData));
-            }
-        });
+    public void onMessageDisplayed(String listener) {
+        messageDisplayListener.listenDisplayEvents(listener);
     }
 
+    @ReactMethod
+    public void onMessageDismissed(String listener) {
+        messageDisplayListener.listenDismissEvents(listener);
+    }
+
+    @ReactMethod
+    public void onMessageAction(String listener) {
+        messageDisplayListener.listenExecuteEvents(listener);
+    }
 
     @ReactMethod
     public void registerForRemoteNotifications() {
@@ -384,6 +388,26 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
             return;
         }
         promise.resolve(null);
+    }
+
+    @ReactMethod
+    public void isQueuePaused(Promise promise) {
+        promise.resolve(LeanplumActions.isQueuePaused());
+    }
+
+    @ReactMethod
+    public void setQueuePaused(boolean paused) {
+        LeanplumActions.setQueuePaused(paused);
+    }
+
+    @ReactMethod
+    public void isQueueEnabled(Promise promise) {
+        promise.resolve(LeanplumActions.isQueueEnabled());
+    }
+
+    @ReactMethod
+    public void setQueueEnabled(boolean enabled) {
+        LeanplumActions.setQueueEnabled(enabled);
     }
 
     @ReactMethod

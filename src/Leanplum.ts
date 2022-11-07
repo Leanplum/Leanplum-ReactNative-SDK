@@ -4,7 +4,7 @@ import {
   Variable,
   Parameters,
   LocationAccuracyType,
-  MessageArchiveData,
+  ActionContext,
   SecuredVars
 } from './leanplum-types';
 
@@ -31,6 +31,12 @@ class LeanplumSdkModule extends NativeEventEmitter {
 
   /** Listener name used when a message is displayed. */
   private static readonly ON_MESSAGE_DISPLAYED = 'onMessageDisplayed';
+
+  /** Listener name used when a message is dismissed. */
+  private static readonly ON_MESSAGE_DISMISSED = 'onMessageDismissed';
+
+  /** Listener name used when message action is executed. */
+  private static readonly ON_MESSAGE_ACTION = 'onMessageAction';
 
   /**
    * Creates an instance of LeanplumSdkModule.
@@ -436,13 +442,47 @@ class LeanplumSdkModule extends NativeEventEmitter {
   }
   /**
    * Register a callback for when a message is displayed.
-   * @param callback to be invoked with the message data as parameter
+   * @param callback Callback to be invoked with the message data as parameter, use null value
+   * to reset.
    */
-  onMessageDisplayed(callback: (data: MessageArchiveData) => void): void {
-    this.nativeModule.onMessageDisplayed(
-      LeanplumSdkModule.ON_MESSAGE_DISPLAYED
-    );
-    this.addListener(LeanplumSdkModule.ON_MESSAGE_DISPLAYED, callback);
+  onMessageDisplayed(callback: ((data: ActionContext) => void) | null): void {
+    if (callback != null) {
+      this.nativeModule.onMessageDisplayed(LeanplumSdkModule.ON_MESSAGE_DISPLAYED);
+      this.addListener(LeanplumSdkModule.ON_MESSAGE_DISPLAYED, callback);
+    } else {
+      this.nativeModule.onMessageDisplayed(null);
+      this.removeAllListeners(LeanplumSdkModule.ON_MESSAGE_DISPLAYED);
+    }
+  }
+
+  /**
+   * Register a callback for when a message is dismissed.
+   * @param callback Callback to be invoked with the message data as parameter, use null value
+   * to reset.
+   */
+  onMessageDismissed(callback: ((data: ActionContext) => void) | null): void {
+    if (callback != null) {
+      this.nativeModule.onMessageDismissed(LeanplumSdkModule.ON_MESSAGE_DISMISSED);
+      this.addListener(LeanplumSdkModule.ON_MESSAGE_DISMISSED, callback);
+    } else {
+      this.nativeModule.onMessageDismissed(null);
+      this.removeAllListeners(LeanplumSdkModule.ON_MESSAGE_DISMISSED);
+    }
+  }
+
+  /**
+   * Register a callback for when a message action is executed.
+   * @param callback Callback to be invoked with the message data as parameter, use null value
+   * to reset.
+   */
+  onMessageAction(callback: ((data: ActionContext) => void) | null): void {
+    if (callback != null) {
+      this.nativeModule.onMessageAction(LeanplumSdkModule.ON_MESSAGE_ACTION);
+      this.addListener(LeanplumSdkModule.ON_MESSAGE_ACTION, callback);
+    } else {
+      this.nativeModule.onMessageAction(null);
+      this.removeAllListeners(LeanplumSdkModule.ON_MESSAGE_ACTION);
+    }
   }
 
   registerForRemoteNotifications(): void {
@@ -451,6 +491,22 @@ class LeanplumSdkModule extends NativeEventEmitter {
 
   async securedVars(): Promise<SecuredVars> {
     return await this.nativeModule.securedVars();
+  }
+
+  async isQueuePaused(): Promise<boolean> {
+    return await this.nativeModule.isQueuePaused();
+  }
+
+  setQueuePaused(paused: boolean): void {
+    this.nativeModule.setQueuePaused(paused);
+  }
+
+  async isQueueEnabled(): Promise<boolean> {
+    return await this.nativeModule.isQueueEnabled();
+  }
+
+  setQueueEnabled(enabled: boolean): void {
+    this.nativeModule.setQueueEnabled(enabled);
   }
 }
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);
