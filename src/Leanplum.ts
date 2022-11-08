@@ -4,7 +4,7 @@ import {
   Variable,
   Parameters,
   LocationAccuracyType,
-  ActionContext,
+  ActionContextData,
   SecuredVars
 } from './leanplum-types';
 
@@ -445,7 +445,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param callback Callback to be invoked with the message data as parameter, use null value
    * to reset.
    */
-  onMessageDisplayed(callback: ((data: ActionContext) => void) | null): void {
+  onMessageDisplayed(callback: ((data: ActionContextData) => void) | null): void {
     if (callback != null) {
       this.nativeModule.onMessageDisplayed(LeanplumSdkModule.ON_MESSAGE_DISPLAYED);
       this.addListener(LeanplumSdkModule.ON_MESSAGE_DISPLAYED, callback);
@@ -460,7 +460,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param callback Callback to be invoked with the message data as parameter, use null value
    * to reset.
    */
-  onMessageDismissed(callback: ((data: ActionContext) => void) | null): void {
+  onMessageDismissed(callback: ((data: ActionContextData) => void) | null): void {
     if (callback != null) {
       this.nativeModule.onMessageDismissed(LeanplumSdkModule.ON_MESSAGE_DISMISSED);
       this.addListener(LeanplumSdkModule.ON_MESSAGE_DISMISSED, callback);
@@ -475,7 +475,7 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param callback Callback to be invoked with the message data as parameter, use null value
    * to reset.
    */
-  onMessageAction(callback: ((data: ActionContext) => void) | null): void {
+  onMessageAction(callback: ((data: ActionContextData) => void) | null): void {
     if (callback != null) {
       this.nativeModule.onMessageAction(LeanplumSdkModule.ON_MESSAGE_ACTION);
       this.addListener(LeanplumSdkModule.ON_MESSAGE_ACTION, callback);

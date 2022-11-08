@@ -19,15 +19,10 @@ export class SecuredVars {
   signature: string;
 }
 
-export class MessageArchiveData { // TODO remove unused
-  messageID: string;
+export class ActionContextData {
+  id: string;
   messageBody: string;
-  recipientUserID: string;
-  deliveryDateTime: string;
-}
-
-export class ActionContext extends MessageArchiveData {
-
+  actionName: string;
 }
 
 export enum LocationAccuracyType {
