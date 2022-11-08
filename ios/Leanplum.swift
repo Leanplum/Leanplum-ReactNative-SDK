@@ -158,7 +158,6 @@ class RNLeanplum: RCTEventEmitter {
         resolve(self.getVariablesValues())
     }
     
-    
     func getVariablesValues() -> [String: Any] {
         var allVariables = [String: Any]()
         for (key, value) in self.variables {
@@ -206,9 +205,9 @@ class RNLeanplum: RCTEventEmitter {
     }
     
     @objc
-    func getVariableAsset(_ name: String, resolver resolve: RCTPromiseResolveBlock,
-                          rejecter reject: RCTPromiseRejectBlock
-    ) {
+    func getVariableAsset(_ name: String,
+                          resolver resolve: RCTPromiseResolveBlock,
+                          rejecter reject: RCTPromiseRejectBlock) {
         if let lpVar = self.variables[name] {
             resolve(lpVar.fileValue())
         } else {
@@ -280,29 +279,25 @@ class RNLeanplum: RCTEventEmitter {
     @objc
     func onMessageDisplayed(_ listener: String) {
         self.allSupportedEvents.append(listener)
-         Leanplum.onMessageDisplayed { [weak self] (lPMessageArchiveData: LPMessageArchiveData?) in
-                        self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
-            
+        ActionManager.shared.onMessageDisplayed { [weak self] actionContext in
+            self?.sendEvent(withName: listener, body: actionContext.dictionary)
         }
-        // TODO
     }
 
     @objc
     func onMessageDismissed(_ listener: String) {
-//         self.allSupportedEvents.append(listener)
-//         Leanplum.onMessageDismissed { [weak self] (lPMessageArchiveData: LPMessageArchiveData?) in
-//             self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
-//         }
-        // TODO
+        self.allSupportedEvents.append(listener)
+        ActionManager.shared.onMessageDismissed { [weak self] actionContext in
+            self?.sendEvent(withName: listener, body: actionContext.dictionary)
+        }
     }
 
     @objc
     func onMessageAction(_ listener: String) {
-//         self.allSupportedEvents.append(listener)
-//         Leanplum.onMessageAction { [weak self] (lPMessageArchiveData: LPMessageArchiveData?) in
-//             self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
-//         }
-        // TODO
+        self.allSupportedEvents.append(listener)
+        ActionManager.shared.onMessageAction { [weak self] actionName, context in
+            self?.sendEvent(withName: listener, body: context.dictionary)
+        }
     }
 
     @objc func registerForRemoteNotifications() {
@@ -323,25 +318,50 @@ class RNLeanplum: RCTEventEmitter {
 
     @objc
     func isQueuePaused(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        // TODO
-        resolve(true)
+        resolve(ActionManager.shared.isPaused)
     }
 
     @objc
-    func setQueuePaused(paused: Bool) {
-        // TODO
+    func setQueuePaused(_ paused: Bool) {
+        ActionManager.shared.isPaused = paused
     }
 
     @objc
     func isQueueEnabled(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        // TODO
-        resolve(true)
+        resolve(ActionManager.shared.isEnabled)
     }
 
     @objc
-    func setQueueEnabled(enabled: Bool) {
-        // TODO
+    func setQueueEnabled(_ enabled: Bool) {
+        ActionManager.shared.isEnabled = enabled
     }
+}
 
-    @objc func
+extension ActionContext {
+    
+    var messageBody: String? {
+        let message = self.args?["Message"]
+        if let message = message {
+            if let messageBody = message as? String {
+                return  messageBody
+            }
+            if let messageDict = message as? [AnyHashable: Any] {
+                if let text = messageDict["Text"] as? String {
+                    return text
+                }
+                if let textValue = messageDict["Text value"] as? String {
+                    return textValue
+                }
+            }
+        }
+        return nil
+    }
+    
+    public var dictionary: [String: Any] {
+        return [
+            "id": self.messageId,
+            "actionName": self.action(),
+            "messageBody": self.messageBody ?? ""
+        ]
+    }
 }

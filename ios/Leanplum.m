@@ -37,7 +37,12 @@ RCT_EXTERN_METHOD(advanceToWithInfoAndParams: (NSString *)state info:(NSString *
 RCT_EXTERN_METHOD(onVariablesChangedAndNoDownloadsPending: (NSString *)listener)
 RCT_EXTERN_METHOD(onceVariablesChangedAndNoDownloadsPending: (NSString *)listener)
 RCT_EXTERN_METHOD(onMessageDisplayed: (NSString *)listener)
-RCT_EXTERN_METHOD(registerForRemoteNotifications)
+RCT_EXTERN_METHOD(onMessageDismissed: (NSString *)listener)
+RCT_EXTERN_METHOD(onMessageAction: (NSString *)listener)
+RCT_EXTERN_METHOD(setQueuePaused: (BOOL)paused)
+RCT_EXTERN_METHOD(setQueueEnabled: (BOOL)enabled)
+RCT_EXTERN_METHOD(isQueuePaused: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(isQueueEnabled: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 @end
 
 @interface RCT_EXTERN_REMAP_MODULE(LeanplumInbox, RNLeanplumInbox, RCTEventEmitter)
