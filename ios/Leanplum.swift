@@ -277,26 +277,38 @@ class RNLeanplum: RCTEventEmitter {
     }
 
     @objc
-    func onMessageDisplayed(_ listener: String) {
-        self.allSupportedEvents.append(listener)
-        ActionManager.shared.onMessageDisplayed { [weak self] actionContext in
-            self?.sendEvent(withName: listener, body: actionContext.dictionary)
+    func onMessageDisplayed(_ listener: String?) {
+        if let listener = listener {
+            self.allSupportedEvents.append(listener)
+            ActionManager.shared.onMessageDisplayed { [weak self] actionContext in
+                self?.sendEvent(withName: listener, body: actionContext.dictionary)
+            }
+        } else {
+            ActionManager.shared.onMessageDisplayed(nil)
         }
     }
 
     @objc
-    func onMessageDismissed(_ listener: String) {
-        self.allSupportedEvents.append(listener)
-        ActionManager.shared.onMessageDismissed { [weak self] actionContext in
-            self?.sendEvent(withName: listener, body: actionContext.dictionary)
+    func onMessageDismissed(_ listener: String?) {
+        if let listener = listener {
+            self.allSupportedEvents.append(listener)
+            ActionManager.shared.onMessageDismissed { [weak self] actionContext in
+                self?.sendEvent(withName: listener, body: actionContext.dictionary)
+            }
+        } else {
+            ActionManager.shared.onMessageDismissed(nil)
         }
     }
 
     @objc
-    func onMessageAction(_ listener: String) {
-        self.allSupportedEvents.append(listener)
-        ActionManager.shared.onMessageAction { [weak self] actionName, context in
-            self?.sendEvent(withName: listener, body: context.dictionary)
+    func onMessageAction(_ listener: String?) {
+        if let listener = listener {
+            self.allSupportedEvents.append(listener)
+            ActionManager.shared.onMessageAction { [weak self] actionName, context in
+                self?.sendEvent(withName: listener, body: context.dictionary)
+            }
+        } else {
+            ActionManager.shared.onMessageAction(nil)
         }
     }
 
