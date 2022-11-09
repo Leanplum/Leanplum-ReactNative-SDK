@@ -43,6 +43,7 @@ RCT_EXTERN_METHOD(setQueuePaused: (BOOL)paused)
 RCT_EXTERN_METHOD(setQueueEnabled: (BOOL)enabled)
 RCT_EXTERN_METHOD(isQueuePaused: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(isQueueEnabled: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(onCleverTapInstance: (NSString *)listener)
 @end
 
 @interface RCT_EXTERN_REMAP_MODULE(LeanplumInbox, RNLeanplumInbox, RCTEventEmitter)

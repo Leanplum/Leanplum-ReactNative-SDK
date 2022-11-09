@@ -8,6 +8,7 @@
 
 import Foundation
 import Leanplum
+import CleverTapSDK
 
 @objc(RNLeanplum)
 class RNLeanplum: RCTEventEmitter {
@@ -346,5 +347,15 @@ class RNLeanplum: RCTEventEmitter {
     @objc
     func setQueueEnabled(_ enabled: Bool) {
         ActionManager.shared.isEnabled = enabled
+    }
+    
+    @objc
+    func onCleverTapInstance(_ listener: String?) {
+        if let listener = listener {
+            self.allSupportedEvents.append(listener)
+            Leanplum.onCleverTapInstanceInitialized { [weak self] instance in
+                self?.sendEvent(withName: listener, body: instance.config.accountId)
+            }
+        }
     }
 }
