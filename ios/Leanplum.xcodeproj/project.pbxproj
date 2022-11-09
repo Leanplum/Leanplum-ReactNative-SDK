@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A2E4C16291BCFA800385536 /* ActionContext+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2E4C15291BCFA800385536 /* ActionContext+Dictionary.swift */; };
 		B3E7B58A1CC2AC0600A0062D /* Leanplum.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Leanplum.m */; };
 		C64E3CC723E32D0500F79791 /* Leanplum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64E3CC623E32D0500F79791 /* Leanplum.swift */; };
 		C661AB6C23FFFC3700F6A4F5 /* LeanplumInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C661AB6B23FFFC3700F6A4F5 /* LeanplumInbox.swift */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libLeanplum.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLeanplum.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A2E4C15291BCFA800385536 /* ActionContext+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActionContext+Dictionary.swift"; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Leanplum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Leanplum.m; sourceTree = "<group>"; };
 		C64E3CC523E32D0400F79791 /* Leanplum-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Leanplum-Bridging-Header.h"; sourceTree = "<group>"; };
 		C64E3CC623E32D0500F79791 /* Leanplum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leanplum.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				6A2E4C15291BCFA800385536 /* ActionContext+Dictionary.swift */,
 				C661AB6B23FFFC3700F6A4F5 /* LeanplumInbox.swift */,
 				C6CAC1D523F58B04001E50F7 /* LeanplumTypeUtils.swift */,
 				C64E3CC623E32D0500F79791 /* Leanplum.swift */,
@@ -123,6 +126,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A2E4C16291BCFA800385536 /* ActionContext+Dictionary.swift in Sources */,
 				C661AB6C23FFFC3700F6A4F5 /* LeanplumInbox.swift in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* Leanplum.m in Sources */,
 				C6CAC1D623F58B04001E50F7 /* LeanplumTypeUtils.swift in Sources */,
