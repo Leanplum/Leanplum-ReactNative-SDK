@@ -13,6 +13,9 @@ jest.mock('react-native', () => {
 
   const NativeModules = {
     ...ReactNative.NativeModules,
+    CleverTapReact: {
+      ...ReactNative.NativeModules.CleverTapReact,
+    },
     Leanplum: {
       ...ReactNative.NativeModules.Leanplum,
       setDeviceId: jest.fn(),
@@ -37,8 +40,9 @@ jest.mock('react-native', () => {
       track: jest.fn(),
       trackPurchase: jest.fn(),
       disableLocationCollection: jest.fn(),
-      setDeviceLocation: jest.fn()
-      //onStartResponse: jest.fn(),
+      setDeviceLocation: jest.fn(),
+      onCleverTapInstance: jest.fn(),
+      addListener: jest.fn()
     }
   };
 

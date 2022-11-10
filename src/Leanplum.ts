@@ -1,5 +1,5 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import 'clevertap-react-native';
+import CleverTap from 'clevertap-react-native';
 import {
   Variables,
   Variable,
@@ -63,7 +63,6 @@ class LeanplumSdkModule extends NativeEventEmitter {
   private registerCleverTapInstanceListener(): void {
     this.nativeModule.onCleverTapInstance(LeanplumSdkModule.ON_CT_INSTANCE);
     this.addListener(LeanplumSdkModule.ON_CT_INSTANCE, accountId => {
-      const CleverTap = require('clevertap-react-native');
       if (CleverTap != undefined) {
         console.log(`[Leanplum] Setting CleverTap instance with: ${accountId}`);
         CleverTap.setInstanceWithAccountId(accountId);

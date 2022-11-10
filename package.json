@@ -39,8 +39,7 @@
   "readmeFilename": "README.md",
   "peerDependencies": {
     "react": "*",
-    "react-native": ">=0.59.0-rc.0 <1.0.x",
-    "clevertap-react-native": "0.9.3"
+    "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -61,6 +60,7 @@
     "yalc": "^1.0.0-pre.45"
   },
   "dependencies": {
-    "@expo/config-plugins": "^4.0.6"
+    "@expo/config-plugins": "^4.0.6",
+    "clevertap-react-native": "0.9.3"
   }
 }
