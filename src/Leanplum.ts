@@ -1,6 +1,5 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
 import 'clevertap-react-native';
-
 import {
   Variables,
   Variable,
@@ -16,6 +15,10 @@ import {
 class LeanplumSdkModule extends NativeEventEmitter {
   /** NativeModule of react-native. */
   private readonly nativeModule: any;
+
+  /** Callback to be invoked when CleverTap instance is ready */
+  private cleverTapReadyCallback: (() => void | null) = null;
+
   /** Default value for the name of the Purchase event. */
   private static readonly PURCHASE_EVENT_NAME: string = 'Purchase';
 
@@ -47,23 +50,41 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * Creates an instance of LeanplumSdkModule.
    * @param nativeModule the NativeModule of react-native
    */
-   constructor(nativeModule: any) {
+  constructor(nativeModule: any) {
     super(nativeModule);
     if (Platform.OS === 'android' || Platform.OS === 'ios') {
       this.nativeModule = nativeModule;
-      this.nativeModule.onCleverTapInstance(LeanplumSdkModule.ON_CT_INSTANCE);
-      this.addListener(LeanplumSdkModule.ON_CT_INSTANCE, accountId => {
-        const CleverTap = require('clevertap-react-native');
-        if (CleverTap != undefined) {
-         console.log(`[Leanplum] Setting CleverTap instance with: ${accountId}`);
-         CleverTap.setInstanceWithAccountId(accountId);
-       } else {
-         console.log('[Leanplum] CleverTap is undefined');
-      }
-    });
+      this.registerCleverTapInstanceListener();
     } else {
       this.throwUnsupportedPlatform();
     }
+  }
+
+  private registerCleverTapInstanceListener(): void {
+    this.nativeModule.onCleverTapInstance(LeanplumSdkModule.ON_CT_INSTANCE);
+    this.addListener(LeanplumSdkModule.ON_CT_INSTANCE, accountId => {
+      const CleverTap = require('clevertap-react-native');
+      if (CleverTap != undefined) {
+        console.log(`[Leanplum] Setting CleverTap instance with: ${accountId}`);
+        CleverTap.setInstanceWithAccountId(accountId);
+        if (this.cleverTapReadyCallback != null) {
+          this.cleverTapReadyCallback();
+        }
+      } else {
+        console.log('[Leanplum] CleverTap is undefined');
+        // TODO show error that CT dependency is missing
+      }
+    });
+  }
+
+  /**
+   * Register a callback to be invoked once CleverTap instance is created using Leanplum data.
+   * Must be registered before Leanplum.start().
+   *
+   * @param callback Callback to be invoked CleverTap instance is ready. Use null value to reset.
+   */
+  onCleverTapReady(callback: (() => void) | null): void {
+    this.cleverTapReadyCallback = callback;
   }
 
   /** Throw an exception with unsupported platform message. */

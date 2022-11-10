@@ -373,6 +373,15 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void onCleverTapInstance(String listener) {
+        Leanplum.onCleverTapInstanceInitialized(cleverTapInstance -> {
+            reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(listener, cleverTapInstance.getAccountId());
+        });
+    }
+
+    @ReactMethod
     public void registerForRemoteNotifications() {
         // do nothing on Android
     }
