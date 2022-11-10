@@ -39,7 +39,8 @@
   "readmeFilename": "README.md",
   "peerDependencies": {
     "react": "*",
-    "react-native": ">=0.59.0-rc.0 <1.0.x"
+    "react-native": ">=0.59.0-rc.0 <1.0.x",
+    "clevertap-react-native": "0.9.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
