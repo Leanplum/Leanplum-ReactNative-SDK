@@ -25,6 +25,14 @@ export class ActionContextData {
   actionName: string;
 }
 
+export class MigrationConfig {
+  state: string;
+  accountId: string;
+  accountToken: string;
+  accountRegion: string;
+  attributeMappings: [string: string];
+}
+
 export enum LocationAccuracyType {
   /**
    * Lowest accuracy. Reserved for internal use.

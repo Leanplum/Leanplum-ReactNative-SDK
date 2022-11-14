@@ -6,7 +6,8 @@ import {
   Parameters,
   LocationAccuracyType,
   ActionContextData,
-  SecuredVars
+  SecuredVars,
+  MigrationConfig
 } from './leanplum-types';
 
 /**
@@ -543,6 +544,10 @@ class LeanplumSdkModule extends NativeEventEmitter {
 
   setQueueEnabled(enabled: boolean): void {
     this.nativeModule.setQueueEnabled(enabled);
+  }
+
+  async migrationConfig(): Promise<MigrationConfig> {
+    return await this.nativeModule.migrationConfig();
   }
 }
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);

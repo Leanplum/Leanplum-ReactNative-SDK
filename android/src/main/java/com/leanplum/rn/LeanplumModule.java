@@ -23,6 +23,7 @@ import com.leanplum.internal.Constants;
 import com.leanplum.rn.actions.RnMessageDisplayListener;
 import com.leanplum.rn.utils.ArrayUtil;
 import com.leanplum.rn.utils.MapUtil;
+import com.leanplum.migration.model.MigrationConfig;
 
 import org.json.JSONException;
 
@@ -427,5 +428,17 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeListeners(Integer count) {
         // Needed to remove warning
+    }
+
+    @ReactMethod
+    public void migrationConfig(Promise promise) {
+        MigrationConfig migrationConfig = MigrationConfig.INSTANCE;
+        HashMap<String, Object> map = new HashMap();
+        map.put("state", migrationConfig.getState());
+        map.put("accountId", migrationConfig.getAccountId());
+        map.put("accountToken", migrationConfig.getAccountToken());
+        map.put("accountRegion", migrationConfig.getAccountRegion());
+        map.put("attributeMappings", migrationConfig.getAttributeMap());
+        promise.resolve(MapUtil.toWritableMap(map));
     }
 }

@@ -358,4 +358,16 @@ class RNLeanplum: RCTEventEmitter {
             }
         }
     }
+
+    @objc
+    func migrationConfig(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var migrationConfig:[String: Any] = [:]
+        migrationConfig["state"] = MigrationManager.shared.state.description
+        migrationConfig["accountId"] = UserDefaults.standard.string(forKey: "__leanplum_ct_account_key")
+        migrationConfig["accountToken"] = UserDefaults.standard.string(forKey: "__leanplum_ct_account_token")
+        migrationConfig["accountRegion"] = UserDefaults.standard.string(forKey: "__leanplum_region_code")
+        migrationConfig["attributeMappings"] = UserDefaults.standard.object(forKey: "__leanplum_attribute_mappings")
+         as? [String: String]
+        resolve(migrationConfig)
+    }
 }
