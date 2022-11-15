@@ -7,7 +7,7 @@ export type Variable =
   | Parameters;
 
 export interface Parameters {
-  [name: string]: Primitive;
+  [name: string]: Primitive | Date;
 }
 
 export interface Variables {

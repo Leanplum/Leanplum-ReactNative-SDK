@@ -13,6 +13,10 @@ import CleverTapSDK
 @objc(RNLeanplum)
 class RNLeanplum: RCTEventEmitter {
     
+    enum Constants {
+        static let DatePrefix = "lp_date_"
+    }
+
     var variables = [String: Var]()
     var allSupportedEvents: [String] = []
     
@@ -66,8 +70,20 @@ class RNLeanplum: RCTEventEmitter {
         guard let attributesDict = attributes as? Dictionary<String, Any> else {
             return
         }
+
+        let attr = attributesDict.mapValues {
+            if let str = $0 as? String, str.hasPrefix(Constants.DatePrefix) {
+                let index = str.index(str.startIndex, offsetBy: Constants.DatePrefix.count)
+                let ts = String(str[index...])
+                if let ti = Double(ts) {
+                    return Date(timeIntervalSince1970: ti/1000) as Any
+                }
+            }
+            return $0
+        }
+
         DispatchQueue.main.async {
-            Leanplum.setUserAttributes(attributesDict)
+            Leanplum.setUserAttributes(attr)
         }
     }
 

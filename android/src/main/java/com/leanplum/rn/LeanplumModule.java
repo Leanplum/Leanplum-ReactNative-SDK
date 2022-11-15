@@ -20,6 +20,7 @@ import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariableCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
+import com.leanplum.internal.Log;
 import com.leanplum.rn.actions.RnMessageDisplayListener;
 import com.leanplum.rn.utils.ArrayUtil;
 import com.leanplum.rn.utils.MapUtil;
@@ -28,11 +29,14 @@ import com.leanplum.migration.model.MigrationConfig;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LeanplumModule extends ReactContextBaseJavaModule {
 
+    public static String DATE_PREFIX = "lp_date_";
+    
     private final ReactApplicationContext reactContext;
     public static Map<String, Object> variables = new HashMap<String, Object>();
     private final RnMessageDisplayListener messageDisplayListener;
@@ -87,7 +91,26 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setUserAttributes(ReadableMap attributes) {
-        Leanplum.setUserAttributes(attributes.toHashMap());
+        HashMap<String, Object> attributesMap = attributes.toHashMap();
+        for(String key : attributesMap.keySet()) {
+            Object value = attributesMap.get(key);
+            if(value instanceof String) {
+                String str = (String) value;
+                int index = str.indexOf(DATE_PREFIX);
+                if(index != -1) {
+                    try {
+                        String tsSubstring = str.substring(index + DATE_PREFIX.length());
+                        long ts = Long.parseLong(tsSubstring);
+                        Date date = new Date(ts);
+                        attributesMap.put(key, date);
+                    } catch (Exception ex) {
+                        Log.e(String.format("Failed to parse Date: %s", str), ex);
+                    }
+                }
+            }
+        }
+
+        Leanplum.setUserAttributes(attributesMap);
     }
 
     @ReactMethod

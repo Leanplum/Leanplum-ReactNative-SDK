@@ -141,6 +141,16 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param attributes.
    */
   setUserAttributes(attributes: Parameters): void {
+    const keys = Object.keys(attributes);
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const value = attributes[key];
+      if (value instanceof Date) {
+        const tsValue = `lp_date_${value.getTime()}`;
+        attributes[key] = tsValue;
+      }
+    }
     this.nativeModule.setUserAttributes(attributes);
   }
 
