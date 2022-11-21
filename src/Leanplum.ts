@@ -20,6 +20,9 @@ class LeanplumSdkModule extends NativeEventEmitter {
   /** Callback to be invoked when CleverTap instance is ready */
   private cleverTapReadyCallback: (() => void | null) = null;
 
+  /** Flag showing whether CleverTap instance is created */
+  private cleverTapReady: boolean = false;
+
   /** Default value for the name of the Purchase event. */
   private static readonly PURCHASE_EVENT_NAME: string = 'Purchase';
 
@@ -70,9 +73,9 @@ class LeanplumSdkModule extends NativeEventEmitter {
         if (this.cleverTapReadyCallback != null) {
           this.cleverTapReadyCallback();
         }
+        this.cleverTapReady = true;
       } else {
-        console.log('[Leanplum] CleverTap is undefined');
-        // TODO show error that CT dependency is missing
+        console.log('[Leanplum] CleverTap dependency is missing!');
       }
     });
   }
@@ -85,6 +88,10 @@ class LeanplumSdkModule extends NativeEventEmitter {
    */
   onCleverTapReady(callback: (() => void) | null): void {
     this.cleverTapReadyCallback = callback;
+    if (this.cleverTapReady && callback != null) {
+      // CleverTap was already created before invoking this method.
+      callback();
+    }
   }
 
   /** Throw an exception with unsupported platform message. */
@@ -559,5 +566,27 @@ class LeanplumSdkModule extends NativeEventEmitter {
   async migrationConfig(): Promise<MigrationConfig> {
     return await this.nativeModule.migrationConfig();
   }
+
+  /**
+   * Use only for debug purposes.
+   * Disables FCM forwarding to CT.
+   */
+  disableAndroidFcmForwarding(): void {
+    if (Platform.OS === 'android') {
+      this.nativeModule.disableAndroidFcmForwarding();
+    }
+  }
+
+  /**
+   * Use only for debug purposes.
+   */
+  forceNewDeviceId(deviceId: string): void {
+    if (Platform.OS === 'android') {
+      this.nativeModule.forceNewDeviceId(deviceId);
+    } else {
+      // TODO iOS ?
+    }
+  }
+
 }
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);

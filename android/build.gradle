@@ -12,7 +12,8 @@
 
 rootProject.ext {
     // expose sdk version for consistency
-    LEANPLUM_SDK_VERSION = '7.0.0'
+    LEANPLUM_SDK_VERSION = '7.0.1-beta1' // TODO do not use beta in release
+    LEANPLUM_CT_SDK_VERSION = '4.6.6'
 }
 
 def DEFAULT_COMPILE_SDK_VERSION = 31
@@ -86,4 +87,5 @@ repositories {
 dependencies {
     implementation 'com.facebook.react:react-native:+'  // From node_modules
     implementation "com.leanplum:leanplum-core:${LEANPLUM_SDK_VERSION}"
+    implementation "com.clevertap.android:clevertap-android-sdk:${LEANPLUM_CT_SDK_VERSION}"
 }

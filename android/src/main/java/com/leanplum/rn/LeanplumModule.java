@@ -21,6 +21,8 @@ import com.leanplum.callbacks.VariableCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
 import com.leanplum.internal.Log;
+import com.leanplum.migration.MigrationManager;
+import com.leanplum.migration.push.FcmMigrationHandler;
 import com.leanplum.rn.actions.RnMessageDisplayListener;
 import com.leanplum.rn.utils.ArrayUtil;
 import com.leanplum.rn.utils.MapUtil;
@@ -398,7 +400,7 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void onCleverTapInstance(String listener) {
-        Leanplum.onCleverTapInstanceInitialized(cleverTapInstance -> {
+        Leanplum.addCleverTapInstanceCallback(cleverTapInstance -> {
             reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(listener, cleverTapInstance.getAccountId());
@@ -463,5 +465,18 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         map.put("accountRegion", migrationConfig.getAccountRegion());
         map.put("attributeMappings", migrationConfig.getAttributeMap());
         promise.resolve(MapUtil.toWritableMap(map));
+    }
+
+    @ReactMethod
+    public void disableAndroidFcmForwarding() {
+        FcmMigrationHandler fcmHandler = MigrationManager.getWrapper().getFcmHandler();
+        if (fcmHandler != null) {
+            fcmHandler.setForwardingEnabled(false);
+        }
+    }
+
+    @ReactMethod
+    public void forceNewDeviceId(String deviceId) {
+        Leanplum.forceNewDeviceId(deviceId);
     }
 }
