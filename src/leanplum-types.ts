@@ -30,7 +30,7 @@ export class MigrationConfig {
   accountId: string;
   accountToken: string;
   accountRegion: string;
-  attributeMappings: [string: string];
+  attributeMappings: {[key:string]: string};
 }
 
 export enum LocationAccuracyType {
