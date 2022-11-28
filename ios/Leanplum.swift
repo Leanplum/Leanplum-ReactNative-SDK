@@ -369,9 +369,9 @@ class RNLeanplum: RCTEventEmitter {
     func onCleverTapInstance(_ listener: String?) {
         if let listener = listener {
             self.allSupportedEvents.append(listener)
-            Leanplum.onCleverTapInstanceInitialized { [weak self] instance in
+            Leanplum.addCleverTapInstance(callback: CleverTapInstanceCallback(callback: { [weak self] instance in
                 self?.sendEvent(withName: listener, body: instance.config.accountId)
-            }
+            }))
         }
     }
 
