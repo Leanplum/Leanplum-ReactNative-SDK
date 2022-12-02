@@ -15,30 +15,39 @@ import com.leanplum.Leanplum;
 import com.leanplum.LeanplumLocationAccuracyType;
 import com.leanplum.Var;
 import com.leanplum.SecuredVars;
-import com.leanplum.callbacks.MessageDisplayedCallback;
+import com.leanplum.actions.LeanplumActions;
 import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariableCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.internal.Constants;
-import com.leanplum.models.MessageArchiveData;
+import com.leanplum.internal.Log;
+import com.leanplum.migration.MigrationManager;
+import com.leanplum.migration.push.FcmMigrationHandler;
+import com.leanplum.rn.actions.RnMessageDisplayListener;
 import com.leanplum.rn.utils.ArrayUtil;
 import com.leanplum.rn.utils.MapUtil;
-import com.leanplum.rn.utils.MessageArchiveDataUtil;
+import com.leanplum.migration.model.MigrationConfig;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LeanplumModule extends ReactContextBaseJavaModule {
 
+    public static String DATE_PREFIX = "lp_date_";
+    
     private final ReactApplicationContext reactContext;
     public static Map<String, Object> variables = new HashMap<String, Object>();
+    private final RnMessageDisplayListener messageDisplayListener;
 
     public LeanplumModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+        this.messageDisplayListener = new RnMessageDisplayListener(reactContext);
+        LeanplumActions.setMessageDisplayListener(messageDisplayListener);
     }
 
     @Override
@@ -84,7 +93,26 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setUserAttributes(ReadableMap attributes) {
-        Leanplum.setUserAttributes(attributes.toHashMap());
+        HashMap<String, Object> attributesMap = attributes.toHashMap();
+        for(String key : attributesMap.keySet()) {
+            Object value = attributesMap.get(key);
+            if(value instanceof String) {
+                String str = (String) value;
+                int index = str.indexOf(DATE_PREFIX);
+                if(index != -1) {
+                    try {
+                        String tsSubstring = str.substring(index + DATE_PREFIX.length());
+                        long ts = Long.parseLong(tsSubstring);
+                        Date date = new Date(ts);
+                        attributesMap.put(key, date);
+                    } catch (Exception ex) {
+                        Log.e(String.format("Failed to parse Date: %s", str), ex);
+                    }
+                }
+            }
+        }
+
+        Leanplum.setUserAttributes(attributesMap);
     }
 
     @ReactMethod
@@ -104,7 +132,8 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void trackPurchase(String purchaseEvent, Double value, String currencyCode, ReadableMap purchaseParams) {
-        Leanplum.trackPurchase(purchaseEvent, value, currencyCode, purchaseParams.toHashMap());
+        Map<String, Object> params = (purchaseParams != null) ? purchaseParams.toHashMap() : null;
+        Leanplum.trackPurchase(purchaseEvent, value, currencyCode, params);
 
     }
 
@@ -117,14 +146,16 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void trackGooglePlayPurchaseWithParams(String item, Integer priceMicros, String currencyCode,
                                                   String purchaseData, String dataSignature, ReadableMap params) {
-        Leanplum.trackGooglePlayPurchase(item, priceMicros, currencyCode, purchaseData, dataSignature, params.toHashMap());
+        Map<String, Object> paramsMap = (params != null) ? params.toHashMap() : null;
+        Leanplum.trackGooglePlayPurchase(item, priceMicros, currencyCode, purchaseData, dataSignature, paramsMap);
 
     }
 
     @ReactMethod
     public void trackGooglePlayPurchaseWithEvent(String eventName, String item, Integer priceMicros, String currencyCode,
                                                  String purchaseData, String dataSignature, ReadableMap params) {
-        Leanplum.trackGooglePlayPurchase(eventName, item, priceMicros, currencyCode, purchaseData, dataSignature, params.toHashMap());
+        Map<String, Object> paramsMap = (params != null) ? params.toHashMap() : null;
+        Leanplum.trackGooglePlayPurchase(eventName, item, priceMicros, currencyCode, purchaseData, dataSignature, paramsMap);
 
     }
 
@@ -356,17 +387,28 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onMessageDisplayed(final String listener) {
-        Leanplum.addMessageDisplayedHandler(new MessageDisplayedCallback() {
-            @Override
-            public void messageDisplayed(MessageArchiveData messageArchiveData) {
-
-                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(listener,
-                        MessageArchiveDataUtil.toWriteableMap(messageArchiveData));
-            }
-        });
+    public void onMessageDisplayed(String listener) {
+        messageDisplayListener.listenDisplayEvents(listener);
     }
 
+    @ReactMethod
+    public void onMessageDismissed(String listener) {
+        messageDisplayListener.listenDismissEvents(listener);
+    }
+
+    @ReactMethod
+    public void onMessageAction(String listener) {
+        messageDisplayListener.listenExecuteEvents(listener);
+    }
+
+    @ReactMethod
+    public void onCleverTapInstance(String listener) {
+        Leanplum.addCleverTapInstanceCallback(cleverTapInstance -> {
+            reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(listener, cleverTapInstance.getAccountId());
+        });
+    }
 
     @ReactMethod
     public void registerForRemoteNotifications() {
@@ -387,6 +429,26 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void isQueuePaused(Promise promise) {
+        promise.resolve(LeanplumActions.isQueuePaused());
+    }
+
+    @ReactMethod
+    public void setQueuePaused(boolean paused) {
+        LeanplumActions.setQueuePaused(paused);
+    }
+
+    @ReactMethod
+    public void isQueueEnabled(Promise promise) {
+        promise.resolve(LeanplumActions.isQueueEnabled());
+    }
+
+    @ReactMethod
+    public void setQueueEnabled(boolean enabled) {
+        LeanplumActions.setQueueEnabled(enabled);
+    }
+
+    @ReactMethod
     public void addListener(String eventName) {
         // Needed to remove warning
     }
@@ -394,5 +456,30 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeListeners(Integer count) {
         // Needed to remove warning
+    }
+
+    @ReactMethod
+    public void migrationConfig(Promise promise) {
+        MigrationConfig migrationConfig = MigrationConfig.INSTANCE;
+        HashMap<String, Object> map = new HashMap();
+        map.put("state", migrationConfig.getState());
+        map.put("accountId", migrationConfig.getAccountId());
+        map.put("accountToken", migrationConfig.getAccountToken());
+        map.put("accountRegion", migrationConfig.getAccountRegion());
+        map.put("attributeMappings", migrationConfig.getAttributeMap());
+        promise.resolve(MapUtil.toWritableMap(map));
+    }
+
+    @ReactMethod
+    public void disableAndroidFcmForwarding() {
+        FcmMigrationHandler fcmHandler = MigrationManager.getWrapper().getFcmHandler();
+        if (fcmHandler != null) {
+            fcmHandler.setForwardingEnabled(false);
+        }
+    }
+
+    @ReactMethod
+    public void forceNewDeviceId(String deviceId) {
+        Leanplum.forceNewDeviceId(deviceId);
     }
 }

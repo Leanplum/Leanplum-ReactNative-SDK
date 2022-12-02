@@ -7,7 +7,7 @@ export type Variable =
   | Parameters;
 
 export interface Parameters {
-  [name: string]: Primitive;
+  [name: string]: Primitive | Date;
 }
 
 export interface Variables {
@@ -19,11 +19,18 @@ export class SecuredVars {
   signature: string;
 }
 
-export class MessageArchiveData {
-  messageID: string;
+export class ActionContextData {
+  id: string;
   messageBody: string;
-  recipientUserID: string;
-  deliveryDateTime: string;
+  actionName: string;
+}
+
+export class MigrationConfig {
+  state: string;
+  accountId: string;
+  accountToken: string;
+  accountRegion: string;
+  attributeMappings: {[key:string]: string};
 }
 
 export enum LocationAccuracyType {

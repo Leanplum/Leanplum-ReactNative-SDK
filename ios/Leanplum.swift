@@ -8,10 +8,15 @@
 
 import Foundation
 import Leanplum
+import CleverTapSDK
 
 @objc(RNLeanplum)
 class RNLeanplum: RCTEventEmitter {
     
+    enum Constants {
+        static let DatePrefix = "lp_date_"
+    }
+
     var variables = [String: Var]()
     var allSupportedEvents: [String] = []
     
@@ -65,8 +70,20 @@ class RNLeanplum: RCTEventEmitter {
         guard let attributesDict = attributes as? Dictionary<String, Any> else {
             return
         }
+
+        let attr = attributesDict.mapValues {
+            if let str = $0 as? String, str.hasPrefix(Constants.DatePrefix) {
+                let index = str.index(str.startIndex, offsetBy: Constants.DatePrefix.count)
+                let ts = String(str[index...])
+                if let ti = Double(ts) {
+                    return Date(timeIntervalSince1970: ti/1000) as Any
+                }
+            }
+            return $0
+        }
+
         DispatchQueue.main.async {
-            Leanplum.setUserAttributes(attributesDict)
+            Leanplum.setUserAttributes(attr)
         }
     }
 
@@ -158,7 +175,6 @@ class RNLeanplum: RCTEventEmitter {
         resolve(self.getVariablesValues())
     }
     
-    
     func getVariablesValues() -> [String: Any] {
         var allVariables = [String: Any]()
         for (key, value) in self.variables {
@@ -206,9 +222,9 @@ class RNLeanplum: RCTEventEmitter {
     }
     
     @objc
-    func getVariableAsset(_ name: String, resolver resolve: RCTPromiseResolveBlock,
-                          rejecter reject: RCTPromiseRejectBlock
-    ) {
+    func getVariableAsset(_ name: String,
+                          resolver resolve: RCTPromiseResolveBlock,
+                          rejecter reject: RCTPromiseRejectBlock) {
         if let lpVar = self.variables[name] {
             resolve(lpVar.fileValue())
         } else {
@@ -278,11 +294,38 @@ class RNLeanplum: RCTEventEmitter {
     }
 
     @objc
-    func onMessageDisplayed(_ listener: String) {
-        self.allSupportedEvents.append(listener)
-         Leanplum.onMessageDisplayed { [weak self] (lPMessageArchiveData: LPMessageArchiveData?) in
-                        self?.sendEvent(withName: listener, body: LeanplumTypeUtils.LPMessageArchiveDataToDict(lPMessageArchiveData!))
-            
+    func onMessageDisplayed(_ listener: String?) {
+        if let listener = listener {
+            self.allSupportedEvents.append(listener)
+            ActionManager.shared.onMessageDisplayed { [weak self] actionContext in
+                self?.sendEvent(withName: listener, body: actionContext.dictionary)
+            }
+        } else {
+            ActionManager.shared.onMessageDisplayed(nil)
+        }
+    }
+
+    @objc
+    func onMessageDismissed(_ listener: String?) {
+        if let listener = listener {
+            self.allSupportedEvents.append(listener)
+            ActionManager.shared.onMessageDismissed { [weak self] actionContext in
+                self?.sendEvent(withName: listener, body: actionContext.dictionary)
+            }
+        } else {
+            ActionManager.shared.onMessageDismissed(nil)
+        }
+    }
+
+    @objc
+    func onMessageAction(_ listener: String?) {
+        if let listener = listener {
+            self.allSupportedEvents.append(listener)
+            ActionManager.shared.onMessageAction { [weak self] actionName, context in
+                self?.sendEvent(withName: listener, body: context.dictionary)
+            }
+        } else {
+            ActionManager.shared.onMessageAction(nil)
         }
     }
 
@@ -300,5 +343,46 @@ class RNLeanplum: RCTEventEmitter {
         securedVarsDictionary["json"] = securedVars.varsJson()
         securedVarsDictionary["signature"] = securedVars.varsSignature()
         resolve(securedVarsDictionary)
+    }
+
+    @objc
+    func isQueuePaused(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(ActionManager.shared.isPaused)
+    }
+
+    @objc
+    func setQueuePaused(_ paused: Bool) {
+        ActionManager.shared.isPaused = paused
+    }
+
+    @objc
+    func isQueueEnabled(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(ActionManager.shared.isEnabled)
+    }
+
+    @objc
+    func setQueueEnabled(_ enabled: Bool) {
+        ActionManager.shared.isEnabled = enabled
+    }
+    
+    @objc
+    func onCleverTapInstance(_ listener: String?) {
+        if let listener = listener {
+            self.allSupportedEvents.append(listener)
+            Leanplum.addCleverTapInstance(callback: CleverTapInstanceCallback(callback: { [weak self] instance in
+                self?.sendEvent(withName: listener, body: instance.config.accountId)
+            }))
+        }
+    }
+
+    @objc
+    func migrationConfig(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var migrationConfig:[String: Any] = [:]
+        migrationConfig["state"] = MigrationManager.shared.state.description
+        migrationConfig["accountId"] = MigrationManager.shared.cleverTapAccountId
+        migrationConfig["accountToken"] = MigrationManager.shared.cleverTapAccountToken
+        migrationConfig["accountRegion"] = MigrationManager.shared.cleverTapAccountRegion
+        migrationConfig["attributeMappings"] = MigrationManager.shared.cleverTapAttributeMappings
+        resolve(migrationConfig)
     }
 }

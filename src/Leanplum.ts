@@ -1,11 +1,13 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
+import CleverTap from 'clevertap-react-native';
 import {
   Variables,
   Variable,
   Parameters,
   LocationAccuracyType,
-  MessageArchiveData,
-  SecuredVars
+  ActionContextData,
+  SecuredVars,
+  MigrationConfig
 } from './leanplum-types';
 
 /**
@@ -14,6 +16,13 @@ import {
 class LeanplumSdkModule extends NativeEventEmitter {
   /** NativeModule of react-native. */
   private readonly nativeModule: any;
+
+  /** Callback to be invoked when CleverTap instance is ready */
+  private cleverTapReadyCallback: (() => void | null) = null;
+
+  /** Flag showing whether CleverTap instance is created */
+  private cleverTapReady: boolean = false;
+
   /** Default value for the name of the Purchase event. */
   private static readonly PURCHASE_EVENT_NAME: string = 'Purchase';
 
@@ -32,6 +41,15 @@ class LeanplumSdkModule extends NativeEventEmitter {
   /** Listener name used when a message is displayed. */
   private static readonly ON_MESSAGE_DISPLAYED = 'onMessageDisplayed';
 
+  /** Listener name used when a message is dismissed. */
+  private static readonly ON_MESSAGE_DISMISSED = 'onMessageDismissed';
+
+  /** Listener name used when message action is executed. */
+  private static readonly ON_MESSAGE_ACTION = 'onMessageAction';
+
+  /** Listener name used when CleverTap instance is initialized. */
+  private static readonly ON_CT_INSTANCE = 'onCleverTapInstance';
+
   /**
    * Creates an instance of LeanplumSdkModule.
    * @param nativeModule the NativeModule of react-native
@@ -40,10 +58,42 @@ class LeanplumSdkModule extends NativeEventEmitter {
     super(nativeModule);
     if (Platform.OS === 'android' || Platform.OS === 'ios') {
       this.nativeModule = nativeModule;
+      this.registerCleverTapInstanceListener();
     } else {
       this.throwUnsupportedPlatform();
     }
   }
+
+  private registerCleverTapInstanceListener(): void {
+    this.nativeModule.onCleverTapInstance(LeanplumSdkModule.ON_CT_INSTANCE);
+    this.addListener(LeanplumSdkModule.ON_CT_INSTANCE, accountId => {
+      if (CleverTap != undefined) {
+        console.log(`[Leanplum] Setting CleverTap instance with: ${accountId}`);
+        CleverTap.setInstanceWithAccountId(accountId);
+        if (this.cleverTapReadyCallback != null) {
+          this.cleverTapReadyCallback();
+        }
+        this.cleverTapReady = true;
+      } else {
+        console.log('[Leanplum] CleverTap dependency is missing!');
+      }
+    });
+  }
+
+  /**
+   * Register a callback to be invoked once CleverTap instance is created using Leanplum data.
+   * Must be registered before Leanplum.start().
+   *
+   * @param callback Callback to be invoked CleverTap instance is ready. Use null value to reset.
+   */
+  onCleverTapReady(callback: (() => void) | null): void {
+    this.cleverTapReadyCallback = callback;
+    if (this.cleverTapReady && callback != null) {
+      // CleverTap was already created before invoking this method.
+      callback();
+    }
+  }
+
   /** Throw an exception with unsupported platform message. */
   throwUnsupportedPlatform() {
     throw new Error('Unsupported Platform');
@@ -98,6 +148,16 @@ class LeanplumSdkModule extends NativeEventEmitter {
    * @param attributes.
    */
   setUserAttributes(attributes: Parameters): void {
+    const keys = Object.keys(attributes);
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const value = attributes[key];
+      if (value instanceof Date) {
+        const tsValue = `lp_date_${value.getTime()}`;
+        attributes[key] = tsValue;
+      }
+    }
     this.nativeModule.setUserAttributes(attributes);
   }
 
@@ -436,13 +496,47 @@ class LeanplumSdkModule extends NativeEventEmitter {
   }
   /**
    * Register a callback for when a message is displayed.
-   * @param callback to be invoked with the message data as parameter
+   * @param callback Callback to be invoked with the message data as parameter, use null value
+   * to reset.
    */
-  onMessageDisplayed(callback: (data: MessageArchiveData) => void): void {
-    this.nativeModule.onMessageDisplayed(
-      LeanplumSdkModule.ON_MESSAGE_DISPLAYED
-    );
-    this.addListener(LeanplumSdkModule.ON_MESSAGE_DISPLAYED, callback);
+  onMessageDisplayed(callback: ((data: ActionContextData) => void) | null): void {
+    if (callback != null) {
+      this.nativeModule.onMessageDisplayed(LeanplumSdkModule.ON_MESSAGE_DISPLAYED);
+      this.addListener(LeanplumSdkModule.ON_MESSAGE_DISPLAYED, callback);
+    } else {
+      this.nativeModule.onMessageDisplayed(null);
+      this.removeAllListeners(LeanplumSdkModule.ON_MESSAGE_DISPLAYED);
+    }
+  }
+
+  /**
+   * Register a callback for when a message is dismissed.
+   * @param callback Callback to be invoked with the message data as parameter, use null value
+   * to reset.
+   */
+  onMessageDismissed(callback: ((data: ActionContextData) => void) | null): void {
+    if (callback != null) {
+      this.nativeModule.onMessageDismissed(LeanplumSdkModule.ON_MESSAGE_DISMISSED);
+      this.addListener(LeanplumSdkModule.ON_MESSAGE_DISMISSED, callback);
+    } else {
+      this.nativeModule.onMessageDismissed(null);
+      this.removeAllListeners(LeanplumSdkModule.ON_MESSAGE_DISMISSED);
+    }
+  }
+
+  /**
+   * Register a callback for when a message action is executed.
+   * @param callback Callback to be invoked with the message data as parameter, use null value
+   * to reset.
+   */
+  onMessageAction(callback: ((data: ActionContextData) => void) | null): void {
+    if (callback != null) {
+      this.nativeModule.onMessageAction(LeanplumSdkModule.ON_MESSAGE_ACTION);
+      this.addListener(LeanplumSdkModule.ON_MESSAGE_ACTION, callback);
+    } else {
+      this.nativeModule.onMessageAction(null);
+      this.removeAllListeners(LeanplumSdkModule.ON_MESSAGE_ACTION);
+    }
   }
 
   registerForRemoteNotifications(): void {
@@ -452,5 +546,47 @@ class LeanplumSdkModule extends NativeEventEmitter {
   async securedVars(): Promise<SecuredVars> {
     return await this.nativeModule.securedVars();
   }
+
+  async isQueuePaused(): Promise<boolean> {
+    return await this.nativeModule.isQueuePaused();
+  }
+
+  setQueuePaused(paused: boolean): void {
+    this.nativeModule.setQueuePaused(paused);
+  }
+
+  async isQueueEnabled(): Promise<boolean> {
+    return await this.nativeModule.isQueueEnabled();
+  }
+
+  setQueueEnabled(enabled: boolean): void {
+    this.nativeModule.setQueueEnabled(enabled);
+  }
+
+  async migrationConfig(): Promise<MigrationConfig> {
+    return await this.nativeModule.migrationConfig();
+  }
+
+  /**
+   * Use only for debug purposes.
+   * Disables FCM forwarding to CT.
+   */
+  disableAndroidFcmForwarding(): void {
+    if (Platform.OS === 'android') {
+      this.nativeModule.disableAndroidFcmForwarding();
+    }
+  }
+
+  /**
+   * Use only for debug purposes.
+   */
+  forceNewDeviceId(deviceId: string): void {
+    if (Platform.OS === 'android') {
+      this.nativeModule.forceNewDeviceId(deviceId);
+    } else {
+      // TODO iOS ?
+    }
+  }
+
 }
 export const Leanplum = new LeanplumSdkModule(NativeModules.Leanplum);

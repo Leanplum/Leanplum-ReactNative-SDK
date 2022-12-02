@@ -70,15 +70,6 @@ class LeanplumTypeUtils {
         return dateFormatter.string(from: date)
     }
 
-    static func LPMessageArchiveDataToDict(_ lPMessageArchiveData: LPMessageArchiveData) -> [String: Any] {
-        var messageDataDict = [String: Any]()
-        messageDataDict["messageID"] = lPMessageArchiveData.messageID
-        messageDataDict["messageBody"] = lPMessageArchiveData.messageBody
-        messageDataDict["recipientUserID"] = lPMessageArchiveData.recipientUserID
-        messageDataDict["deliveryDateTime"] = stringFromDate(lPMessageArchiveData.deliveryDateTime)
-        return messageDataDict
-       }
-
     private static func isBoolNumber(num: NSNumber) -> Bool {
         let boolID = CFBooleanGetTypeID()
         let numID = CFGetTypeID(num)
