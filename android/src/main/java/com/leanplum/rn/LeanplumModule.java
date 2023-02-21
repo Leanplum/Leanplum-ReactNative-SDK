@@ -467,6 +467,7 @@ public class LeanplumModule extends ReactContextBaseJavaModule {
         map.put("accountToken", migrationConfig.getAccountToken());
         map.put("accountRegion", migrationConfig.getAccountRegion());
         map.put("attributeMappings", migrationConfig.getAttributeMap());
+        map.put("identityKeys", migrationConfig.getIdentityList());
         promise.resolve(MapUtil.toWritableMap(map));
     }
 
