@@ -383,6 +383,7 @@ class RNLeanplum: RCTEventEmitter {
         migrationConfig["accountToken"] = MigrationManager.shared.cleverTapAccountToken
         migrationConfig["accountRegion"] = MigrationManager.shared.cleverTapAccountRegion
         migrationConfig["attributeMappings"] = MigrationManager.shared.cleverTapAttributeMappings
+        migrationConfig["identityKeys"] = MigrationManager.shared.cleverTapIdentityKeys
         resolve(migrationConfig)
     }
 }
