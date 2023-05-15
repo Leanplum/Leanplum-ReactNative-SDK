@@ -1,4 +1,4 @@
-import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
+import {NativeModules, Platform, NativeEventEmitter, EmitterSubscription} from 'react-native';
 import CleverTap from 'clevertap-react-native';
 import {
   Variables,
@@ -17,11 +17,11 @@ class LeanplumSdkModule extends NativeEventEmitter {
   /** NativeModule of react-native. */
   private readonly nativeModule: any;
 
-  /** Callback to be invoked when CleverTap instance is ready */
-  private cleverTapReadyCallback: (() => void | null) = null;
-
   /** Flag showing whether CleverTap instance is created */
   private cleverTapReady: boolean = false;
+
+  /** Listener name used to notify when CleverTap instance is created. */
+  private static readonly CLEVERTAP_READY_INTERNAL_EVENT = 'ctReadyEvent';
 
   /** Default value for the name of the Purchase event. */
   private static readonly PURCHASE_EVENT_NAME: string = 'Purchase';
@@ -70,10 +70,9 @@ class LeanplumSdkModule extends NativeEventEmitter {
       if (CleverTap != undefined) {
         console.log(`[Leanplum] Setting CleverTap instance with: ${accountId}`);
         CleverTap.setInstanceWithAccountId(accountId);
-        if (this.cleverTapReadyCallback != null) {
-          this.cleverTapReadyCallback();
-        }
         this.cleverTapReady = true;
+        this.emit(LeanplumSdkModule.CLEVERTAP_READY_INTERNAL_EVENT);
+        this.removeAllListeners(LeanplumSdkModule.CLEVERTAP_READY_INTERNAL_EVENT);
       } else {
         console.log('[Leanplum] CleverTap dependency is missing!');
       }
@@ -81,16 +80,21 @@ class LeanplumSdkModule extends NativeEventEmitter {
   }
 
   /**
-   * Register a callback to be invoked once CleverTap instance is created using Leanplum data.
-   * Must be registered before Leanplum.start().
+   * Registers a callback to be invoked once CleverTap instance is created using Leanplum data. If
+   * CleverTap instance is already created, the callback will be invoked immediately.
    *
-   * @param callback Callback to be invoked CleverTap instance is ready. Use null value to reset.
+   * @param callback Callback to be invoked once CleverTap instance is ready.
+   *
+   * @returns Returns null if CleveTap is already created or EmitterSubscription object. You can use
+   *          the EmitterSubscription to cancel the subscription.
    */
-  onCleverTapReady(callback: (() => void) | null): void {
-    this.cleverTapReadyCallback = callback;
-    if (this.cleverTapReady && callback != null) {
+  onCleverTapReady(callback: () => void): (EmitterSubscription | null) {
+    if (this.cleverTapReady) {
       // CleverTap was already created before invoking this method.
       callback();
+      return null;
+    } else {
+      return this.addListener(LeanplumSdkModule.CLEVERTAP_READY_INTERNAL_EVENT, callback);
     }
   }
 
