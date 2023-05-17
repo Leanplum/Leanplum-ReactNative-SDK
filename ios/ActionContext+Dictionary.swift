@@ -3,7 +3,7 @@
 //  Leanplum
 //
 //  Created by Nikola Zagorchev on 9.11.22.
-//  Copyright © 2022 Facebook. All rights reserved.
+//  Copyright © 2023 Leanplum. All rights reserved.
 //
 
 import Foundation

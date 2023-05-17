@@ -3,7 +3,7 @@
 //  Leanplum
 //
 //  Created by Alik . Risco on 13.02.20.
-//  Copyright © 2020 Facebook. All rights reserved.
+//  Copyright © 2023 Leanplum. All rights reserved.
 //
 
 import Foundation
