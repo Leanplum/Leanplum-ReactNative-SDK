@@ -12,8 +12,8 @@
 
 rootProject.ext {
     // expose sdk version for consistency
-    LEANPLUM_SDK_VERSION = '7.1.1'
-    LEANPLUM_CT_SDK_VERSION = '4.7.4' // CT RN SDK uses 4.7.2, but differences are bugfixes only
+    LEANPLUM_SDK_VERSION = '7.2.0'
+    LEANPLUM_CT_SDK_VERSION = '5.0.0'
 }
 
 def DEFAULT_COMPILE_SDK_VERSION = 33
