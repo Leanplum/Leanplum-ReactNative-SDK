@@ -12,14 +12,14 @@
 
 rootProject.ext {
     // expose sdk version for consistency
-    LEANPLUM_SDK_VERSION = '7.0.1'
-    LEANPLUM_CT_SDK_VERSION = '4.6.6'
+    LEANPLUM_SDK_VERSION = '7.2.0'
+    LEANPLUM_CT_SDK_VERSION = '5.0.0'
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 31
-def DEFAULT_BUILD_TOOLS_VERSION = '31.0.0'
-def DEFAULT_MIN_SDK_VERSION = 16
-def DEFAULT_TARGET_SDK_VERSION = 31
+def DEFAULT_COMPILE_SDK_VERSION = 33
+def DEFAULT_BUILD_TOOLS_VERSION = '33.0.2'
+def DEFAULT_MIN_SDK_VERSION = 19 // CT SDK 4.7.2 has minSDK set as 19
+def DEFAULT_TARGET_SDK_VERSION = 33
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -54,6 +54,10 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

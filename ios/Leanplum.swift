@@ -3,7 +3,7 @@
 //  Leanplum
 //
 //  Created by Alik . Risco on 30.01.20.
-//  Copyright © 2020 Facebook. All rights reserved.
+//  Copyright © 2023 Leanplum. All rights reserved.
 //
 
 import Foundation
@@ -15,10 +15,13 @@ class RNLeanplum: RCTEventEmitter {
     
     enum Constants {
         static let DatePrefix = "lp_date_"
+        static let SupportedEvents = [
+            "ctReadyEvent"
+        ]
     }
 
-    var variables = [String: Var]()
-    var allSupportedEvents: [String] = []
+    var variables: [String: LeanplumVar] = [:]
+    var allSupportedEvents: [String] = Constants.SupportedEvents
     
     @objc
     override static func requiresMainQueueSetup() -> Bool {
@@ -383,6 +386,7 @@ class RNLeanplum: RCTEventEmitter {
         migrationConfig["accountToken"] = MigrationManager.shared.cleverTapAccountToken
         migrationConfig["accountRegion"] = MigrationManager.shared.cleverTapAccountRegion
         migrationConfig["attributeMappings"] = MigrationManager.shared.cleverTapAttributeMappings
+        migrationConfig["identityKeys"] = MigrationManager.shared.cleverTapIdentityKeys
         resolve(migrationConfig)
     }
 }

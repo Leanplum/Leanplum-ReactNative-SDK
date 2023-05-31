@@ -15,6 +15,7 @@ jest.mock('react-native', () => {
     ...ReactNative.NativeModules,
     CleverTapReact: {
       ...ReactNative.NativeModules.CleverTapReact,
+      setLibrary: jest.fn()
     },
     Leanplum: {
       ...ReactNative.NativeModules.Leanplum,
