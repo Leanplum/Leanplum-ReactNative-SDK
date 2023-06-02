@@ -118,7 +118,6 @@ public class MapUtil {
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry) iterator.next();
             writableMap.merge(addValue((String) pair.getKey(), pair.getValue()));
-            iterator.remove();
         }
 
         return writableMap;
