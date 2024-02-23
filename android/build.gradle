@@ -12,8 +12,8 @@
 
 rootProject.ext {
     // expose sdk version for consistency
-    LEANPLUM_SDK_VERSION = '7.2.0'
-    LEANPLUM_CT_SDK_VERSION = '5.0.0'
+    LEANPLUM_SDK_VERSION = '7.3.0'
+    LEANPLUM_CT_SDK_VERSION = '6.0.0'
 }
 
 def DEFAULT_COMPILE_SDK_VERSION = 33
