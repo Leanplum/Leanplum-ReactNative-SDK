@@ -4465,10 +4465,10 @@
     "isobject" "^3.0.0"
     "static-extend" "^0.1.1"
 
-"clevertap-react-native@2.2.0":
-  "integrity" "sha512-ZJab5IkkqjbgYN73rWsko/J6NnwzMklF3tsNRPNgRpihY+ONx/iyWGbfzSbkOQ/UR2UgcoNjbudI9fmboRPpjw=="
-  "resolved" "https://registry.npmjs.org/clevertap-react-native/-/clevertap-react-native-2.2.0.tgz"
-  "version" "2.2.0"
+"clevertap-react-native@2.2.1":
+  "integrity" "sha512-WGH0hk54EPGJ19o3nZzFpErbvN3kHDgmzG2/QUsnbqrwEPwdDf/4TndtCSO/sUjgwBBoGWGZaledu38Yes+t5Q=="
+  "resolved" "https://registry.npmjs.org/clevertap-react-native/-/clevertap-react-native-2.2.1.tgz"
+  "version" "2.2.1"
 
 "cli-cursor@^2.1.0":
   "integrity" "sha1-s12sN2R5+sw+lHR9QdDQ9SOP/LU="
