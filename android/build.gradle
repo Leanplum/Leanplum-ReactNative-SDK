@@ -38,7 +38,7 @@ buildscript {
             google()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:7.3.1'
+            classpath 'com.android.tools.build:gradle:8.1.1'
         }
     }
 }
@@ -59,6 +59,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    classpath "com.leanplum.rn"
 }
 
 repositories {
