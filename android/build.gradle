@@ -16,10 +16,10 @@ rootProject.ext {
     LEANPLUM_CT_SDK_VERSION = '7.5.0'
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 33
-def DEFAULT_BUILD_TOOLS_VERSION = '33.0.2'
+def DEFAULT_COMPILE_SDK_VERSION = 35
+def DEFAULT_BUILD_TOOLS_VERSION = '34.0.0'
 def DEFAULT_MIN_SDK_VERSION = 21
-def DEFAULT_TARGET_SDK_VERSION = 33
+def DEFAULT_TARGET_SDK_VERSION = 35
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
