@@ -1,7 +1,7 @@
 {
   "name": "@leanplum/react-native-sdk",
   "title": "React Native Leanplum",
-  "version": "2.4.0-beta2",
+  "version": "2.4.0-beta3",
   "description": "Mobile Marketing Platform. Integrated. ROI Engine.",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
