@@ -2,7 +2,7 @@ if: (tag IS present) OR (type = pull_request)
 
 language: node_js
 node_js:
-  - "12.16"
+  - "18"
 
 cache: yarn
 
@@ -35,6 +35,3 @@ deploy:
   on:
     repo: Leanplum/Leanplum-ReactNative-SDK
     tags: true
-
-after_deploy:
-  - ./Tools/triggerRondo.sh
