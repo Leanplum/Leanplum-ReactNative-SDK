@@ -1,7 +1,7 @@
 {
   "name": "@leanplum/react-native-sdk",
   "title": "React Native Leanplum",
-  "version": "2.4.0-beta4",
+  "version": "2.4.0",
   "description": "Mobile Marketing Platform. Integrated. ROI Engine.",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -38,8 +38,8 @@
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
-    "react": ">=17.0.0",
-    "react-native": ">=0.72.0 <1.0.x"
+    "react": "*",
+    "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
     "@types/react-native": "^0.72.0",
