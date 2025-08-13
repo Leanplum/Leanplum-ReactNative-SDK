@@ -1,6 +1,6 @@
 # @leanplum/react-native-sdk
 
-If you have already installed Node on your system, make sure it is Node 8.3 or newer.
+If you have already installed Node on your system, make sure it is Node 16.0 or newer.
 
 ## Getting started using npm registry
 
