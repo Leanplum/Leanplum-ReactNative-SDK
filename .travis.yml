@@ -6,65 +6,17 @@ node_js:
 
 cache: yarn
 
-before_script:
-  - echo "=== TRAVIS BUILD DEBUG INFO ==="
-  - echo "TRAVIS_BUILD_TYPE: $TRAVIS_EVENT_TYPE"
-  - echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
-  - echo "TRAVIS_TAG: $TRAVIS_TAG"
-  - echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
-  - echo "TRAVIS_PULL_REQUEST_BRANCH: $TRAVIS_PULL_REQUEST_BRANCH"
-  - echo "TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
-  - |
-    if [ "$TRAVIS_TAG" != "" ]; then
-      echo "✅ TAG IS PRESENT: $TRAVIS_TAG"
-    else
-      echo "❌ NO TAG PRESENT"
-    fi
-  - |
-    if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then
-      echo "📝 THIS IS A PULL REQUEST BUILD"
-      echo "   - Source branch: $TRAVIS_PULL_REQUEST_BRANCH"
-      echo "   - Target branch: $TRAVIS_BRANCH"
-      echo "   - PR Number: $TRAVIS_PULL_REQUEST"
-    else
-      echo "🚀 THIS IS A $TRAVIS_EVENT_TYPE BUILD"
-    fi
-  - |
-    if [ "$TRAVIS_TAG" != "" ] || [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then
-      echo "✅ IF CONDITION PASSED: Build will proceed"
-    else
-      echo "❌ IF CONDITION FAILED: Build should not have started"
-      echo "   - Tag present: $([ "$TRAVIS_TAG" != "" ] && echo 'YES' || echo 'NO')"
-      echo "   - Is pull request: $([ "$TRAVIS_EVENT_TYPE" = 'pull_request' ] && echo 'YES' || echo 'NO')"
-    fi
-  - echo "=== END DEBUG INFO ==="
-
 script:
   - ./Tools/setLPAndroidVersion.sh
   - ./Tools/setLPiOSVersion.sh
   - yarn install --frozen-lockfile
-#  - yarn test
+  #  - yarn test
   - yarn build
 
 after_success:
   - ./Tools/createTag.sh
-  
+
 before_deploy: |
-  echo "=== DEPLOYMENT DEBUG INFO ==="
-  echo "DEPLOYMENT TRIGGERED!"
-  echo "Current tag: $TRAVIS_TAG"
-  echo "Current branch: $TRAVIS_BRANCH"
-  echo "Is pull request: $TRAVIS_PULL_REQUEST"
-  echo "Event type: $TRAVIS_EVENT_TYPE"
-  
-  if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-    echo "⚠️  WARNING: This is a pull request build - deployment will be skipped by Travis"
-  fi
-  
-  if [ "$TRAVIS_TAG" = "" ]; then
-    echo "⚠️  WARNING: No tag present - deployment might be skipped"
-  fi
-  
   function npm_dist_tag() {
     if [[ "$TRAVIS_TAG" = *"beta"* ]]; then
       echo "beta"
@@ -72,9 +24,6 @@ before_deploy: |
       echo "latest"
     fi
   }
-  
-  echo "NPM dist tag will be: $(npm_dist_tag)"
-  echo "=== END DEPLOYMENT DEBUG INFO ==="
 
 deploy:
   skip_cleanup: true
