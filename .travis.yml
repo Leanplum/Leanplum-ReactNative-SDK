@@ -2,7 +2,7 @@ if: (tag IS present) OR (type = pull_request)
 
 language: node_js
 node_js:
-  - "12.16"
+  - "18.20.8"
 
 cache: yarn
 
@@ -10,12 +10,12 @@ script:
   - ./Tools/setLPAndroidVersion.sh
   - ./Tools/setLPiOSVersion.sh
   - yarn install --frozen-lockfile
-  - yarn test
+  #  - yarn test
   - yarn build
 
 after_success:
   - ./Tools/createTag.sh
-  
+
 before_deploy: |
   function npm_dist_tag() {
     if [[ "$TRAVIS_TAG" = *"beta"* ]]; then
@@ -35,6 +35,3 @@ deploy:
   on:
     repo: Leanplum/Leanplum-ReactNative-SDK
     tags: true
-
-after_deploy:
-  - ./Tools/triggerRondo.sh

@@ -12,14 +12,14 @@
 
 rootProject.ext {
     // expose sdk version for consistency
-    LEANPLUM_SDK_VERSION = '7.4.1'
-    LEANPLUM_CT_SDK_VERSION = '6.1.1'
+    LEANPLUM_SDK_VERSION = '7.8.0'
+    LEANPLUM_CT_SDK_VERSION = '7.5.0'
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 33
-def DEFAULT_BUILD_TOOLS_VERSION = '33.0.2'
-def DEFAULT_MIN_SDK_VERSION = 19 // CT SDK 4.7.2 has minSDK set as 19
-def DEFAULT_TARGET_SDK_VERSION = 33
+def DEFAULT_COMPILE_SDK_VERSION = 35
+def DEFAULT_BUILD_TOOLS_VERSION = '34.0.0'
+def DEFAULT_MIN_SDK_VERSION = 21
+def DEFAULT_TARGET_SDK_VERSION = 35
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -38,7 +38,7 @@ buildscript {
             google()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:7.3.1'
+            classpath 'com.android.tools.build:gradle:8.1.1'
         }
     }
 }
@@ -59,6 +59,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.leanplum.rn'
 }
 
 repositories {
